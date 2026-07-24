@@ -20,8 +20,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
     ) throws IOException{
         if(authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
             response.sendRedirect("/admin/home");
-        }else if(authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_RESTAURANT"))){
-            response.sendRedirect("/restaurant/home");
         }else if(authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_RIDER"))){
             response.sendRedirect("/rider/home");
         }else{

@@ -1,18 +1,83 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form th:action="@{/login}" method="post" th:object="${user}">
-        <span th:if="${param.error}">Invalid email or password</span><br>
-        <input type="email" name="email" id="email" placeholder="Email"><br><br>
-        <input type="password" name="password" id="password" placeholder="Password"><br><br>
-        <button type="submit">Login</button>
+    <title>Foodies Hub</title>
 
-        <a href="/register">register</a>
-    </form>
+    <!-- Spring Security CSRF Meta Tags (Fetch API သုံးရန်အတွက်) -->
+    <meta name="_csrf" th:content="${_csrf?.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}"/>
+
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+
+<body>
+    <div class="website-title">
+        <span class="brand-text">Foodies</span><span class="accent-text"> Hub</span> 🍽️
+    </div>
+
+    <div class="container">
+        <div class="card" id="card">
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-content">
+                <form id="authLoginForm" onsubmit="handleLogin(event)">
+                    <h2 class="login">Login 🛒</h2>
+                    <span id="loginError" style="color: red; display: none; margin-bottom: 10px; font-weight: bold;"></span>
+
+                    <div class="input-group">
+                        <input type="email" placeholder="Email" id="loginEmail" name="loginEmail">
+                        <label for="loginEmail">Email</label>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" placeholder="Password" id="loginPass" name="loginPass">
+                        <label for="loginPass">Password</label>
+                    </div>
+
+                    <button class="btn" type="submit">Log In</button>
+                    <p>Are you new to us? <span class="toggle-link" onclick="toggleForm()">Sign Up</span></p>
+                </form>
+            </div>
+
+            <!-- Register Form (Fetch API သုံးမည်) -->
+            <div id="signupForm" class="form-content" style="display:none;">
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <h2 class="signup">Sign Up</h2>
+                    
+                    <!-- Global Success Message -->
+                    <span id="success" style="color: green; display: none; font-weight: bold; margin-bottom: 10px;"></span>
+
+                    <div class="input-group">
+                        <input type="text" name="username" id="username" placeholder="Name">
+                        <label for="username">Full Name</label>
+                        <span id="nameError" style="color: red; display: none; font-size: 0.85rem;"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="email" name="signupEmail" id="signupEmail" placeholder="Email">
+                        <label for="signupEmail">Email</label>
+                        <span id="emailError" style="color: red; display: none; font-size: 0.85rem;"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" name="password" id="signupPass" placeholder="Password">
+                        <label for="signupPass">Password</label>
+                        <span id="pwdError" style="color: red; display: none; font-size: 0.85rem;"></span>
+                    </div>
+
+                    <button class="btn" type="submit">Sign Up</button>
+                    <p>Already have an account? <span class="toggle-link" onclick="toggleForm()">Log In</span></p>
+                </form> 
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Corrected JS path -->
+    <script th:src="@{/js/register.js}"></script>
 </body>
+
 </html>

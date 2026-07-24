@@ -1,0 +1,179 @@
+body, html { margin: 0; padding: 0; font-family: sans-serif; height: 100%; }
+/* Background အတွက် */
+body
+    {
+        background-image: url(../images/login.png);
+        background-position: center;
+        background-size:cover ;
+        background-repeat: no-repeat;
+        background-attachment: fixed ;
+        
+    }
+
+
+@media (max-width:768px){
+    body{
+        background-image: url("../images/mobile_login.png");
+    }
+}
+
+
+/* ရွေ့သွားစေမယ့် Keyframes */
+@keyframes moveBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: 1000px 1000px; }
+}
+
+.container {
+    /* background: linear-gradient(135deg, #74ebd5, #9face6); */
+    margin-top: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: rgba(215, 237, 52, 0.116);
+    backdrop-filter: blur(15px);
+    padding: 30px; 
+    border-radius: 25px;
+    border: solid rgba(162, 62, 12, 0.116);;
+    /* Responsive အတွက် အဓိကပြင်ဆင်ချက် */
+    width: 90%;          /* ဖုန်း screen ပေါ်မူတည်ပြီး နေရာယူမယ် */
+    max-width: 400px;    /* ကွန်ပျူတာ screen မှာ အရမ်းမကြီးသွားအောင် ကန့်သတ်မယ် */
+    text-align: center; 
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin: 10px;        /* ဘေးဘောင်ကပ်မသွားအောင် margin ပေးထားပါတယ် */
+}
+
+/* Input box များ ပိုကြီးစေရန် */
+input {
+    width: 100%;
+    padding: 10px 0; /* အပေါ်အောက် padding သာပေးပြီး ဘေးဘောင်မလိုပါ */
+    margin: 10px 0;
+    border: none; /* အရင်ရှိပြီးသား ဘောင်ကို ဖျောက်လိုက်ပါ */
+    border-bottom: 2px solid white; /* အောက်ဘက် မျဉ်းကြောင်းလေး ထည့်ပါ */
+    background: transparent; /* background ကို အကြည်ဖြစ်အောင် လုပ်ပါ */
+    color: white;
+    outline: none; /* နှိပ်လိုက်ရင် ပေါ်လာတဲ့ default ဘောင်ကို ဖျောက်ပါ */
+    transition: 0.3s;
+}
+
+/* နှိပ်လိုက်တဲ့အခါ မျဉ်းကြောင်း အရောင်ပြောင်းစေချင်ရင် */
+input:focus {
+    border-bottom: 2px solid #101011; /* အပြာရောင် သို့မဟုတ် သင်ကြိုက်တဲ့ အရောင် */
+}
+.input-group {
+    position: relative;
+    margin-top: 20px;
+}
+
+.input-group label {
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: #010408; /* Label ရဲ့ နောက်ခံအရောင် */
+    padding: 0 5px;
+    font-size: 12px;
+    color: white;
+    border-radius: 4px;
+    opacity: 0; /* ပုံမှန်ဆို မပေါ်ဘူး */
+    transition: 0.3s;
+}
+
+/* Input ကို နှိပ်လိုက်ရင် (Focus ဖြစ်ရင်) Label လေးပေါ်လာမယ် */
+.input-group input:focus + label {
+    opacity: 1;
+}
+
+
+
+.btn {
+    width: 30%; 
+    padding: 15px; 
+    background: #030609; 
+    border: none;
+    border-radius: 10px; 
+    color: white; 
+    cursor: pointer; 
+    margin-top: 15px;
+    margin-left: 20vh ;
+    font-size: 16px;     /* Button စာသားကိုလည်း ကြီးပေးပါ */
+}
+
+/* Slide Animation */
+@keyframes slideLeft {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes slideRight {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+.slide-out { animation: slideLeft 0.5s forwards; }
+.slide-in { animation: slideRight 0.5s forwards; }
+
+
+
+.toggle-link { cursor: pointer; font-weight: bold; text-decoration: underline; }
+
+/* Responsive */
+@media (max-width: 480px) { .card { width: 85%; padding: 20px; } }
+
+
+
+
+
+/* &&&&&&&&&&&&&&&&&&&&&&&& signup */
+.signup{
+        /* position: absolute; */
+        margin-left: 180px;
+       transform: translateX(-50%);
+        top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-color: #17385e; */
+        width: 180px;
+        height: 30px;
+        border-radius: 40px 40px 40px 40px;
+        font-size: 35px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+.login{
+    font-size: 45px;
+}
+
+.website-title {
+    font-size: 35px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    margin-top: 60px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    /* စာလုံးလေးတွေ ပေါ်လွင်အောင် Shadow ထည့်ခြင်း */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.brand-text {
+    color: #181717; /* ပထမပိုင်း စာလုံးအဖြူ */
+}
+
+.accent-text {
+    color: #ffcc00; /* ဒုတိယပိုင်းကို အဝါရောင် (Food နဲ့လိုက်အောင်) */
+}
+
+/* နာမည်လေးကို အနည်းငယ် လှုပ်ရှားနေစေချင်ရင် (Animation) */
+.website-title {
+    animation: fadeInDown 3s ease;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}

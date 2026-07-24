@@ -3,9 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rider Panel - Live Navigation</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
+        #map { height: 480px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .panel { margin-top: 15px; padding: 12px; background: #e2f0d9; border-left: 5px solid #385723; border-radius: 4px; }
+        .info-panel { margin-top: 10px; padding: 12px; background: #d1ecf1; border-left: 5px solid #17a2b8; border-radius: 4px; }
+    </style>
 </head>
 <body>
-    Rider home page
+
+    <h2>Rider Panel - Navigation</h2>
+    <p>💡 ဖုန်း GPS သို့မဟုတ် မြေပုံပေါ်ကလစ်နှိပ်၍ သင့်နေရာကို Customer ဆီသို့ လှမ်းပို့ပါ</p>
+    
+    <div id="map"></div>
+    
+    <div class="panel">
+        <b>Server Connection:</b> <span id="status" style="color: red; font-weight: bold;">Disconnected</span><br>
+        <b>Rider Location:</b> <span id="location-text" style="font-weight: bold;">Not active yet</span>
+    </div>
+
+    <div class="info-panel">
+        🎯 <b>Customer Destination:</b> <span id="customer-text" style="color: #0c5460; font-weight: bold;">Waiting for customer...</span>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script>
+        const orderId = "12345";
+        
+        // ⚠️ မိမိ Laptop ၏ Local IP Address ကို ပြောင်းလဲထည့်သွင်းပါ
+        const SERVER_IP = "172.20.10.12"; 
+
+        let map, riderMarker = null, destMarker = null;
+        let stompClient = null;
+
+        const startLat = 22.029440; // ဆိုင်တည်နေရာ (Default)
+        const startLng = 96.101202;
+
+        function initMap() {
+            map = L.map('map').setView([startLat, startLng], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            riderMarker = L.marker([startLat, startLng]).addTo(map).bindPopup("<b>You (Rider)</b>").openPopup();
+
+            // မြေပုံပေါ် နှိပ်၍ Rider နေရာပြောင်းခြင်း (Click Fallback)
+            map.on('click', function(e) {
+                sendRiderLocationToBackend(e.latlng.lat, e.latlng.lng);
+            });
+            
+            // ဖုန်း GPS ကို စောင့်ကြည့်ခြင်း
+            startGpsTracking();
+        }
+
+        function sendRiderLocationToBackend(lat, lng) {
+            riderMarker.setLatLng([lat, lng]);
+            document.getElementById("location-text").innerText = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+
+            if (stompClient && stompClient.connected) {
+                stompClient.send("/app/rider-location/" + orderId, {}, JSON.stringify({
+                    latitude: lat,
+                    longitude: lng
+                }));
+                console.log("Rider location sent:", lat, lng);
+            }
+        }
+
+        function startGpsTracking() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(function(position) {
+                    sendRiderLocationToBackend(position.coords.latitude, position.coords.longitude);
+                }, function(err) { 
+                    console.log("GPS blocked or HTTP local test mode. Click on map to move."); 
+                }, 
+                { enableHighAccuracy: true });
+            }
+        }
+
+        function connectWebSocket() {
+            const socket = new SockJS(`http://${SERVER_IP}:8080/ws-tracking`);
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                document.getElementById("status").innerText = "Connected & Active";
+                document.getElementById("status").style.color = "green";
+
+                // 💡 Customer အိမ်နေရာ တက်လာတာ နားထောင်ခြင်း
+                stompClient.subscribe('/topic/customer-home/' + orderId, function (response) {
+                    const customerLoc = JSON.parse(response.body);
+                    
+                    document.getElementById("customer-text").innerText = `Lat: ${customerLoc.latitude.toFixed(4)}, Lng: ${customerLoc.longitude.toFixed(4)}`;
+                    
+                    // Customer Marker (အပြာရောင်) ချပေးခြင်း
+                    const blueIcon = new L.Icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41], 
+                        iconAnchor: [12, 41]
+                    });
+
+                    if (destMarker) {
+                        destMarker.setLatLng([customerLoc.latitude, customerLoc.longitude]);
+                    } else {
+                        destMarker = L.marker([customerLoc.latitude, customerLoc.longitude], {icon: blueIcon}).addTo(map);
+                    }
+                    destMarker.bindPopup("<b>Customer Home</b>").openPopup();
+                });
+
+            }, function (error) {
+                document.getElementById("status").innerText = "Connection Failed";
+                document.getElementById("status").style.color = "red";
+                setTimeout(connectWebSocket, 5000);
+            });
+        }
+
+        window.onload = function() {
+            initMap();
+            connectWebSocket();
+        };
+    </script>
 </body>
 </html>
