@@ -27,51 +27,53 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/register"))
-            .authenticationProvider(authenticationProvider())
-            .authorizeHttpRequests(auth -> {
-                auth
-                .requestMatchers("/register", "/login", "/api/login", "/api/register", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                .requestMatchers("/rider/**").hasRole("RIDER")
-                .anyRequest()
-                .authenticated();
-            }
-            )
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/register", "/login"))
+                .authenticationProvider(authenticationProvider())
+                .authorizeHttpRequests(auth -> {
+                    auth
+                            .requestMatchers("/register", "/login", "/api/login", "/api/register", "/css/**", "/js/**",
+                                    "/images/**")
+                            .permitAll()
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/customer/**").hasRole("CUSTOMER")
+                            .requestMatchers("/rider/**").hasRole("RIDER")
+                            .anyRequest()
+                            .authenticated();
+                })
 
-            .formLogin(httpForm -> {
-                httpForm
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .usernameParameter("loginEmail")
-                .passwordParameter("loginPass")
-                .successHandler(loginSuccessHandler)
-                .permitAll();
-            }
-            )
+                .formLogin(httpForm -> {
+                    httpForm
+                            .loginPage("/login")
+                            .loginProcessingUrl("/login")
+                            .usernameParameter("loginEmail")
+                            .passwordParameter("loginPass")
+                            .successHandler(loginSuccessHandler)
+                            
+                            .permitAll();
+                })
 
-            .logout(logout -> {logout
-                .logoutSuccessUrl("/login");
-            }
-            )
+                .logout(logout -> {
+                    logout
+                            .logoutSuccessUrl("/login");
+                })
 
-        .build();
+                .build();
     }
 
 }

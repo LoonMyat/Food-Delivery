@@ -13,4 +13,29 @@ public class AdminController {
         return "admin/home";
     }
 
+    @GetMapping("/order_list")
+    public String orderList(){
+        return "admin/order_list";
+    }
+
+    @GetMapping("/profile")
+    public String profile(){
+        return "admin/profile";
+    }
+
+    @GetMapping("/customer_list")
+    public String customerList(){
+        return "admin/customer_list";
+    }
+
+    @GetMapping("/menu_list")
+    public String menuList(){
+        return "admin/menu_list";
+    }
+
+    @GetMapping("/rider_list")
+    public String riderList(){
+        return "admin/rider_list";
+    }
+
 }

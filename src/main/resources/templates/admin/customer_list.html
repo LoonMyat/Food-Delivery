@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Customer Lists</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet" th:href="@{/css/admin.css}">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#BBE0F2;
+height:100vh;
+display:flex;
+justify-content:center;
+padding:10px;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="customer-container" >
+
+    <!-- Header -->
+    <div class="customertop-bar">
+
+        <button class="back" onclick="goHome()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+        <h2>Customer Lists</h2>
+
+        <!-- <button class="add" onclick="goAdd()">
+            <i class="fa-solid fa-plus"></i>
+        </button> -->
+
+    </div>
+
+    <!-- Column -->
+    <div class="customertable-header">
+
+        <div>Name</div>
+        <div>Email</div>
+        <div></div>
+
+    </div>
+
+    <!-- Scroll Area -->
+    <div id="list" class="list"></div>
+
+</div>
+
+<script th:src="@{/js/customer_list.js}"></script>
+
+</body>
+</html>

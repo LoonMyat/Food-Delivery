@@ -6,9 +6,9 @@ function toggleForm() {
     const emailErr = document.getElementById("emailError");
     const pwdErr = document.getElementById("pwdError");
     const successSpan = document.getElementById("success");
-    const loginError = document.getElementById("loginError");
+    // const loginError = document.getElementById("loginError");
     // Error ဟောင်းများကို ဖျောက်ထားခြင်း
-    loginError.style.display = "none"; 
+    // loginError.style.display = "none"; 
     nameErr.style.display = "none";
     emailErr.style.display = "none";
     pwdErr.style.display = "none";
@@ -106,39 +106,39 @@ async function handleRegister(event) {
 }
 
 async function handleLogin(event) {
-    event.preventDefault(); // Page reload ဖြစ်ခြင်းကို တားဆီးခြင်း
+    event.preventDefault(); // Page reload မဖြစ်အောင် တားဆီးထားသည်
 
     const loginError = document.getElementById("loginError");
-    loginError.style.display = "none"; // Error ဟောင်းကို ဖျောက်ထားခြင်း
+    const passwordInput = document.getElementById("loginPass"); // Password Field
+    
+    loginError.style.display = "none";
 
     const loginData = {
         loginEmail: document.getElementById("loginEmail").value,
-        loginPass: document.getElementById("loginPass").value
+        loginPass: passwordInput.value
     };
 
     try {
         const response = await fetch('/api/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
         });
 
         const data = await response.json();
 
-        if (response.ok && data.success) {
-            // Login အောင်မြင်ပါက Home/Dashboard Page သို့ ခေါ်ဆောင်သွားမည်
+        if (data.success) {
             window.location.href = data.redirectUrl || "/home";
         } else {
-            // Login မှားယွင်းပါက Page Reload မဖြစ်ဘဲ Error တန်းပြမည်
+            // Password မှားသွားပါက Error ပြပြီး Password field ကိုပဲ Clear လုပ်မည်
             loginError.innerText = data.message || "Invalid Email or Password!";
             loginError.style.display = "block";
+            
+            // Password ကွက်ကိုပဲ ခါထုတ်လိုက်မည် (Email Input ကွက် မပျောက်ပါ)
+            passwordInput.value = ""; 
+            passwordInput.focus(); // Password ပြန်ရိုက်နိုင်ရန် cursor တန်းတင်ပေးမည်
         }
-
     } catch (err) {
         console.error("Login Error:", err);
-        loginError.innerText = "Server ချိတ်ဆက်မှု အမှားအယွင်း ရှိနေပါသည်။";
-        loginError.style.display = "block";
     }
 }

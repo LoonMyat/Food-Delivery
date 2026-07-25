@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <!-- <link href="profile.css" rel="stylesheet"> -->
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 5vw;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="image">
+            <img th:src="@{/images/profile.jpg}" alt="profile_image" width="100" height="auto">
+        </div>
+        <div class="admin">
+            <p>Food Deliver Tracking</p>
+        </div>
+        <div class="admin-logout">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Log Out">
+            </form>
+        </div>
+    </div>
+    
+    <div th:replace="~{includes/admin/partial :: menu_bar}"></div>
+
+
+</body>
+
+</html>

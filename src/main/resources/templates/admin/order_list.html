@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="orserlist.css"> -->
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <style>
+        *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#BBE0F2;
+    padding:2vw;
+}
+
+    </style>
+
+</head>
+<body>
+    <div class="order-container">
+
+        <h2 class="title">Order List</h2>
+
+        <!-- Header -->
+        <div class="order-item order-header">
+            <span>Order ID</span>
+            <span>Date</span>
+            <span>Customer</span>
+            <span>Status</span>
+        </div>
+
+        <!-- Scroll Area -->
+        <div class="order-list" id="orderList">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <script th:src="@{/js/orserlist.js}"></script>
+
+    <div th:replace="~{includes/admin/partial :: menu_bar}"></div>
+</body>
+</html>

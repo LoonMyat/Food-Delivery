@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rider List</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" th:href="@{/css/admin.css}">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#BBE0F2;
+height:100vh;
+display:flex;
+justify-content:center;
+padding:10px;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+    <div class="rider-container">
+
+        <div class="ridertopBar">
+            <i class="fa-solid fa-angle-left back"></i>
+            <h2>Rider Lists</h2>
+            <button class="rideraddBtn">+</button>
+        </div>
+
+        <div class="ridertableHeader">
+            <div>Name</div>
+            <div>Email</div>
+            <div>Phone No</div>
+            <!-- <div>Total Orders</div> -->
+            <div></div>
+        </div>
+
+        <div id="list" class="rider-list"></div>
+
+    </div>
+
+    <script th:src="@{/js/rider.js}"></script>
+</body>
+</html>
