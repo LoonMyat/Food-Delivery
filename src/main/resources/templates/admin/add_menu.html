@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="my" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #BBE0F2;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .circle-upload {
+            width: 100px;
+            height: 100px;
+            background-color: #f7b553;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin: 0 auto 20px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .circle-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .circle-upload span {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .add-btn {
+            background-color: #f7b553;
+        }
+
+        .back-btn {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>New Menu</h2>
+        <form id="menuForm" th:action="@{/admin/add_menu}" method="post" enctype="multipart/form-data">
+            <!-- ပုံတင်ရန် အဝိုင်းပုံစံ -->
+            <div class="circle-upload" onclick="document.getElementById('fileInput').click()">
+                <span id="plusSign">+</span>
+                <img id="imagePreview" alt="Preview">
+            </div>
+            <input type="file" name="image" id="fileInput" accept="image/*" style="display:none;" onchange="previewFile(event)">
+
+            <input type="text" name="name" id="foodName" placeholder="Name" required>
+
+            <select id="category" name="type" required>
+                <option value="" disabled selected>Select Category (Food / Drink)</option>
+                <option value="Food">Food</option>
+                <option value="Drink">Drink</option>
+            </select>
+
+            <input type="number" name="price" id="price" placeholder="Price" required>
+
+            <div class="btn-group">
+                <button type="button" class="back-btn" onclick="goBack()">Back</button>
+                <button type="submit" class="add-btn">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+        // Back Button Logic
+        function goBack() {
+            window.history.back();
+        }
+
+        // // // Add Button Logic
+        // document.getElementById('menuform').onsubmit = function(e) {
+        //     e.preventDefault();
+        //     alert("Menu added successfully!");
+        //     // ဒီနေရာမှာ Data ကို Database သို့မဟုတ် LocalStorage ထဲ သိမ်းမယ့် code ထည့်နိုင်ပါတယ်
+        // };
+
+
+        let uploadedImageSrc = "";
+
+        // ပုံရွေးလိုက်ပါက အဝိုင်းထဲတွင် ပုံပေါ်လာစေရန်
+        function previewFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    uploadedImageSrc = e.target.result;
+                    const img = document.getElementById('imagePreview');
+                    img.src = uploadedImageSrc;
+                    img.style.display = 'block';
+                    document.getElementById('plusSign').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Add ခလုတ်နှိပ်ပါက အချက်အလက်များ သိမ်းဆည်းပြီး Menu Page သို့ သွားရန်
+        function saveMenu() {
+
+            const name = document.getElementById("foodName").value;
+            const category = document.getElementById("category").value;
+            const price = document.getElementById("price").value;
+
+            const newItem = {
+                name,
+                category,
+                price,
+                image: uploadedImageSrc
+            };
+
+            let menus = JSON.parse(localStorage.getItem("menuList")) || [];
+
+            menus.push(newItem);
+
+            localStorage.setItem("menuList", JSON.stringify(menus));
+
+            window.location.href = "/admin/menu_list";
+
+        }
+    </script>
+
+</body>
+
+</html>

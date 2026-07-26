@@ -33,7 +33,7 @@ function deleteRow(index) {
 render();
 
 document.querySelector(".rideraddBtn").onclick = function() {
-    window.location.href = "addRiders.html";
+    window.location.href = "/admin/add_rider";
 };
 
 document.querySelector(".back").onclick = function() {

@@ -1,91 +1,108 @@
 <!DOCTYPE html>
 <html lang="my" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Page</title>
     <link rel="stylesheet" th:href="@{/css/admin.css}">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: sans-serif; padding: 20px; background-color: #BBE0F2; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #BBE0F2;
+        }
     </style>
 
 </head>
+
 <body>
 
-<div class="menu-container">
-    <header>
-        <h1>Menus</h1>
-    <div class="header-right">
-        <span class="back-icon" onclick="window.location.href='/admin/home'">&times;</span>
-        <button class="add-menu-btn" onclick="window.location.href='addMenutest.html'">Add menu</button>
+    <div class="menu-container">
+        <header>
+            <h1>Menus</h1>
+            <div class="header-right">
+                <span class="back-icon" onclick="window.location.href='/admin/home'">&times;</span>
+                <button class="add-menu-btn" onclick="window.location.href='/admin/add_menu'">Add menu</button>
+            </div>
+        </header>
+
+        <h2>Foods</h2>
+        <section class="menu-section" id="foodsection">
+            <div class="scroll-container">
+                <div class="grid-menu" id="foodGrid">
+                    <th:block th:each="food : ${foods}">
+                        <div class="menu-item">
+                            <div class="img-placeholder"><img th:src="${food.image}" alt="userprofile" width="100"
+                                    height="auto"></div>
+                            <p class="name" th:text="${food.name}">Bubble Tea</p>
+                            <p class="price" th:text="${#numbers.formatInteger(food.price, 0, 'COMMA')} + ' MMK'">price</p>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </section>
+
+        <h2>Drinks</h2>
+        <section class="menu-section" id="drinksection">
+
+            <div class="scroll-container">
+                <div class="grid-menu" id="drinkGrid">
+                    <th:block th:each="drink : ${drinks}">
+                        <div class="menu-item">
+                            <div class="img-placeholder"><img th:src="${drink.image}" alt="userprofile" width="100"
+                                    height="auto">
+                            </div>
+                            <p class="name" th:text="${drink.name}">Name</p>
+                            <p class="price" th:text="${#numbers.formatInteger(drink.price, 0, 'COMMA')} + ' MMK'">price</p>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </section>
     </div>
-    </header>
-
-    <h2>Foods</h2>
-    <section class="menu-section" id="foodsection">
-        <div class="scroll-container">
-            <div class="grid-menu" id="foodGrid">
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Bubble Tea</p>
-                    <p class="price">price</p>
-                </div>
-                 
-            </div>
-        </div>
-    </section>
-
-    <h2>Drinks</h2>
-    <section class="menu-section" id="drinksection">
-        
-        <div class="scroll-container">
-            <div class="grid-menu" id="drinkGrid">
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Name</p>
-                    <p class="price">price</p>
-                </div>
-                
-            </div>
-        </div>
-    </section>
-</div>
 
 
-<script>
-    // Page ဖွင့်လိုက်သည်နှင့် LocalStorage ထဲမှ အချက်အလက်များကို ဆွဲထုတ်ပြသခြင်း
-    window.onload = function() {
-        const menus = JSON.parse(localStorage.getItem('menuList')) || [];
-        console.log(menus);
-        
-        const foodGrid = document.getElementById('foodGrid');
-        const drinkGrid = document.getElementById('drinkGrid');
+    <script>
+        // Page ဖွင့်လိုက်သည်နှင့် LocalStorage ထဲမှ အချက်အလက်များကို ဆွဲထုတ်ပြသခြင်း
+        window.onload = function () {
+            const menus = JSON.parse(localStorage.getItem('menuList')) || [];
+            console.log(menus);
 
-        // မူလပါရှိနေသော နမူနာများကို ဖျောက်လိုပါက အောက်ပါအတိုင်း ရှင်းလင်းနိုင်သည် (သို့မဟုတ် ထားခဲ့နိုင်သည်)
-        // foodGrid.innerHTML = '';
-        // drinkGrid.innerHTML = '';
+            const foodGrid = document.getElementById('foodGrid');
+            const drinkGrid = document.getElementById('drinkGrid');
 
-        menus.forEach(menu => {
-            const itemHTML =` 
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="${menu.image}" alt="${menu.name}"></div>
-                    <p class="name">${menu.name}</p>
-                    <p class="price">${menu.price}</p>
-                </div>`
-            ;
+            // မူလပါရှိနေသော နမူနာများကို ဖျောက်လိုပါက အောက်ပါအတိုင်း ရှင်းလင်းနိုင်သည် (သို့မဟုတ် ထားခဲ့နိုင်သည်)
+            // foodGrid.innerHTML = '';
+            // drinkGrid.innerHTML = '';
 
-            if (menu.category === "Food") {
-    document.getElementById("foodGrid").innerHTML += itemHTML;
-} else {
-    document.getElementById("drinkGrid").innerHTML += itemHTML;
-}
-        });
-    };
+            // menus.forEach(menu => {
+            //     const itemHTML = ` 
+            //     <div class="menu-item">
+            //         <div class="img-placeholder"><img src="${menu.image}" alt="${menu.name}"></div>
+            //         <p class="name">${menu.name}</p>
+            //         <p class="price">${menu.price}</p>
+            //     </div>`
+            //         ;
+
+            //     if (menu.category === "Food") {
+            //         document.getElementById("foodGrid").innerHTML += itemHTML;
+            //     } else {
+            //         document.getElementById("drinkGrid").innerHTML += itemHTML;
+            //     }
+            // });
+        };
 
 
 
 
-</script>
+    </script>
 </body>
+
 </html>
