@@ -36,7 +36,9 @@
         const orderId = "12345";
         
         // ⚠️ မိမိ Laptop ၏ Local IP Address ကို ပြောင်းလဲထည့်သွင်းပါ
-        const SERVER_IP = "172.20.10.12"; 
+        const SERVER_IP = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") 
+                  ? "localhost" 
+                  : "172.20.10.4"; 
 
         const restLat = 22.029440; 
         const restLng = 96.101202;
@@ -145,7 +147,7 @@
             }, function (error) {
                 document.getElementById("connection-status").innerText = "Connection Failed";
                 document.getElementById("connection-status").style.color = "red";
-                setTimeout(connectWebSocket, 5000);
+                setTimeout(connectWebSocket, 8080);
             });
         }
 

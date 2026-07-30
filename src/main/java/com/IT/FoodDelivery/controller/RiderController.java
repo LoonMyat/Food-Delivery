@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RiderController {
 
     @GetMapping("/home")
-    public String showMap(){
+    public String home(){
         return "rider/home";
     }
-
 
 }

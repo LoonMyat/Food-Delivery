@@ -25,40 +25,6 @@ public class AuthController {
         return "login";
     }
 
-    // @PostMapping("/register")
-    // public String saveUser(@Valid @ModelAttribute("user") AppUser user,
-    // BindingResult result, Model model){
-    // String nameError = userService.validateUsername(user.getUsername());
-    // String emailError = userService.validateEmail(user.getEmail());
-    // String pwdError = userService.validatePassword(user.getPassword());
-    // boolean hasError = false;
-
-    // if(nameError!=null){
-    // model.addAttribute("nameError", nameError);
-    // hasError = true;
-    // }
-    // if(emailError!=null){
-    // model.addAttribute("emailError", emailError);
-    // hasError = true;
-    // }
-    // if(pwdError!=null){
-    // model.addAttribute("passwordError", pwdError);
-    // hasError = true;
-    // }
-    // if(hasError){
-    // model.addAttribute("showSignup", true);
-    // return "login";
-    // }
-
-    // userService.register(user);
-    // return "redirect:/login";
-
-    // }
-
-    // @GetMapping("/login")
-    // public String login(){
-    // return "login";
-    // }
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registerUser(@RequestBody AppUser user) {
         Map<String, Object> response = new HashMap<>();
@@ -91,7 +57,7 @@ public class AuthController {
         }
 
         // 4. Error မရှိပါက Database ထဲ သိမ်းပြီး Success ပြန်မည်
-        userService.register(user); // User သိမ်းသည့် logic ထည့်ရန် မမေ့ပါနှင့်
+        userService.register(user);
 
         response.put("success", true);
         response.put("message", "Registration successful!");
