@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Panel - Live Tracking</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/customer/map.css}">
+    
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
+        #map { height: 480px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .status-panel { margin-top: 15px; padding: 12px; background: #ffffff; border-left: 5px solid #007bff; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .leaflet-routing-container { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div th:object="${customer}">
+        <input type="hidden" id="currentName" th:value="*{username}">
+    </div>
+
+    <h2>Customer Panel - Live Delivery Tracking</h2>
+    <p>🎯 မြေပုံပေါ်တွင် သင်၏ <b>အိမ်နေရာ (Home Location)</b> ကို ကလစ်နှိပ်၍ သတ်မှတ်ပါ</p>
+    
+    <div class="status-panel">
+        <b>Server Connection:</b> <span id="connection-status" style="color: red; font-weight: bold;">Disconnected</span><br>
+        <b>Live Status:</b> <span id="eta-text" style="color: blue; font-weight: bold;">Please select your home location on the map.</span>
+    </div>
+
+    <div class="container">
+
+        <!-- Back Button -->
+        <button class="back-btn" onclick="history.back()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h1>Order Details</h1>
+
+
+
+        <div class="content">
+
+            <!-- ================= MAP ================= -->
+
+            <div class="map-card">
+
+                <div id="map"></div>
+                <div>
+                    <label for="phone">Phone No.</label>
+                    <input type="text" name="phone" id="phone" inputmode="numeric" pattern="[0-9]*"/>
+                </div>
+
+            </div>
+
+
+            <!-- ================= ORDER DETAIL ================= -->
+
+            <div class="detail-card">
+
+                <div class="info">
+
+                    <div class="row">
+                        <span>Order ID</span>
+                        <strong id="orderId">#000</strong>
+                    </div>
+
+                    <div class="row">
+                        <span>Total Count</span>
+                        <strong id="totalCount">0</strong>
+                    </div>
+
+                    <div class="row">
+                        <span>Food Price</span>
+                        <strong id="foodPrice">0 MMK</strong>
+                    </div>
+
+                    <div class="row">
+                        <span>Delivery Fee</span>
+                        <strong id="deliveryFee">0 MMK</strong>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="total">
+
+                    <span>Total Amount</span>
+
+                    <strong id="totalAmount">0 MMK</strong>
+
+                </div>
+
+                <!-- Distance & Time -->
+
+                <div class="status-box">
+
+                    <div class="box">
+
+                        <h4>Distance</h4>
+
+                        <p id="distance">0 km</p>
+
+                    </div>
+
+                    <div class="box">
+
+                        <h4>Estimated Time</h4>
+
+                        <p id="eta">0 min</p>
+
+                    </div>
+
+                </div>
+
+                <button id="statusBtn">
+                    Confirm
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script th:src="@{/js/customer/map.js}"></script>
+
+</body>
+</html>

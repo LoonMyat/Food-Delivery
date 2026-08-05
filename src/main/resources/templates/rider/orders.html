@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Delivered Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/rider.css}">
+</head>
+<body>
+    <button class="back-btn" onclick="goToPage('/rider/home')"><</button>
+  <h2>Delivered Orders</h2>
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Customer</th>
+      </tr>
+      <tr>
+        <td>12345</td>
+        <td>2026-07-18</td>
+        <td>CUST001</td>
+      </tr>
+    </table>
+  </div>
+  <script th:src="@{/js/rider.js}"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Panel - Live Navigation</title>
+    
+    <!-- Leaflet CSS & Routing CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
+        #map { height: 480px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .panel { margin-top: 15px; padding: 12px; background: #e2f0d9; border-left: 5px solid #385723; border-radius: 4px; }
+        .info-panel { margin-top: 10px; padding: 12px; background: #d1ecf1; border-left: 5px solid #17a2b8; border-radius: 4px; }
+        /* OSRM ရဲ့ စာအကွက် မပေါ်စေရန် ပုန်းပေးထားခြင်း */
+        .leaflet-routing-container { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <h2>Rider Panel - Navigation to Customer</h2>
+    <p>💡 ဖုန်း GPS သို့မဟုတ် မြေပုံပေါ်ကလစ်နှိပ်၍ သင့်နေရာကို ရွှေ့ပါ။ Customer အိမ်နေရာပေါ်ပါက လမ်းကြောင်းအပြာရောင် ဆွဲပေးပါမည်။</p>
+    
+    <div id="map"></div>
+    
+    <div class="panel">
+        <b>Server Connection:</b> <span id="status" style="color: red; font-weight: bold;">Disconnected</span><br>
+        <b>Rider Location:</b> <span id="location-text" style="font-weight: bold;">Not active yet</span>
+    </div>
+
+    <div class="info-panel">
+        🎯 <b>Customer Destination:</b> <span id="customer-text" style="color: #0c5460; font-weight: bold;">Waiting for customer...</span><br>
+        🛣️ <b>Route Info:</b> <span id="route-info" style="color: #0056b3; font-weight: bold;">No route active</span>
+    </div>
+
+    <!-- Leaflet JS & Routing JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script>
+        const orderId = "12345";
+        
+        // Dynamic IP (Laptop တွင် localhost သုံးမည်၊ ဖုန်းတွင် 172.20.10.4 သုံးမည်)
+        const SERVER_IP = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") 
+                          ? "localhost" 
+                          : "172.20.10.4";
+
+        let map, riderMarker = null, destMarker = null, routingControl = null;
+        let stompClient = null;
+
+        let currentRiderLat = 22.029440; // Default ဆိုင်နေရာ
+        let currentRiderLng = 96.101202;
+        let customerLat = 0, customerLng = 0;
+
+        function initMap() {
+            map = L.map('map').setView([currentRiderLat, currentRiderLng], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            riderMarker = L.marker([currentRiderLat, currentRiderLng]).addTo(map).bindPopup("<b>You (Rider)</b>").openPopup();
+
+            // မြေပုံပေါ် နှိပ်၍ Rider တည်နေရာ ပြောင်းလဲခြင်း
+            map.on('click', function(e) {
+                currentRiderLat = e.latlng.lat;
+                currentRiderLng = e.latlng.lng;
+                sendRiderLocationToBackend(currentRiderLat, currentRiderLng);
+            });
+            
+            startGpsTracking();
+        }
+
+        // 💡 Rider နှင့် Customer အကြား လမ်းကြောင်းအပြာရောင် ဆွဲပေးသည့် Function
+        function updateBlueRoute() {
+            if (customerLat === 0 || customerLng === 0) return;
+
+            // ယခင်ဆွဲထားသော လမ်းကြောင်းဟောင်းရှိပါက ဖျက်မည်
+            if (routingControl) { 
+                map.removeControl(routingControl); 
+            }
+
+            // OSRM လမ်းကြောင်းအပြာရောင် အသစ်ဆွဲခြင်း
+            routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(currentRiderLat, currentRiderLng), 
+                    L.latLng(customerLat, customerLng)
+                ],
+                router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+                lineOptions: { 
+                    styles: [{ color: '#0066ff', opacity: 0.8, weight: 6 }] 
+                },
+                addWaypoints: false, 
+                draggableWaypoints: false,
+                createMarker: function() { return null; } // ရိုးရိုး Marker အပိုမပေါ်စေရန်
+            }).addTo(map);
+
+            routingControl.on('routesfound', function(e) {
+                const summary = e.routes[0].summary;
+                const distanceKm = (summary.totalDistance / 1000).toFixed(2);
+                const durationMin = Math.round(summary.totalTime / 60);
+
+                document.getElementById("route-info").innerText = `အကွာအဝေး: ${distanceKm} Km | သွားရမည့်ချိန်: ${durationMin} mins`;
+            });
+        }
+
+        function sendRiderLocationToBackend(lat, lng) {
+            riderMarker.setLatLng([lat, lng]);
+            document.getElementById("location-text").innerText = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+
+            // လမ်းကြောင်းကိုပါ အလိုအလျောက် Update ပြုလုပ်ပေးမည်
+            updateBlueRoute();
+
+            if (stompClient && stompClient.connected) {
+                stompClient.send("/app/rider-location/" + orderId, {}, JSON.stringify({
+                    latitude: lat,
+                    longitude: lng
+                }));
+            }
+        }
+
+        function startGpsTracking() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(function(position) {
+                    currentRiderLat = position.coords.latitude;
+                    currentRiderLng = position.coords.longitude;
+                    sendRiderLocationToBackend(currentRiderLat, currentRiderLng);
+                }, function(err) { 
+                    console.log("GPS local test mode. Tap map to move rider."); 
+                }, { enableHighAccuracy: true });
+            }
+        }
+
+        function connectWebSocket() {
+            const socket = new SockJS(`http://${SERVER_IP}:8080/ws-tracking`);
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                document.getElementById("status").innerText = "Connected & Active";
+                document.getElementById("status").style.color = "green";
+
+                // Customer အိမ်နေရာ တက်လာတာ စောင့်နားထောင်ခြင်း
+                stompClient.subscribe('/topic/customer-home/' + orderId, function (response) {
+                    const customerLoc = JSON.parse(response.body);
+                    customerLat = customerLoc.latitude;
+                    customerLng = customerLoc.longitude;
+                    
+                    document.getElementById("customer-text").innerText = `Lat: ${customerLat.toFixed(4)}, Lng: ${customerLng.toFixed(4)}`;
+                    
+                    // Customer အပြာရောင် Marker ချပေးခြင်း
+                    const blueIcon = new L.Icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41], iconAnchor: [12, 41]
+                    });
+
+                    if (destMarker) {
+                        destMarker.setLatLng([customerLat, customerLng]);
+                    } else {
+                        destMarker = L.marker([customerLat, customerLng], {icon: blueIcon}).addTo(map);
+                    }
+                    destMarker.bindPopup("<b>Customer Home</b>").openPopup();
+
+                    // Customer နေရာ ရသည်နှင့် လမ်းကြောင်းအပြာရောင် တန်းဆွဲပေးမည်
+                    updateBlueRoute();
+                });
+
+            }, function (error) {
+                document.getElementById("status").innerText = "Connection Failed";
+                document.getElementById("status").style.color = "red";
+                setTimeout(connectWebSocket, 5000);
+            });
+        }
+
+        window.onload = function() {
+            initMap();
+            connectWebSocket();
+        };
+    </script>
+</body>
+</html>

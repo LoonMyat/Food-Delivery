@@ -13,4 +13,19 @@ public class RiderController {
         return "rider/home";
     }
 
+    @GetMapping("/orders")
+    public String orders(){
+        return "rider/orders";
+    }
+
+    @GetMapping("/mapTest")
+    public String map(){
+        return "rider/mapTest";
+    }
+
+    @GetMapping("/notifications")
+    public String noti(){
+        return "rider/notifications";
+    }
+
 }

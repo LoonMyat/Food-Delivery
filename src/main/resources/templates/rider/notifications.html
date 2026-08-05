@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>New Deliveries</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/rider.css}">
+</head>
+<body>
+  <button class="back-btn" onclick="goToPage('/rider/home')"><</button>
+  <h2>New Deliveries</h2>
+  <div class="delivery-card">
+    <p><strong>OrderID:</strong> 12345</p>
+    <p><strong>Customer:</strong> CUST001</p>
+    <p><strong>Total Price:</strong> $25.00</p>
+    <p><strong>Phone Number:</strong> 09-771906016</p>
+    <button class="action-btn" onclick="goToPage('/rider/mapTest')">Picked up</button>
+  </div>
+  
+  <script th:src="@{/js/rider.js}"></script>
+</body>
+</html>

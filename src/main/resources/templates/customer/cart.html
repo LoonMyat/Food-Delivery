@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/customer/nav.css}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/customer/cart.css}">
+</head>
+
+<body>
+
+<div class="cart-container">
+
+    <!-- Header -->
+    <header>
+
+        <button class="back-btn" onclick="goToPage('/customer/home')">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+        <h1>Your Cart</h1>
+
+    </header>
+
+
+    <!-- Cart List -->
+    <div id="cartItems" class="cart-items">
+
+        <!-- cart.js က Item တွေကို ဒီနေရာမှာ ထည့်ပေးမယ် -->
+
+    </div>
+
+
+    <!-- Total -->
+    <div class="total-box">
+
+        <h2>
+            Total :
+            <span id="totalPrice">0 MMK</span>
+        </h2>
+
+    </div>
+
+
+    <!-- Bottom Buttons -->
+    <div class="bottom-buttons">
+
+        <button class="close-btn"
+            onclick="goToPage('/customer/menulist')">
+
+            Continue Shopping
+
+        </button>
+
+
+        <button class="order-btn" id="orderBtn">
+            Order
+        </button>
+
+    </div>
+
+</div>
+<script>
+    // Back Button Logic
+    function goToPage(page) {
+        window.location.href = page;
+    }
+</script>
+
+
+<!-- Bottom Navigation -->
+
+<div th:replace="~{includes/customer/partial :: menubar}"></div>
+
+<script th:src="@{/js/customer/cart.js}"></script>
+</body>
+</html>

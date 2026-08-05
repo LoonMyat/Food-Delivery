@@ -1,0 +1,228 @@
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Menu_list.Css */
+
+
+/* .menu-container { max-width: 1000px; margin: auto; } */
+.menu-container {
+    max-width: 1000px;
+    margin: auto;
+    height: calc(100vh - 90px);
+    /* nav အတွက်နေရာချန် */
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.add-menu-btn {
+    background-color: #f39c12;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.menu-section {
+    background-color: #fdf5e6;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 2px solid #750608;
+}
+
+
+
+.scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+/* .scroll-container::-webkit-scrollbar-thumb{
+    background:#750608;
+    border-radius:20px;
+}
+
+.scroll-container::-webkit-scrollbar-track{
+    background:#eee;
+} */
+
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+    /* Icon နဲ့ Button ကို တစ်ခုအောက်တစ်ခုဖြစ်အောင် */
+    align-items: flex-end;
+    /* ညာဘက်သို ကပ်ထားရန် */
+    gap: 5px;
+    /* Icon နဲ့ Button ကြားကွာဟချက် */
+}
+
+.back-icon {
+    font-size: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    padding-right: 5px;
+    color: #750608;
+}
+
+.add-menu-btn {
+    background-color: #750608;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: #FFF8E7;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.grid-menu {
+    display: grid;
+    grid-auto-flow: column;
+    /* items တွေကို ဘေးကိုတိုးသွားစေရန် */
+    grid-template-rows: repeat(2, 1fr);
+    /* 2 တန်းစီ ဖြစ်စေရန် */
+    gap: 35px;
+}
+
+/* .menu-item { text-align: center; color: white; min-width: 120px; } */
+.menu-item {
+    text-align: center;
+    color: #750608;
+    font-weight: bold;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.img-placeholder img {
+    width: 95px;
+    height: 105px;
+    background-color: #fdf5e6;
+    border-radius: 50%;
+    border: 5px solid #750608;
+    margin: 0 auto 5px;
+    /* width:30vw; */
+    max-width: 130px;
+    min-width: 90px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    /* border:.3rem solid #667eea; */
+    box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .15);
+}
+
+/* Responsive: Mobile အတွက် */
+@media (max-width: 600px) {
+    .grid-menu {
+        gap: 10px;
+    }
+
+    .img-placeholder {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+
+
+
+/* Button */
+/* ===========================
+   Add To Cart Button
+=========================== */
+.cart-btn {
+    margin-top: auto;
+    width: 100px;
+    height: 32px;
+    border: none;
+    border-radius: 25px;
+    background: #750608;
+    color: #fff;
+    font-size: 13px;
+    /* font-weight: bold; */
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cart-btn:hover {
+    background: #F5A300;
+    transform: scale(1.05);
+}
+
+.cart-btn:active {
+    transform: scale(0.95);
+}
+
+/* ===========================
+   Tablet
+=========================== */
+@media (max-width:768px) {
+
+    .menu-item {
+        min-width: 120px;
+    }
+
+    .cart-btn {
+        max-width: 110px;
+        font-size: 13px;
+        padding: 7px 10px;
+    }
+}
+
+/* ===========================
+   Mobile
+=========================== */
+@media (max-width:600px) {
+
+    .menu-item {
+        min-width: 100px;
+    }
+
+    .img-placeholder img {
+        width: 70px;
+        height: 80px;
+    }
+
+    .cart-btn {
+        max-width: 95px;
+        font-size: 12px;
+        padding: 6px 8px;
+        border-radius: 16px;
+    }
+}
+
+/* ===========================
+   Small Mobile
+=========================== */
+@media (max-width:400px) {
+
+    .menu-item {
+        min-width: 90px;
+    }
+
+    .cart-btn {
+        max-width: 85px;
+        font-size: 11px;
+        padding: 5px 6px;
+    }
+}

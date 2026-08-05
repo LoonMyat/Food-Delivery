@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="my" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Page</title>
+        <!-- <link rel="stylesheet" href="home.css"> -->
+
+
+    <link rel="stylesheet" th:href="@{/css/customer/menulist.css}">
+    <link rel="stylesheet" th:href="@{/css/customer/nav.css}">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* body { font-family: sans-serif; padding: 20px; background-color: #BBE0F2; } */
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #BBE0F2;
+            overflow: hidden;
+            }
+        
+         nav{
+            position:fixed;
+            bottom:0;
+            left:0;
+            width:100%;
+            height:70px;
+            background:#750608;
+            display:flex;
+            justify-content:space-around;
+            align-items:center;
+            }
+
+        nav a{
+            color:white;
+            font-size:24px;
+            text-decoration:none;
+            }
+
+        .active{
+            width:50px;
+            height:50px;
+            background:white;
+            color:#F5A300;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+
+<div class="menu-container">
+    <header>
+        <h1>Menus</h1>
+    <div class="header-right">
+        <!-- <span class="back-icon" onclick="history.back()">&times;</span> -->
+        <!-- <button class="add-menu-btn" onclick="window.location.href='addMenutest.html'">Add menu</button> -->
+    </div>
+    </header>
+
+    <h2>Foods</h2>
+    <section class="menu-section" id="foodsection">
+        <div class="scroll-container">
+            <div class="grid-menu" id="foodGrid">
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/dumpling.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Dumpling</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Dumpling',3000,'images/dumpling.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/dumpling1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Dumpling1</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Dumpling1',3000,'images/dumpling1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/eggroll.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Egg Roll</p>
+                    <p class="price">5000</p>
+                    <button class="cart-btn" onclick="addToCart('Eggroll',5000,'images/eggroll.jpg')">Add Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/eggroll1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Egg Roll1</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Egg Roll',3000,'images/eggroll1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/eggroll2.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Egg Roll2</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Egg Roll2',3000,'images/eggroll2.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/eggroll3.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Egg Roll3</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('eggroll3',3000,'images/eggroll3.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/kuey_teow.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Kuey Teow</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Kuey Teow',3000,'images/kuey_teow.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/kuey_teow1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Kuey Teow1</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Kuey Teow1',3000,'images/kuey_teow1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/kwey_teow2.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Kuey Teow3</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Kwey_Teow2',3000,'images/kwey_teow2.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/sushi.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Sushi</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Sushi',3000,'images/sushi.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/sushi1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Sushi1</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Sushi1',3000,'images/sushi1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/sushi3.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Sushi3</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Sushi3',3000,'images/sushi3.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/toppoki.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Toppoki</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Toppoki',3000,'images/toppoki.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/toppoki1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Toppoki1</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Toppoki1',3000,'images/toppoki1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="images/toppoki2.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Toppoki2</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Toppoki2',3000,'images/toppoki2.jpg')">Add To Cart</button>
+                </div>
+
+                
+                
+            </div>
+        </div>
+    </section>
+
+    <h2>Drinks</h2>
+    <section class="menu-section" id="drinksection">
+        
+        <div class="scroll-container">
+            <div class="grid-menu" id="drinkGrid">
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/apple_juice.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/apple_juice1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/avocado_smoothie.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/blueberry_smoothie.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/cappuccino.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/cappuccino1.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/coconut_latte.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/chocolate_milk_tea.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/expresso.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/apple_juice.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/strawberry_smoothie.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                <div class="menu-item">
+                    <div class="img-placeholder"><img src="image/coconut_latte.jpg" alt="userprofile" width="100" height="auto"></div>
+                    <p class="name">Bubble Tea</p>
+                    <p class="price">3000</p>
+                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+</div>
+
+    <div th:replace="~{includes/customer/partial :: menubar}"></div>
+
+<script th:src="@{/js/customer/menulist.js}"></script>
+
+</body>
+</html>

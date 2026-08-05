@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 💡 1. Notification အသံအတွက် Audio Tag (mp3 ဖိုင်ကို static/audio/ ထဲ ထည့်ထားပါ) -->
+<!-- <audio id="notiSound" src="/audio/notification.mp3" preload="auto"></audio> -->
+
+<!-- 💡 2. Notification Pop-up Cards များ ပေါ်လာမည့် Container (Top Right Corner) -->
+<div id="notiContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 320px;"></div>
+
+<!-- Restaurant Orders Table -->
+<div class="container mt-4">
+    <h2>New Orders</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="orderTableBody">
+            <!-- Order များ ဒီထဲ ရောက်လာမည် -->
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

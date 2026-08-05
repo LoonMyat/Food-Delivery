@@ -1,0 +1,196 @@
+/* ==========================
+   SEARCH PAGE
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#BBE0F2;
+}
+
+/* Container */
+
+.search-page{
+    max-width:900px;
+    margin:auto;
+    padding:25px;
+}
+
+/* Header */
+
+.search-header{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.search-header a{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#17385E;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+.search-header h2{
+    color:#17385E;
+    font-size:28px;
+}
+
+/* Search Box */
+
+.search-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#fff;
+    padding:16px 20px;
+    border-radius:18px;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.search-box i{
+    color:#F5A300;
+    font-size:18px;
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-size:16px;
+    color:#17385E;
+}
+
+.search-box input::placeholder{
+    color:#999;
+}
+
+/* Result Title */
+
+.result-title{
+    color:#17385E;
+    font-size:20px;
+    font-weight:400;
+    margin-bottom:18px;
+}
+
+/* Food List */
+
+.food-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+/* Food Card */
+
+.food-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    background:#fff;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.food-card:hover{
+    transform:translateY(-4px);
+}
+
+.food-card img{
+    width:95px;
+    height:95px;
+    border-radius:15px;
+    object-fit:cover;
+}
+
+.food-info{
+    flex:1;
+}
+
+.food-info h3{
+    color:#17385E;
+    margin-bottom:6px;
+}
+
+.food-info p{
+    color:#777;
+    margin-bottom:10px;
+}
+
+.bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.bottom span{
+    color:#F5A300;
+    font-weight:600;
+}
+
+.bottom strong{
+    color:#17385E;
+    font-size:18px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.search-page{
+    padding:18px;
+}
+
+.search-header h2{
+    font-size:24px;
+}
+
+.food-card{
+    flex-direction:column;
+    text-align:center;
+}
+
+.food-card img{
+    width:100%;
+    height:190px;
+}
+
+.bottom{
+    margin-top:10px;
+}
+
+}
+
+@media(max-width:480px){
+
+.search-box{
+    padding:14px 16px;
+}
+
+.search-box input{
+    font-size:15px;
+}
+
+.result-title{
+    font-size:18px;
+}
+
+}
+

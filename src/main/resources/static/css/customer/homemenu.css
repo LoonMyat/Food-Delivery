@@ -1,0 +1,50 @@
+.popular-menu{
+    padding:50px 20px;
+    text-align:center;
+}
+.popular-menu h4,
+.popular-menu h1{
+    position: relative;
+    top: -20px;   /* 20px အပေါ်တက် */
+}
+.menu-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.food-card{
+    background:#fff;
+    border:2px solid #750608;
+    border-radius:25px;
+    padding:25px;
+    transition:.3s;
+}
+
+.food-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.food-card img{
+    width:170px;
+    height:170px;
+    object-fit:contain;
+}
+
+.price{
+    color:#750608;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.food-card button{
+    width:170px;
+    height:50px;
+    border:none;
+    border-radius:30px;
+    background:#750608;
+    color:#FFF8E7;
+    font-size:17px;
+    cursor:pointer;
+}

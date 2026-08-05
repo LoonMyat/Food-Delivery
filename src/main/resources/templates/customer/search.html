@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search | GoBite</title>
+
+    <link rel="stylesheet" th:href="@{/css/customer/search.css}">
+    <link rel="stylesheet" th:href="@{/css/customer/nav.css}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="search-page">
+
+        <div class="search-header">
+
+
+
+            <h2>Search</h2>
+
+        </div>
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+
+            <input type="text" id="searchInput" placeholder="Search food...">
+        </div>
+
+        <p class="result-title">
+            What are you craving today?...
+        </p>
+        <p id="noResult" style="display:none; text-align:center; color:#17385E; margin:20px 0;">
+            No food found.
+        </p>
+
+        <div th:replace="~{includes/customer/partial :: menubar}"></div>
+
+        <!-- <script src="search.js"></script> -->
+
+</body>
+
+</html>

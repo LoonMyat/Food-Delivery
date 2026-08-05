@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GoBite Profile</title>
+
+        <link rel="stylesheet" th:href="@{/css/customer/profile.css}">
+        <!-- <link rel="stylesheet" href="css/customer.css"> -->
+        <link rel="stylesheet" th:href="@{/css/customer/nav.css}">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+
+        <div class="profile-container">
+
+            <div class="profile-card">
+
+                <img src="images/profile.jpg" class="profile">
+
+                <h2>Naing Sit Hmue</h2>
+
+                <p>naingsit@example.com</p>
+
+                <button>Edit Profile</button>
+
+            </div>
+
+            <div class="menu-profile">
+
+                <div class="item-profile">
+                    <i class="fa-solid fa-box"></i>
+                    <span>My Orders</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                </div>
+
+
+
+                <div class="item-profile">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Current Location</span>
+                    <i class="fa-solid fa-angle-right"></i>
+                </div>
+
+
+
+
+            </div>
+
+            <button class="logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+
+        </div>
+
+        <!--<nav>
+
+<div>
+<i class="fa-solid fa-house"></i>
+</div>
+
+<div>
+<i class="fa-solid fa-store"></i>
+</div>
+
+<div>
+<i class="fa-solid fa-cart-shopping"></i>
+</div>
+
+<div class="active">
+<i class="fa-solid fa-user"></i>
+</div>
+
+</nav>-->
+
+        <div th:replace="~{includes/customer/partial :: menubar}"></div>
+
+
+
+</body>
+
+</html>
