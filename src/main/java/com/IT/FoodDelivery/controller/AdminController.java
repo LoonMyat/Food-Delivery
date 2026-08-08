@@ -104,4 +104,9 @@ public class AdminController {
 
     }
 
+    @GetMapping("/notification")
+    public String noti(){
+        return "admin/notification";
+    }
+
 }

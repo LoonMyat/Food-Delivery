@@ -59,11 +59,12 @@
 
             </div>
 
-            <button class="logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </button>
-
+            <form th:action="@{/logout}" method="post">
+                <button class="logout" type="submit">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </form>
         </div>
 
         <!--<nav>

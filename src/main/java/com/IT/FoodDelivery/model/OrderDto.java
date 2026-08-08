@@ -2,21 +2,17 @@ package com.IT.FoodDelivery.model;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class OrderDto {
 
+    private String tempOrderId;
     private String cusName;
-    private Double lattitude;
+    private Double latitude;
     private Double longitude;
     private String status;
+    private String phno;
     private LocalDateTime createdAt;
 
 }

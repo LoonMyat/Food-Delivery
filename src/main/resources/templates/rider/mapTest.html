@@ -133,7 +133,7 @@
         }
 
         function connectWebSocket() {
-            const socket = new SockJS(`http://${SERVER_IP}:8080/ws-tracking`);
+            const socket = new SockJS(`http://${SERVER_IP}:8080/ws`);
             stompClient = Stomp.over(socket);
 
             stompClient.connect({}, function (frame) {
