@@ -1,0 +1,231 @@
+/* ==============================
+   General
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f6fa;
+    color: #333;
+    min-height: 100vh;
+}
+
+
+/* ==============================
+   Container
+================================ */
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.container h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 25px;
+    /* border-left: 5px solid #ff7a00; */
+    padding-left: 12px;
+    text-align: center;
+}
+
+
+/* ==============================
+   Notification Area
+================================ */
+#noti {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+/* ==============================
+   Order Card
+================================ */
+.order-card {
+    width: 100%;
+    background: #FFF8E7;
+    border-radius: 14px;
+    padding: 22px 25px;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+    position: relative;
+    overflow: hidden;
+    transition: 0.25s ease;
+}
+
+/* Orange line on left */
+.order-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: #750608;
+}
+
+
+/* Hover */
+.order-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.11);
+}
+
+
+/* ==============================
+   Order Information
+================================ */
+.order-card p {
+    font-size: 16px;
+    /* margin: 10px 0; */
+    color: #555;
+}
+.order-card p:first-child {
+    margin-top: 0;
+    font-size: 17px;
+    color: #222;
+}
+.order-card strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Order ID */
+.order-card p:first-child strong {
+    color: #750608;
+}
+
+/* Total Amount */
+.order-card p:nth-child(3) {
+    color: #222;
+    font-weight: 600;
+}
+
+
+/* Phone */
+.order-card p:nth-child(4) {
+    margin-bottom: 0;
+}
+/* ==============================
+   Tablet
+================================ */
+@media (max-width: 768px) {
+
+    .container {
+        padding: 25px 16px;
+    }
+    .container h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .order-card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    .order-card p {
+        font-size: 15px;
+        margin: 9px 0;
+    }
+}
+/* ==============================
+   Mobile
+================================ */
+@media (max-width: 480px) {
+
+    .container {
+        padding: 20px 12px;
+    }
+    .container h2 {
+        font-size: 21px;
+        padding-left: 9px;
+        border-left-width: 4px;
+        margin-bottom: 18px;
+    }
+    #noti {
+        gap: 14px;
+    }
+    .order-card {
+        padding: 18px 16px 18px 20px;
+        border-radius: 11px;
+    }
+    .order-card::before {
+        width: 4px;
+    }
+    .order-card p {
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 7px 0;
+    }
+    .order-card p:first-child {
+        font-size: 15px;
+    }
+}
+/* ==============================
+   Very Small Mobile
+================================ */
+@media (max-width: 350px) {
+
+    .container {
+        padding: 16px 10px;
+    }
+    .container h2 {
+        font-size: 19px;
+    }
+    .order-card {
+        padding: 16px 14px 16px 18px;
+    }
+    .order-card p {
+        font-size: 13px;
+    }
+}
+.statusBtn,
+.rejectBtn {
+    padding: 10px 20px;
+    margin-top: 8px;
+    margin-left: 30px;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    float: right;
+}
+
+/* Reject */
+.rejectBtn {
+    background: #ffe5e5;
+    color: #e53935;
+}
+
+.rejectBtn:hover {
+    background: #e53935;
+    color: white;
+}
+
+/* Accept */
+.statusBtn {
+    background: #750608;
+    color: white;
+}
+
+.statusBtn:hover {
+    background: #e53935;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .acceptBtn,
+    .rejectBtn {
+        padding: 9px 15px;
+        font-size: 13px;
+    }
+}

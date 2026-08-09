@@ -1,5 +1,17 @@
 let stompClient = null;
 
+let ridersList = []; // DB ထဲမှ Rider များ သိမ်းရန်
+
+// Page စပွင့်တာနဲ့ Rider List ကို Fetch လုပ်မည်
+async function loadRiders() {
+    try {
+        const response = await fetch('/api/riders');
+        ridersList = await response.json();
+    } catch (error) {
+        console.error("Error loading riders:", error);
+    }
+}
+
 // 💡 1. DB ထဲမှ ရှိပြီးသား Active Orders များကို Fetch လုပ်ယူမည့် Function
 function loadActiveOrders() {
     fetch('/api/orders/active')
@@ -17,12 +29,17 @@ function loadActiveOrders() {
         .catch(error => console.error("Error fetching active orders:", error));
 }
 
+
+
+
+// Page စတင်ချိန်တွင် ခေါ်ယူမည်
+document.addEventListener("DOMContentLoaded", loadRiders);
+
 // 💡 2. Order Card ဖန်တီးပေးမည့် Reusable Function
 function renderOrderCard(order) {
     const notiContainer = document.getElementById("noti");
     if (!notiContainer) return;
 
-    // ရှိပြီးသား Card ဖြစ်ပါက ထပ်မံ မထည့်စေရန် စစ်ဆေးခြင်း
     if (document.getElementById("order-card-" + order.id)) {
         return;
     }
@@ -34,20 +51,31 @@ function renderOrderCard(order) {
     let btnText = "Accept";
     let isDisabled = "";
 
-    // Status အပေါ်မူတည်ပြီး Button စာသား ပြောင်းလဲခြင်း
     if (order.status === "PREPARING") {
         btnText = "Ready to pick up";
         isDisabled = "disabled";
     }
 
+    // 💡 DB မှ ရလာသော ridersList ကိုသုံးပြီး Option များ ဆောက်ခြင်း
+    let riderOptions = `<option value="" disabled selected>Select Rider</option>`;
+    
+    ridersList.forEach(rider => {
+        riderOptions += `<option value="${rider.id}">${rider.name}</option>`;
+    });
+
     info.innerHTML = `
         <p><strong>Order ID:</strong> #${order.id}</p>
         <p><strong>Customer:</strong> ${order.cusName}</p>
+        
+        <!-- 💡 ID ကို order.id ပါအောင် ခွဲပေးထားပါသည် -->
+        <select name="rider" id="rider-${order.id}" required>
+            ${riderOptions}
+        </select>
+        
         <button onclick="rejectOrder(${order.id}, this)" ${isDisabled} class="rejectBtn">Reject</button>
         <button onclick="acceptOrder(${order.id}, this)" class="statusBtn">${btnText}</button>
     `;
 
-    // အပေါ်ဆုံးတွင် ထည့်သွင်းမည်
     notiContainer.prepend(info);
 }
 
@@ -86,11 +114,35 @@ function connectWebSocket() {
 
 // 💡 4. Accept Button နှိပ်သည့် Function
 function acceptOrder(orderId, btnElement) {
-    if (stompClient && stompClient.connected) {
-        stompClient.send("/app/accept-order", {}, JSON.stringify({ orderId: orderId }));
+    if (!stompClient || !stompClient.connected) return;
+
+    const currentText = btnElement ? btnElement.innerText.trim() : "";
+
+    // 💡 ၁။ "Accept" ဖြစ်နေလျှင် -> Customer + Rider ဆီ Noti သွားမည်
+    if (currentText === "Accept") {
+        
+        stompClient.send("/app/accept-order", {}, JSON.stringify({ 
+            orderId: orderId,
+            status: "ACCEPTED" // Backend ကို status ပါ ပို့ပေးမည်
+        }));
 
         if (btnElement) {
             btnElement.innerText = "Ready to pick up";
+            btnElement.style.backgroundColor = "#ff9800"; // (Optional) အရောင်ပြောင်းရန်
+        }
+
+    } 
+    // 💡 ၂။ "Ready to pick up" ဖြစ်နေလျှင် -> Rider ဆီပဲ Noti သွားမည်
+    else if (currentText === "Ready to pick up") {
+        
+        stompClient.send("/app/ready-order", {}, JSON.stringify({ 
+            orderId: orderId,
+            status: "READY_FOR_PICKUP"
+        }));
+
+        if (btnElement) {
+            btnElement.innerText = "Picked Up";
+            btnElement.disabled = true; // ပြီးသွားပါက Button နှိပ်မရအောင် ပိတ်မည်
         }
     }
 }

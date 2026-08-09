@@ -5,6 +5,12 @@ let tempOrderId = null; // Client ဘက်မှ ခေတ္တထုတ်ယ
 let orderId = null;     // DB မှ ကျလာမည့် Order ID အမှန်
 let stompClient = null;
 
+const currentOrder = JSON.parse(localStorage.getItem("currentOrder"));
+if(currentOrder){
+    document.getElementById("foodPrice").innerHTML = `${currentOrder.foodPrice} MMK`;
+    document.getElementById("totalCount").innerHTML = `${currentOrder.totalCount}`;
+}
+
 // Restaurant Coordinates (ဆိုင် တည်နေရာ)
 const restLat = 22.029440;
 const restLng = 96.101202;
@@ -181,6 +187,24 @@ function initMap() {
         updateRouteAndETA(currentRiderLat, currentRiderLng);
     });
 }
+let deliFee = 0;
+function calculateTotalAmount(distance, amount){
+    let total = 0;
+    if(distance<=5){
+        deliFee = 1000;
+    }
+    else if(distance<=10){
+        deliFee = 2000;
+    }
+    else if(distance <=20){
+        deliFee = 3000;
+    }else{
+        deliFee = 3500;
+    }
+
+    total = deliFee + amount;
+    return total;
+}
 
 function updateRouteAndETA(riderLat, riderLng) {
     currentRiderLat = riderLat;
@@ -201,17 +225,50 @@ function updateRouteAndETA(riderLat, riderLng) {
     }).addTo(map);
 
     routingControl.on('routesfound', function (e) {
+        
         const summary = e.routes[0].summary;
         const distanceKm = (summary.totalDistance / 1000).toFixed(2);
         const durationMin = Math.round(summary.totalTime / 60);
+        
+
+        // 💡 1. total ကို if အပြင်ဘက်မှာ ကြေညာပေးရပါမည်
+        let total = 0;
+
+        if (currentOrder && currentOrder.foodPrice) {
+            const foodPrice = currentOrder.foodPrice;
+            total = calculateTotalAmount(distanceKm, foodPrice);
+            document.getElementById("deliveryFee").innerHTML = `${deliFee} MMK`;
+        }
 
         riderMarker.bindPopup(`<b>Rider (${durationMin} mins away)</b>`).openPopup();
-        const etaElem = document.getElementById("eta-text");
+        
+        const etaElem = document.getElementById("eta");
+        const distance = document.getElementById("distance");
+        const totalAmount = document.getElementById("totalAmount");
+
+        // 💡 2. UI Elements များကို Null Check အသီးသန့် စစ်ပေးပါမည်
         if (etaElem) {
-            etaElem.innerText = `အကွာအဝေး: ${distanceKm} Km | ရောက်ရန်ကြာချိန်: ${durationMin} mins`;
+            if (durationMin >= 4) {
+                etaElem.innerText = `${durationMin * 2} mins`;
+            } else {
+                etaElem.innerText = `${durationMin} mins`;
+            }
+        }
+
+        if (distance) {
+            distance.innerText = `${distanceKm} km`;
+        }
+
+        if (totalAmount) {
+            // 💡 3. toLocaleString() လို့ e ထည့်ပြီး ပြင်ပေးထားပါတယ်
+            totalAmount.innerText = `${total.toLocaleString()} MMK`;
         }
     });
 }
+
+
+
+
 
 
 // ==========================================

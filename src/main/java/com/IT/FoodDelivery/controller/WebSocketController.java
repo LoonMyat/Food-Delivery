@@ -33,21 +33,17 @@ public class WebSocketController {
 
         Order savedOrder = orderRepo.save(order);
 
-        // 💡 Customer နှင့် Restaurant ထံ ပို့ပေးမည့် Payload Structure
         Map<String, Object> orderPayload = new HashMap<>();
         orderPayload.put("id", savedOrder.getId());
-        orderPayload.put("tempOrderId", dto.getTempOrderId()); // 👈 ၁။ Customer JS စစ်နိုင်ရန် tempOrderId
-                                                               // ထည့်ပေးရပါမည်
+        orderPayload.put("tempOrderId", dto.getTempOrderId());
         orderPayload.put("cusName", savedOrder.getCusName());
         orderPayload.put("phno", dto.getPhno());
         orderPayload.put("latitude", savedOrder.getLattitude());
         orderPayload.put("longitude", savedOrder.getLongitude());
         orderPayload.put("status", savedOrder.getStatus());
 
-        // Customer ထံသို့ tempOrderId ပါသော Payload ပို့ပေးခြင်း
         messagingTemplate.convertAndSend("/topic/order-response", (Object) orderPayload);
 
-        // Restaurant (Admin) ထံသို့ ပို့ပေးခြင်း
         messagingTemplate.convertAndSend("/topic/admin/orders", (Object) orderPayload);
 
         System.out.println("order sent: " + savedOrder.getId());
@@ -58,7 +54,7 @@ public class WebSocketController {
 
         Long orderId = Long.parseLong(payload.get("orderId").toString());
 
-        Order order = orderRepo.findById(orderId).orElseThrow();
+        Order order = orderRepo.findById(orderId).orElse(null);
         if (order != null) {
             order.setStatus("PREPARING");
             orderRepo.save(order);
@@ -68,12 +64,36 @@ public class WebSocketController {
             response.put("status", "PREPARING");
             response.put("message", "Order Accept");
 
-            // 👈 ၂။ Customer JS နားထောင်နေသည့် Topic Path အတိုင်း
-            // /topic/order-status/{orderId} သို့ ပြောင်းလိုက်ပါ
             messagingTemplate.convertAndSend("/topic/order-status/" + orderId, (Object) response);
+            messagingTemplate.convertAndSend("/topic/riders/order-status/", (Object) response);
         }
 
     }
+
+    @MessageMapping("/ready-order")
+public void readyOrder(Map<String, Object> payload) {
+
+    Long orderId = Long.parseLong(payload.get("orderId").toString());
+    
+    // 💡 Frontend ကနေ ပါလာမည့် riderId ကို ယူပါမည်
+    Long riderId = Long.parseLong(payload.get("riderId").toString()); 
+
+    Order order = orderRepo.findById(orderId).orElse(null);
+    if (order != null) {
+        order.setStatus("READY_FOR_PICKUP");
+        orderRepo.save(order);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", orderId);
+        response.put("riderId", riderId);
+        response.put("status", "READY_FOR_PICKUP");
+        response.put("message", "Ready for pickup!");
+
+        // 📢 ၁။ ရွေးချယ်ထားသော သီးသန့် Rider ထံသို့သာ ပို့မည်
+        messagingTemplate.convertAndSend("/topic/rider-status/" + riderId, (Object)response);
+
+    }
+}
 
     @MessageMapping("/reject-order")
     public void rejectOrder(Map<String, Object> payload) {
@@ -83,14 +103,14 @@ public class WebSocketController {
         Order order = orderRepo.findById(orderId).orElse(null);
         if (order != null) {
             order.setStatus("REJECTED");
-            orderRepo.save(order); // DB ထဲတွင် REJECTED အဖြစ် သိမ်းမည်
+            orderRepo.save(order);
 
             Map<String, Object> response = new HashMap<>();
             response.put("orderId", orderId);
             response.put("status", "REJECTED");
             response.put("message", "Order Rejected");
 
-            // Customer နားထောင်နေသည့် Topic သို့ ပို့ပေးမည်
+            // Send to customer
             messagingTemplate.convertAndSend("/topic/order-status/" + orderId, (Object) response);
         }
     }
