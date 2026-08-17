@@ -1,22 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>New Deliveries</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- 💡 Active Rider ID ကို Meta Tag တွင် ထည့်သွင်းထားခြင်း -->
+  <meta name="rider-id" th:content="${riderId}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" th:href="@{/css/rider.css}">
 </head>
+
 <body>
-  <button class="back-btn" onclick="goToPage('/rider/home')"><</button>
+  <button class="back-btn" onclick="goToPage('/rider/home')">
+    <i class="fa-solid fa-angle-left back"></i>
+  </button>
   <h2>New Deliveries</h2>
-  <div class="delivery-card">
-    <p><strong>OrderID:</strong> 12345</p>
-    <p><strong>Customer:</strong> CUST001</p>
-    <p><strong>Total Price:</strong> $25.00</p>
-    <p><strong>Phone Number:</strong> 09-771906016</p>
-    <button class="action-btn" onclick="goToPage('/rider/mapTest')">Picked up</button>
+
+  <!-- Noti Card များ ပေါ်လာမည့် Container -->
+  <div id="noti-container">
+
+    <!-- 💡 DB + In-Memory Phone မှ ရလာသော Active Orders များကို Loop ပတ်ပြမည့် အပိုင်း -->
+    <div th:each="order : ${orders}" class="delivery-card" th:id="'assigned-order-' + ${order.id}">
+      <div class="card-body">
+        <p><strong>Order ID: </strong><span th:text="'#' + ${#numbers.formatInteger(order.id, 3)}">#001</span></p>
+        <p><strong>Customer Name:</strong> <span th:text="${order.cusName != null ? order.cusName : 'N/A'}">Customer</span></p>
+        
+        <!-- 💡 Phone နံပါတ်ကို Thymeleaf ဖြင့် တိုက်ရိုက်ပြသခြင်း (ဖုန်းခေါ်ဆို၍ ရနိုင်သည်) -->
+        <p><strong>Phone:</strong> 
+          <a th:href="'tel:' + ${order.phone}" 
+             style="color: #007bff; font-weight: bold; text-decoration: none;" 
+             th:text="'📞 ' + ${order.phone != null ? order.phone : 'N/A'}">📞 N/A</a>
+        </p>
+
+        <p><strong>Status:</strong> <span style="color: orange;" th:text="${order.status}">PREPARING</span></p>
+
+        <button class="btn-map" th:onclick="|viewOrderOnMap('${order.id}')|">
+          🗺️ View Map
+        </button>
+
+      </div>
+    </div>
+
   </div>
-  
-  <script th:src="@{/js/rider.js}"></script>
+
+  <!-- 1. SockJS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+  <!-- 2. STOMP Client Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+  <!-- 3. Rider Custom JS -->
+  <script th:src="@{/js/rider/rider.js}"></script>
 </body>
+
 </html>

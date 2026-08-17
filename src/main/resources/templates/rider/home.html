@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <title>Delivery Rider - Main</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="rider-id" th:content="${riderId}">
   <link rel="stylesheet" th:href="@{/css/rider.css}">
 </head>
 <body>
   
   <div class="menu">
-    <button class="menu-card" onclick="goToPage('/rider/notifications')">
+    <button class="menu-card" th:onclick="|goToPage('/rider/notifications/${riderId}')|">
       <img th:src="@{/images/NotiIcon.png}" alt="Notifications" class="icon">
       <span>Notifications</span>
     </button>
-    <button class="menu-card" onclick="goToPage('/rider/orders')">
+    <button class="menu-card" th:onclick="|goToPage('/rider/orders/${riderId}')|">
       <img th:src="@{/images/OrderIcon.png}" alt="Orders" class="icon">
       <span>Orders</span>
     </button>
@@ -21,7 +22,11 @@
   <form th:action="@{/logout}" method="post">
     <button class="logout-btn">Log out</button>
   </form>
-  
-  <script th:src="@{/js/rider.js}"></script>
+  <!-- 1. SockJS Library -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<!-- 2. STOMP Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script th:src="@{/js/rider/rider.js}"></script>
 </body>
 </html>

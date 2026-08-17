@@ -26,7 +26,7 @@
             <img th:src="@{/images/profile.jpg}" alt="profile_image" width="100" height="auto">
         </div>
         <div class="admin">
-            <p>Food Deliver Tracking</p>
+            <p th:text="${user.username}">Food Deliver Tracking</p>
         </div>
         <div class="admin-logout">
             <form th:action="@{/logout}" method="post">

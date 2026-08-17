@@ -1,6 +1,14 @@
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Menu_list.Css */
 
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.menu-container::-webkit-scrollbar {
+    display: none;
+}
+
 /* .menu-container { max-width: 1000px; margin: auto; } */
 .menu-container {
     max-width: 1000px;
@@ -28,11 +36,13 @@ header {
 }
 
 .menu-section {
-    background-color: #fdf5e6;
+    /* background-color: #fdf5e6; */
     padding: 15px;
     margin-bottom: 20px;
-    border-radius: 8px;
-    border: 2px solid #750608;
+    border-radius: 15px;
+    /* border: 2px solid #750608; */
+    background: rgba(61, 78, 117, 0.25);
+    backdrop-filter: blur(12px);
 }
 
 
@@ -96,13 +106,19 @@ header {
 /* .menu-item { text-align: center; color: white; min-width: 120px; } */
 .menu-item {
     text-align: center;
-    color: #750608;
-    font-weight: bold;
+    color: #000;
     min-width: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+.name{
+    font-size: 15px;
+}
+.price{
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .img-placeholder img {
@@ -110,7 +126,7 @@ header {
     height: 105px;
     background-color: #fdf5e6;
     border-radius: 50%;
-    border: 5px solid #750608;
+    /* border: 2px solid #750608; */
     margin: 0 auto 5px;
     /* width:30vw; */
     max-width: 130px;
@@ -125,7 +141,7 @@ header {
 /* Responsive: Mobile အတွက် */
 @media (max-width: 600px) {
     .grid-menu {
-        gap: 10px;
+        gap: 25px;
     }
 
     .img-placeholder {
@@ -147,10 +163,9 @@ header {
     height: 32px;
     border: none;
     border-radius: 25px;
-    background: #750608;
-    color: #fff;
-    font-size: 13px;
-    /* font-weight: bold; */
+    background: #FFF8E7;
+    color: #000;
+    font-size: 12px;
     cursor: pointer;
     display: block;
     margin-left: auto;
@@ -165,8 +180,7 @@ header {
 }
 
 .cart-btn:hover {
-    background: #F5A300;
-    transform: scale(1.05);
+    background: #7a7474;
 }
 
 .cart-btn:active {

@@ -83,12 +83,24 @@
     <div class="form-container">
         <h2>New Menu</h2>
         <form id="menuForm" th:action="@{/admin/add_menu}" method="post" enctype="multipart/form-data">
+            <!-- ❌ Error Message ပြရန် (errorMessage ရှိရင် ပေါ်မည်) -->
+            <div th:if="${errorMessage}" class="alert alert-danger"
+                style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <!-- ✅ Success Message ပြရန် (successMessage ရှိရင် ပေါ်မည်) -->
+            <div th:if="${successMessage}" class="alert alert-success"
+                style="color: green; background-color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                <span th:text="${successMessage}"></span>
+            </div>
             <!-- ပုံတင်ရန် အဝိုင်းပုံစံ -->
             <div class="circle-upload" onclick="document.getElementById('fileInput').click()">
                 <span id="plusSign">+</span>
                 <img id="imagePreview" alt="Preview">
             </div>
-            <input type="file" name="image" id="fileInput" accept="image/*" style="display:none;" onchange="previewFile(event)">
+            <input type="file" name="image" id="fileInput" accept="image/*" style="display:none;"
+                onchange="previewFile(event)">
 
             <input type="text" name="name" id="foodName" placeholder="Name" required>
 
@@ -111,7 +123,7 @@
 
         // Back Button Logic
         function goBack() {
-            window.history.back();
+            window.location.href="/admin/menu_list";
         }
 
         // // // Add Button Logic

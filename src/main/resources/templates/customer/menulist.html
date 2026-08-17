@@ -18,42 +18,13 @@
             background-color: #BBE0F2;
             overflow: hidden;
             }
-        
-         nav{
-            position:fixed;
-            bottom:0;
-            left:0;
-            width:100%;
-            height:70px;
-            background:#750608;
-            display:flex;
-            justify-content:space-around;
-            align-items:center;
-            }
-
-        nav a{
-            color:white;
-            font-size:24px;
-            text-decoration:none;
-            }
-
-        .active{
-            width:50px;
-            height:50px;
-            background:white;
-            color:#F5A300;
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            }
 
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 <body>
-
+<main id="main-content">
 <div class="menu-container">
     <header>
         <h1>Menus</h1>
@@ -67,31 +38,12 @@
     <section class="menu-section" id="foodsection">
         <div class="scroll-container">
             <div class="grid-menu" id="foodGrid">
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="images/dumpling.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Dumpling</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Dumpling',3000,'images/dumpling.jpg')">Add To Cart</button>
-                </div>
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="images/dumpling1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Dumpling1</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Dumpling1',3000,'images/dumpling1.jpg')">Add To Cart</button>
-                </div>
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="images/eggroll.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Egg Roll</p>
-                    <p class="price">5000</p>
-                    <button class="cart-btn" onclick="addToCart('Eggroll',5000,'images/eggroll.jpg')">Add Cart</button>
-                </div>
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="images/eggroll1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Egg Roll1</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Egg Roll',3000,'images/eggroll1.jpg')">Add To Cart</button>
-                </div>
-                
+                <div class="menu-item" th:each="food : ${foods}">
+                    <div class="img-placeholder"><img th:src="${food.image}" width="100" height="auto" loading="lazy"></div>
+                    <p class="name" th:text="${food.name}">Dumpling</p>
+                    <p class="price" th:text="${#numbers.formatInteger(food.price, 0, 'COMMA')} + ' MMK'">3000</p>
+                    <button class="cart-btn" th:onclick="addToCart([[${food.name}]], [[${food.price}]], [[${food.image}]])">Add To Cart</button>
+                </div>  
             </div>
         </div>
     </section>
@@ -101,39 +53,25 @@
         
         <div class="scroll-container">
             <div class="grid-menu" id="drinkGrid">
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Bubble Tea</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
-                </div>
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Bubble Tea</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
-                </div>
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Bubble Tea</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
-                </div>
-                <div class="menu-item">
-                    <div class="img-placeholder"><img src="drink1.jpg" alt="userprofile" width="100" height="auto"></div>
-                    <p class="name">Bubble Tea</p>
-                    <p class="price">3000</p>
-                    <button class="cart-btn" onclick="addToCart('Bubble Tea',3000,'drink1.jpg')">Add To Cart</button>
-                </div>
-                
+                <div class="menu-item" th:each="drink : ${drinks}">
+                    <div class="img-placeholder"><img th:src="${drink.image}" width="100" height="auto" loading="lazy"></div>
+                    <p class="name" th:text="${drink.name}">Bubble Tea</p>
+                    <p class="price" th:text="${#numbers.formatInteger(drink.price, 0, 'COMMA')} + ' MMK'">3000</p>
+                    <button class="cart-btn" th:onclick="addToCart([[${drink.name}]], [[${drink.price}]], [[${drink.image}]])">Add To Cart</button>
+                </div>            
             </div>
         </div>
     </section>
 </div>
 
     <div th:replace="~{includes/customer/partial :: menubar}"></div>
+    <!-- 1. SockJS Library -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<!-- 2. STOMP Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 <script th:src="@{/js/customer/menulist.js}"></script>
-
+</main>
 </body>
 </html>

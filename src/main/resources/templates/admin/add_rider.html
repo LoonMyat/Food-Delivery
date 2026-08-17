@@ -1,126 +1,136 @@
 <!DOCTYPE html>
 <html lang="my">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Forms</title>
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background-color: #BBE0F2; display: flex; justify-content: center; padding: 40px; flex-wrap: wrap; gap: 40px; }
-    
-    /* Form Container ကို ပိုရှည်စေဖို padding နဲ့ width တိုးထားပါတယ် */
-    .riderform-container { 
-        background: #FFF8E7; 
-        padding: 40px 30px; /* အပေါ်အောက် padding ကို 40px ထိ တိုးထားပါတယ် */
-        border-radius: 20px; 
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
-        width: 100%; 
-        max-width: 450px; /* Form ရဲ့ အကျယ်ကို နည်းနည်းထပ်တိုးပေးထားပါတယ် */
-        margin-top: 8vh;
-         border: 2px solid #750608;
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-    }
-    
-    h2 { text-align: center; color: #750608; margin-bottom: 30px; font-size: 28px; }
-    
-    .riderinput-group { margin-bottom: 25px; } /* input တစ်ခုနဲ့တစ်ခုကြား နေရာကျဲစေဖို */
-    label { display: block; margin-bottom: 10px; font-weight: bold; }
-    
-    /* Input field အမြင့်ကို ပိုကြီးစေဖို padding 22px ပေးထားပါတယ် */
-    input { 
-        width: 100%; 
-        padding: 22px; 
-        border: 2px solid #750608; 
-        border-radius: 12px; 
-        outline: none; 
-        font-size: 16px;
-    }
-    
-    input:focus { border-color: #ff9f1a; }
-    
-    .riderbtn-group { display: flex; gap: 15px; margin-top: 35px; }
-    
-    /* Button တွေကို ပိုကြီးစေဖို */
-    button { 
-        flex: 1; 
-        padding: 18px; 
-        border: none; 
-        border-radius: 12px; 
-        cursor: pointer; 
-        font-weight: bold; 
-        font-size: 16px;
-        transition: 0.3s; 
-    }
-    
-    .riderbtn-back { background: #e0e0e0; color: #333; }
-    .riderbtn-add { background: #750608; color: white; }
-    button:hover { opacity: 0.8; transform: translateY(-2px); }
+        body {
+            background-color: #BBE0F2;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
 
+        /* Form Container ကို ပိုရှည်စေဖို padding နဲ့ width တိုးထားပါတယ် */
+        .riderform-container {
+            background: #FFF8E7;
+            padding: 40px 30px;
+            /* အပေါ်အောက် padding ကို 40px ထိ တိုးထားပါတယ် */
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            /* Form ရဲ့ အကျယ်ကို နည်းနည်းထပ်တိုးပေးထားပါတယ် */
+            margin-top: 8vh;
+            border: 2px solid #750608;
+
+        }
+
+        h2 {
+            text-align: center;
+            color: #750608;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .riderinput-group {
+            margin-bottom: 25px;
+        }
+
+        /* input တစ်ခုနဲ့တစ်ခုကြား နေရာကျဲစေဖို */
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* Input field အမြင့်ကို ပိုကြီးစေဖို padding 22px ပေးထားပါတယ် */
+        input {
+            width: 100%;
+            padding: 22px;
+            border: 2px solid #750608;
+            border-radius: 12px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        input:focus {
+            border-color: #ff9f1a;
+        }
+
+        .riderbtn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        /* Button တွေကို ပိုကြီးစေဖို */
+        button {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .riderbtn-back {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .riderbtn-add {
+            background: #750608;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
+
 <body>
 
-<div class="riderform-container">
-    <h2>New Rider</h2>
-    <form id="riderForm">
-        <div class="riderinput-group"><input type="text" id="ridername" placeholder="Name" required></div>
-        <div class="riderinput-group"><input type="email" id="rideremail" placeholder="Email" required></div>
-        <div class="riderinput-group"><input type="tel"id="riderph" placeholder="Ph no." required></div>
-        <div class="riderbtn-group">
-            <button type="button" class="riderbtn-back" onclick="goBack()">Back</button>
-            <button type="submit" class="riderbtn-add" >Add</button>
-        </div>
-    </form>
-</div>
+    <div class="riderform-container">
+        <h2>New Rider</h2>
+        <form id="riderForm" method="post" th:action="@{/admin/add_rider}">
+            <div th:if="${errorMessage}" class="alert alert-danger"
+                style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                <span th:text="${errorMessage}"></span>
+            </div>
+            <!-- <div class="riderinput-group"><input type="text" id="ridername" placeholder="Name" required></div> -->
+            <div class="riderinput-group"><input type="email" name="email" id="rideremail" placeholder="Email" required>
+            </div>
+            <div class="riderinput-group"><input type="text" name="phno" id="riderph" placeholder="Ph no."
+                    inputmode="numeric" pattern="[0-9]*" required></div>
+            <div class="riderbtn-group">
+                <button type="button" class="riderbtn-back" onclick="goBack()">Back</button>
+                <button type="submit" class="riderbtn-add">Add</button>
+            </div>
 
-<!-- <script>
-    // Back Button Logic
-    function goBack() {
-        window.history.back();
-    }
+        </form>
+    </div>
 
-    // //Add Button Logic
-    // document.getElementById('riderForm').onsubmit = function(e) {
-    //     e.preventDefault();
-    //     alert("Rider added successfully!");
-    // };
+    <script>
+        function goBack() {
+            window.location.href = "/admin/rider_list";
+        }
 
-    document.getElementById('riderForm').onsubmit = function(e) {
-        e.preventDefault();
-        alert("Rider added successfully!");
-        // ဒီနေရာမှာ Data ကို Database သို့မဟုတ် LocalStorage ထဲ သိမ်းမယ့် code ထည့်နိုင်ပါတယ်
-    };
-
-    
-
-</script> -->
-
-<script>
-function goBack() {
-    window.history.back();
-}
-
-document.getElementById("riderForm").onsubmit = function(e) {
-    e.preventDefault();
-
-    // Form Data
-    const rider = {
-        name: document.getElementById("ridername").value,
-        email: document.getElementById("rideremail").value,
-        phone: document.getElementById("riderph").value
-    };
-
-    // LocalStorage ထဲသိမ်း
-    let riders = JSON.parse(localStorage.getItem("riders")) || [];
-    riders.push(rider);
-    localStorage.setItem("riders", JSON.stringify(riders));
-
-    alert("Rider added successfully!");
-
-    // Rider List Page ကိုသွား
-    window.location.href = "/admin/rider_list";
-};
-</script>
+    </script>
 
 </body>
+
 </html>

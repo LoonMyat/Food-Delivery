@@ -1,7 +1,33 @@
-<nav th:fragment="menubar">
-    <a href="/customer/search"><i class="fa-solid fa-magnifying-glass"></i></a>
-    <a href="/customer/menulist"><i class="fa-solid fa-utensils"></i></a>
-    <a href="/customer/home" class="active"><i class="fa-solid fa-home"></i></a>
-    <a href="/customer/cart"><i class="fa-solid fa-cart-shopping"></i></a>
-    <a href="/customer/profile"><i class="fa-solid fa-user"></i></a>
+<nav th:fragment="menubar"
+     hx-target="#main-content" 
+     hx-select="#main-content" 
+     hx-swap="innerHTML" 
+     hx-push-url="true">
+    <a th:href="@{/customer/search}"><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a th:href="@{/customer/menulist}"><i class="fa-solid fa-utensils"></i></a>
+    <a th:href="@{/customer/home}"><i class="fa-solid fa-home"></i></a>
+    <a th:href="@{/customer/cart}"><i class="fa-solid fa-cart-shopping"></i></a>
+    <a th:href="@{/customer/profile}"><i class="fa-solid fa-user"></i></a>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // လက်ရှိ ရောက်နေတဲ့ URL လမ်းကြောင်းကို ယူမည် (ဥပမာ- /customer/cart)
+            const currentPath = window.location.pathname;
+
+            // nav ထဲက a tag များကို ပတ်ကြည့်မည်
+            const navLinks = document.querySelectorAll("nav a");
+
+            navLinks.forEach(link => {
+                const href = link.getAttribute("href");
+                // a tag ရဲ့ href နဲ့ လက်ရှိ URL ကို တိုက်စစ်မည်
+                if (href && currentPath === href) {
+                    link.classList.add("active");
+                } else {
+                    link.classList.remove("active");
+                }
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
 </nav>

@@ -8,22 +8,27 @@ nav{
     display:flex;
     justify-content:space-around;
     align-items:center;
+    border-radius: 15px 15px 0 0;
+    /* background: rgba(133, 22, 22, 0.25); */
+    /* backdrop-filter: blur(12px); */
 }
 
 nav a{
     color:#FFF8E7;
     font-size:24px;
     text-decoration:none;
+    transition: transform 0.25s ease;
+}
+
+nav a:hover{
+    transform: scale(1.1);  
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+    
 }
 
 .active{
-    width:50px;
-    height:50px;
-    background:#FFF8E7;
-    color:#750608;
-    border-radius:50%;
+    color:#df9798;    
     display:flex;
     align-items:center;
     justify-content:center;
-
 }

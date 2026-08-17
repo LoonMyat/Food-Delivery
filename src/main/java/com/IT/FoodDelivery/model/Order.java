@@ -6,7 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +28,17 @@ public class Order {
     private Long id;
 
     private String cusName;
-    private Double lattitude;
+    private Double latitude;
     private Double longitude;
     private String status;
     private LocalDateTime createdAt;
+    
+    
+    @ManyToOne
+    @JoinColumn(name = "rider_id") // Foreign key column အမည်
+    private Rider rider;
+
+    @Transient 
+    private String phone;
 
 }

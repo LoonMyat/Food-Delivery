@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    
+    <main id="main-content">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>GoBite Profile</title>
@@ -25,13 +25,13 @@
 
             <div class="profile-card">
 
-                <img src="images/profile.jpg" class="profile">
+                <img th:src="@{/images/profile.jpg}" class="profile">
 
-                <h2>Naing Sit Hmue</h2>
+                <h2 th:text="${user.username}">Naing Sit Hmue</h2>
 
-                <p>naingsit@example.com</p>
+                <p th:text="${user.email}">naingsit@example.com</p>
 
-                <button>Edit Profile</button>
+                <!-- <button>Edit Profile</button> -->
 
             </div>
 
@@ -43,17 +43,6 @@
                     <i class="fa-solid fa-angle-right"></i>
                 </div>
 
-
-
-                <div class="item-profile">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Current Location</span>
-                    <i class="fa-solid fa-angle-right"></i>
-                </div>
-
-
-
-
             </div>
 
             <form th:action="@{/logout}" method="post" onclick="localStorage.removeItem('cart')">
@@ -64,30 +53,10 @@
             </form>
         </div>
 
-        <!--<nav>
-
-<div>
-<i class="fa-solid fa-house"></i>
-</div>
-
-<div>
-<i class="fa-solid fa-store"></i>
-</div>
-
-<div>
-<i class="fa-solid fa-cart-shopping"></i>
-</div>
-
-<div class="active">
-<i class="fa-solid fa-user"></i>
-</div>
-
-</nav>-->
 
         <div th:replace="~{includes/customer/partial :: menubar}"></div>
 
-
-
+    </main>
 </body>
 
 </html>

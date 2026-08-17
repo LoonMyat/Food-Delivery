@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/admin/noti.css}">
 </head>
 <body>
     <!-- 💡 1. Notification အသံအတွက် Audio Tag (mp3 ဖိုင်ကို static/audio/ ထဲ ထည့်ထားပါ) -->
 <!-- <audio id="notiSound" src="/audio/notification.mp3" preload="auto"></audio> -->
 
-
 <div class="container mt-4">
+    <button class="back" onclick="goToPage('/admin/home')">
+                <i class="fa-solid fa-angle-left back"></i>
+            </button>
     <h2>New Orders</h2>
     
     <div id="noti">

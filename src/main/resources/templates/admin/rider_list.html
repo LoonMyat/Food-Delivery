@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rider List</title>
+    <title>Rider List</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
 
-<style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-background:#BBE0F2;
-height:100vh;
-display:flex;
-justify-content:center;
-padding:10px;
-}
-
-
-</style>
+        body {
+            background: #BBE0F2;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+    </style>
 
 </head>
 
@@ -37,23 +35,43 @@ padding:10px;
     <div class="rider-container">
 
         <div class="ridertopBar">
-            <i class="fa-solid fa-angle-left back"></i>
+            <i class="fa-solid fa-angle-left back" onclick="goToPage('/admin/home')"></i>
             <h2>Rider Lists</h2>
-            <button class="rideraddBtn">+</button>
+            <button class="rideraddBtn" onclick="goToPage('/admin/add_rider')">+</button>
         </div>
 
         <div class="ridertableHeader">
+            <div>#</div>
             <div>Name</div>
             <div>Email</div>
             <div>Phone No</div>
-            <!-- <div>Total Orders</div> -->
             <div></div>
         </div>
 
-        <div id="list" class="rider-list"></div>
+        <div id="list" class="rider-list">
+            <th:block th:each="rider, num : ${riders}">
+                <div class="riderrow">
+                    <div th:text="${num.count}"></div>
+                    <div th:text="${rider.user?.username}"></div>
+                    <div th:text="${rider.user?.email}"></div>
+                    <div th:text="${rider.ph_no}"></div>
+                    <div>
+                        <form th:action="@{/admin/deleteRider/{id}(id=${rider.id})}" method="post"
+                            onsubmit="return confirm('Are you sure to delete this rider?')">
+                            <button class="delete" type="submit">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </th:block>
+
+        </div>
 
     </div>
 
     <script th:src="@{/js/admin/admin.js}"></script>
 </body>
+
 </html>

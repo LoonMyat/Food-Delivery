@@ -12,18 +12,7 @@
 </head>
 
 <body>
-
-    <!-- <div class="food-card">
-        <img src="drink4.jpg">
-        <h3>Double Beef Burger</h3>
-        <p class="price">9670</p>
-        <button class="cart-btn" onclick="addToCart('Double Beef Burger',9670,'drink4.jpg')">
-            Add to Cart
-        </button>
-
-        
-    </div> -->
-
+<main id="main-content">
 
     <section class="popular-menu">
     <h4>OUR MENU</h4>
@@ -32,64 +21,11 @@
     <div class="menu-container">
 
         <!-- Food Card -->
-        <div class="food-card">
-            <img src="images/dumpling.jpg" alt="Burger">
-            <h2>Double Beef Burger</h2>
-            <p class="price">2000</p>
-            <button class="cart-btn" onclick="addToCart('Double Beef Burger',9.67,'images/dumpling.jpg')">
-                Add to Cart
-            </button>
-        </div>
-
-        <div class="food-card">
-            <img src="images/dumpling1.jpg" alt="Pizza">
-            <h2>Veggie Pizza</h2>
-            <p class="price">4000</p>
-            <button class="cart-btn" onclick="addToCart('Dumpling',10.99,'images/dumpling1.jpg')">
-                Add to Cart
-            </button>
-        </div>
-        <div class="food-card">
-            <img src="images/eggroll.jpg" alt="Pizza">
-            <h2>Veggie Pizza</h2>
-            <p class="price">3500</p>
-            <button class="cart-btn" onclick="addToCart('Egg Roll',10.99,'images/eggroll.jpg')">
-                Add to Cart
-            </button>
-        </div>
-        <div class="food-card">
-            <img src="images/eggroll1.jpg" alt="Pizza">
-            <h2>Veggie Pizza</h2>
-            <p class="price">4000</p>
-            <button class="cart-btn" onclick="addToCart('Egg Roll1',10.99,'images/eggroll1.jpg')">
-                Add to Cart
-            </button>
-        </div>
-        <div class="food-card">
-            <img src="images/eggroll2.jpg" alt="Pizza">
-            <h2>Veggie Pizza</h2>
-            <p class="price">3000</p>
-            <button class="cart-btn" onclick="addToCart('eggroll2',10.99,'images/eggroll2.jpg')">
-                Add to Cart
-            </button>
-        </div>
-        
-
-
-        <div class="food-card">
-            <img src="images/eggroll3.jpg" alt="Chicken">
-            <h2>Fried Chicken</h2>
-            <p class="price">1500</p>
-            <button class="cart-btn" onclick="addToCart('eggroll3',13.45,'images/eggroll3.jpg')">
-                Add to Cart
-            </button>
-        </div>
-
-        <div class="food-card">
-            <img src="drink5.jpg" alt="Roll">
-            <h2>Chicken Roll</h2>
-            <p class="price">2000</p>
-            <button class="cart-btn" onclick="addToCart('Chicken Roll',7.50,'images/roll.png')">
+        <div class="food-card" th:each="menu : ${menus}">
+            <img th:src="${menu.image}" alt="image" loading="lazy">
+            <h2 th:text="${menu.name}">Double Beef Burger</h2>
+            <p class="price" th:text="${#numbers.formatInteger(menu.price, 0, 'COMMA')} + ' MMK'">2000</p>
+            <button class="cart-btn" th:onclick="addToCart([[${menu.name}]], [[${menu.price}]], [[${menu.image}]])">
                 Add to Cart
             </button>
         </div>
@@ -99,7 +35,13 @@
 
 
     <div th:replace="~{includes/customer/partial :: menubar}"></div>
+    <!-- 1. SockJS Library -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<!-- 2. STOMP Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
     <script th:src="@{/js/customer/menulist.js}"></script>
+</main>
 </body>
 </html>

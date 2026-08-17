@@ -17,13 +17,10 @@ function addToCart(name, price, image){
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    alert("Item added to cart");   // ဒီ alert က JSON Data ပြရမယ်
+    alert("Item added to cart");  
 
     window.location.href = "/customer/cart";
 }
-
-
-
 
 // For add Menu
 
@@ -52,11 +49,11 @@ window.onload = function () {
         </div>
         `;
 
-        if(menu.category === "Food"){
-            foodGrid.innerHTML += html;
-        }else{
-            drinkGrid.innerHTML += html;
-        }
+        // if(menu.category === "Food"){
+        //     foodGrid.innerHTML += html;
+        // }else{
+        //     drinkGrid.innerHTML += html;
+        // }
 
     });
 

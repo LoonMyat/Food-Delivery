@@ -34,12 +34,13 @@
         </header>
 
         <h2>Foods</h2>
+        <h5>Total - <span id="food-count" th:text="${foods.size()}">0</span></h5>
         <section class="menu-section" id="foodsection">
             <div class="scroll-container">
                 <div class="grid-menu" id="foodGrid">
                     <th:block th:each="food : ${foods}">
                         <div class="menu-item">
-                            <div class="img-placeholder"><img th:src="${food.image}" alt="userprofile" width="100"
+                            <div class="img-placeholder"><img th:src="${food.image}" width="100"
                                     height="auto"></div>
                             <p class="name" th:text="${food.name}">Bubble Tea</p>
                             <p class="price" th:text="${#numbers.formatInteger(food.price, 0, 'COMMA')} + ' MMK'">price</p>
@@ -50,6 +51,7 @@
         </section>
 
         <h2>Drinks</h2>
+        <h5>Total - <span id="food-count" th:text="${drinks.size()}">0</span></h5>
         <section class="menu-section" id="drinksection">
 
             <div class="scroll-container">
@@ -57,7 +59,7 @@
                     <th:block th:each="drink : ${drinks}">
                         <div class="menu-item">
                             <div class="img-placeholder"><img th:src="${drink.image}" alt="userprofile" width="100"
-                                    height="auto">
+                                    height="auto" loading="lazy">
                             </div>
                             <p class="name" th:text="${drink.name}">Name</p>
                             <p class="price" th:text="${#numbers.formatInteger(drink.price, 0, 'COMMA')} + ' MMK'">price</p>
@@ -70,7 +72,6 @@
 
 
     <script>
-        // Page ဖွင့်လိုက်သည်နှင့် LocalStorage ထဲမှ အချက်အလက်များကို ဆွဲထုတ်ပြသခြင်း
         window.onload = function () {
             const menus = JSON.parse(localStorage.getItem('menuList')) || [];
             console.log(menus);
@@ -78,25 +79,6 @@
             const foodGrid = document.getElementById('foodGrid');
             const drinkGrid = document.getElementById('drinkGrid');
 
-            // မူလပါရှိနေသော နမူနာများကို ဖျောက်လိုပါက အောက်ပါအတိုင်း ရှင်းလင်းနိုင်သည် (သို့မဟုတ် ထားခဲ့နိုင်သည်)
-            // foodGrid.innerHTML = '';
-            // drinkGrid.innerHTML = '';
-
-            // menus.forEach(menu => {
-            //     const itemHTML = ` 
-            //     <div class="menu-item">
-            //         <div class="img-placeholder"><img src="${menu.image}" alt="${menu.name}"></div>
-            //         <p class="name">${menu.name}</p>
-            //         <p class="price">${menu.price}</p>
-            //     </div>`
-            //         ;
-
-            //     if (menu.category === "Food") {
-            //         document.getElementById("foodGrid").innerHTML += itemHTML;
-            //     } else {
-            //         document.getElementById("drinkGrid").innerHTML += itemHTML;
-            //     }
-            // });
         };
 
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="rider-id" th:content="${riderId}">
+    <title>Rider Panel - Live Navigation</title>
+
+    <!-- Meta Tags -->
+    <meta name="order-id" th:content="${order != null ? order.id : ''}">
+    <meta name="order-status" th:content="${order != null ? order.status : 'READY_TO_PICKUP'}">
+    <meta name="customer-lat" th:content="${order != null ? order.latitude : 0}">
+    <meta name="customer-lng" th:content="${order != null ? order.longitude : 0}">
+
+    <!-- Leaflet CSS & Routing CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" th:href="@{/css/rider.css}">
+
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
+        #map { height: 420px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .panel { margin-top: 15px; padding: 12px; background: #e2f0d9; border-left: 5px solid #385723; border-radius: 4px; }
+        .info-panel { margin-top: 10px; padding: 12px; background: #d1ecf1; border-left: 5px solid #17a2b8; border-radius: 4px; }
+        .leaflet-routing-container { display: none !important; }
+
+        /* 💡 Action Button Style */
+        .status-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.3s ease;
+        }
+        .btn-pickup { background-color: #ff9800; }  /* လိမ္မော်ရောင် */
+        .btn-delivered { background-color: #28a745; } /* အစိမ်းရောင် */
+    </style>
+</head>
+<body>
+
+    
+    <!-- 🗺️ မြေပုံ -->
+    <div id="map"></div>
+    
+    <!-- 💡 မြေပုံအောက်တွင် ပေါ်လာမည့် Status Action Button -->
+    <button id="action-btn" class="status-btn btn-pickup">
+        Delivered
+    </button>
+
+    <div class="panel">
+        <b>Server Connection:</b> <span id="status" style="color: red; font-weight: bold;">Disconnected</span><br>
+        <b>Rider Location:</b> <span id="location-text" style="font-weight: bold;">Not active yet</span>
+    </div>
+
+    <div class="info-panel">
+        🎯 <b>Customer Destination:</b> <span id="customer-text" style="color: #0c5460; font-weight: bold;">Waiting for customer...</span><br>
+        🛣️ <b>Route Info:</b> <span id="route-info" style="color: #0056b3; font-weight: bold;">No route active</span>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script th:src="@{/js/rider/rider-map.js}"></script>
+</body>
+</html>

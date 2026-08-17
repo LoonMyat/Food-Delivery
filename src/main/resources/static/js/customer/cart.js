@@ -1,12 +1,11 @@
 // =========================
 // Load Cart
 // =========================
-console.log("cart.js loaded");
+// console.log("cart.js loaded");
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const cartItems = document.getElementById("cartItems");
 const totalPrice = document.getElementById("totalPrice");
-
 // =========================
 // Display Cart
 // =========================

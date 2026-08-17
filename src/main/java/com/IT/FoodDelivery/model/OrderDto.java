@@ -12,7 +12,7 @@ public class OrderDto {
     private Double latitude;
     private Double longitude;
     private String status;
-    private String phno;
+    private String phone;
     private LocalDateTime createdAt;
 
 }

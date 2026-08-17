@@ -9,9 +9,16 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #f5f6fa;
+    background: #BBE0F2;
     color: #333;
     min-height: 100vh;
+}
+
+.back{
+    background-color: #BBE0F2;
+    border-style: none;
+    color: #750608;
+    font-size: larger;
 }
 
 
@@ -206,7 +213,7 @@ body {
     color: #e53935;
 }
 
-.rejectBtn:hover {
+.rejectBtn:hover:enabled {
     background: #e53935;
     color: white;
 }
@@ -217,7 +224,7 @@ body {
     color: white;
 }
 
-.statusBtn:hover {
+.statusBtn:hover:enabled {
     background: #e53935;
 }
 
