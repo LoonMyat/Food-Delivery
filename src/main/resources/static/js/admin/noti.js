@@ -66,6 +66,7 @@ function renderOrderCard(order) {
         <p><strong>Order ID:</strong> #${order.id}</p>
         <p><strong>Customer:</strong> ${order.cusName || 'N/A'}</p>
         <p><strong>Phone:</strong> ${phoneNum}</p>
+        <p><strong>Total amount:</strong> ${Number(order.totalAmount || 0).toLocaleString()} MMK</p>
         
         <select name="rider" id="rider-${order.id}" required>
             ${riderOptions}

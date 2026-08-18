@@ -14,5 +14,6 @@ public class OrderDto {
     private String status;
     private String phone;
     private LocalDateTime createdAt;
+    private Double totalAmount;
 
 }

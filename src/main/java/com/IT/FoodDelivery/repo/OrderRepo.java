@@ -15,5 +15,5 @@ public interface OrderRepo extends JpaRepository<Order, Long>{
 
     List<Order> findByStatusNot(String status);
 
-    
+    List<Order> findByCusName(String cusName);    
 }

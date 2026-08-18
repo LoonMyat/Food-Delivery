@@ -36,6 +36,7 @@ public class WebSocketController {
         order.setLongitude(dto.getLongitude());
         order.setStatus("PENDING");
         order.setCreatedAt(LocalDateTime.now());
+        order.setTotalAmount(dto.getTotalAmount());
 
         Order savedOrder = orderRepo.save(order);
 
@@ -51,6 +52,7 @@ public class WebSocketController {
         orderPayload.put("latitude", savedOrder.getLatitude());
         orderPayload.put("longitude", savedOrder.getLongitude());
         orderPayload.put("status", savedOrder.getStatus());
+        orderPayload.put("totalAmount", savedOrder.getTotalAmount());
 
         messagingTemplate.convertAndSend("/topic/order-response", (Object) orderPayload);
         messagingTemplate.convertAndSend("/topic/admin/orders", (Object) orderPayload);
@@ -95,6 +97,7 @@ public class WebSocketController {
                 response.put("phone", customerPhone); 
                 response.put("latitude", order.getLatitude() != null ? order.getLatitude() : 0.0);
                 response.put("longitude", order.getLongitude() != null ? order.getLongitude() : 0.0);
+                response.put("totalAmount", order.getTotalAmount());
 
 
                 messagingTemplate.convertAndSend("/topic/rider/" + riderId + "/orders", (Object) response);

@@ -309,10 +309,10 @@ body {
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& profile.CSS */
 .profile-container {
     width: min(90vw, 380px);
-    min-height: 85vh;
+    /* min-height: 85vh; */
     /* background:#fff; */
     /* border-radius:1.5rem; */
-    padding: 2rem 1.5rem;
+    /* padding: 2rem 1.5rem; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -345,7 +345,7 @@ input[type="submit"] {
     padding: 0.7rem 1.5rem;
     width: clamp(110px, 30vw, 160px);
     height: clamp(40px, 60vh, 50px);
-    background: #ff9800;
+    background: #750608;
     color: aliceblue;
     cursor: pointer;
     margin-top: 35vh;
@@ -361,7 +361,7 @@ input[type="submit"] {
     padding: 1.9rem;
     border: none;
     border-radius: .8rem;
-    background: #ff4d4d;
+    background: #750608;
     color: #fff;
     font-size: clamp(.95rem, 2.5vw, 1rem);
     font-weight: bold;

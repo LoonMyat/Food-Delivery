@@ -121,6 +121,6 @@ if (orderBtn) {
         localStorage.setItem("currentOrder", JSON.stringify(orderData));
 
         // Map / ETA Page သို့ လမ်းကြောင်းညွှန်းမည်
-        window.location.href = "/customer/maptest";
+        window.location.href = "/customer/map";
     });
 }

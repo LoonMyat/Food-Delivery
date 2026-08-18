@@ -34,6 +34,7 @@
              style="color: #007bff; font-weight: bold; text-decoration: none;" 
              th:text="'📞 ' + ${order.phone != null ? order.phone : 'N/A'}">📞 N/A</a>
         </p>
+        <p><strong>Total amount:</strong> <span th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></span></p>
 
         <p><strong>Status:</strong> <span style="color: orange;" th:text="${order.status}">PREPARING</span></p>
 

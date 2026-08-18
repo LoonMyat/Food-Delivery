@@ -27,9 +27,9 @@
 
                 <img th:src="@{/images/profile.jpg}" class="profile">
 
-                <h2 th:text="${user.username}">Naing Sit Hmue</h2>
+                <h2 th:text="${user.username}">User</h2>
 
-                <p th:text="${user.email}">naingsit@example.com</p>
+                <p th:text="${user.email}">user@example.com</p>
 
                 <!-- <button>Edit Profile</button> -->
 
@@ -37,9 +37,9 @@
 
             <div class="menu-profile">
 
-                <div class="item-profile">
+                <div class="item-profile" th:onclick="|goToPage('/customer/orders/${user.id}')|">
                     <i class="fa-solid fa-box"></i>
-                    <span>My Orders</span>
+                    <span>Order History</span>
                     <i class="fa-solid fa-angle-right"></i>
                 </div>
 
@@ -57,6 +57,11 @@
         <div th:replace="~{includes/customer/partial :: menubar}"></div>
 
     </main>
+    <script>
+        function goToPage(page){
+            window.location.href = page;
+        }
+    </script>
 </body>
 
 </html>

@@ -214,6 +214,8 @@ function calculateTotalAmount(distance, amount) {
     return total;
 }
 
+let total = 0;
+
 function updateRouteAndETA(riderLat, riderLng) {
     currentRiderLat = riderLat;
     currentRiderLng = riderLng;
@@ -236,7 +238,7 @@ function updateRouteAndETA(riderLat, riderLng) {
             const distanceKm = (summary.totalDistance / 1000).toFixed(2);
             const durationMin = Math.round(summary.totalTime / 60);
 
-            let total = 0;
+            
             if (currentOrder && currentOrder.foodPrice) {
                 total = calculateTotalAmount(distanceKm, currentOrder.foodPrice);
                 const deliFeeElem = document.getElementById("deliveryFee");
@@ -304,7 +306,8 @@ window.onload = function () {
                 cusName: currentName,
                 phone: phoneNumber,
                 latitude: destLat,
-                longitude: destLng
+                longitude: destLng,
+                totalAmount: total
             };
 
             stompClient.send("/app/new-order", {}, JSON.stringify(orderDetails));

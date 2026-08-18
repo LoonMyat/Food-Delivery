@@ -65,6 +65,7 @@ function renderNewOrderCard(data) {
                     ${customerPhone}
                 </a>
             </p>
+            <p><strong>Total amount:</strong> ${Number(data.totalAmount || 0).toLocaleString()} MMK</p>
             <p><strong>Status:</strong> <span style="color: orange; font-weight: bold;">${data.status || 'ACCEPTED'}</span></p>
 
             ${actionButtons}

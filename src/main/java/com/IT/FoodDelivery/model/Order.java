@@ -32,6 +32,7 @@ public class Order {
     private Double longitude;
     private String status;
     private LocalDateTime createdAt;
+    private Double totalAmount;
     
     
     @ManyToOne

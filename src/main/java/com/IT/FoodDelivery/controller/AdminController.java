@@ -132,7 +132,7 @@ public class AdminController {
     ) {
         Optional<AppUser> userOptional = userRepo.findByEmail(email);
         if(userOptional.isEmpty()){
-            redirectAttributes.addFlashAttribute("errorMessage", "User does not exist");
+            redirectAttributes.addFlashAttribute("errorMessage", "Email does not exist");
             return "redirect:/admin/add_rider";
         }
         AppUser user = userOptional.get();
@@ -147,6 +147,7 @@ public class AdminController {
         Rider rider = new Rider();
         rider.setUser(user);
         rider.setPh_no(phno);
+        rider.setUser(user);
         rider.setStatus("AVAILABLE");
         riderRepo.save(rider);
 

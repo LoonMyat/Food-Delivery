@@ -14,37 +14,52 @@
 </head>
 
 <body>
-<main id="main-content">
-    <div class="search-page">
+    <main id="main-content">
+        <div class="search-page">
 
-        <div class="search-header">
+            <div class="search-header">
+                <h2>Search</h2>
+            </div>
 
+            <div class="search-box">
+                <form th:action="@{/customer/searchFood}" method="get" class="search-form">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" name="keyword" id="searchInput" placeholder="Search food..."
+                        th:value="${keyword}">
+                    <button type="submit" class="search-button">search</button>
+                </form>
 
+            </div>
 
-            <h2>Search</h2>
+            <p class="result-title">
+                What are you craving today?...
+            </p>
+            <div class="result-container">
+                <th:block th:if="${result != null and !#lists.isEmpty(result)}" th:each="menu: ${result}">
+                    <div class="food-card">
+                        <img th:src="${menu.image}" alt="image">
+                        <div class="food-info">
+                            <h3 th:text="${menu.name}">Name</h3>
+                            <p th:text="${#numbers.formatInteger(menu.price, 0, 'COMMA')} + 'MMK'">price</p>
+                            <button class="cart-btn"
+                                th:onclick="addToCart([[${menu.name}]], [[${menu.price}]], [[${menu.image}]])">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+            <p id="noResult"
+                th:if="${keyword != null and !#strings.isEmpty(keyword) and (result == null or #lists.isEmpty(result))}"
+                style="text-align:center; color:#17385E; margin:20px 0;">
+                No food found.
+            </p>
 
+            <div th:replace="~{includes/customer/partial :: menubar}"></div>
+
+            <script th:src="@{/js/customer/menulist.js}"></script>
         </div>
-
-        <div class="search-box">
-
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-
-            <input type="text" id="searchInput" placeholder="Search food...">
-        </div>
-
-        <p class="result-title">
-            What are you craving today?...
-        </p>
-        <p id="noResult" style="display:none; text-align:center; color:#17385E; margin:20px 0;">
-            No food found.
-        </p>
-
-        <div th:replace="~{includes/customer/partial :: menubar}"></div>
-
-        <!-- <script src="search.js"></script> -->
-    </div>
-</main>
+    </main>
 </body>
 
 </html>

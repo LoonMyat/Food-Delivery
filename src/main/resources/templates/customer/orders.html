@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Delivered Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/rider.css}">
+</head>
+
+<body>
+  <button class="back-btn" onclick="goToPage('/customer/profile')">
+    <i class="fa-solid fa-angle-left back"></i>
+  </button>
+  <h2>Order List</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <th:block th:each="order: ${orders}">
+          <tr>
+            <td th:text="'#' + ${#numbers.formatInteger(order.id, 3)}"></td>
+            <td th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, hh:mm a')}"></td>
+            <td th:text="${order.status}"></td>
+          </tr>
+        </th:block>
+      </tbody>
+
+
+    </table>
+  </div>
+  <script th:src="@{/js/rider/rider.js}"></script>
+</body>
+
+</html>

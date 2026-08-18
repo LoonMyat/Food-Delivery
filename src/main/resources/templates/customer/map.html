@@ -12,24 +12,17 @@
 
     <link rel="stylesheet" th:href="@{/css/customer/map.css}">
     
-    <style>
+    <!-- <style>
         body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
         #map { height: 480px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .status-panel { margin-top: 15px; padding: 12px; background: #ffffff; border-left: 5px solid #007bff; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .leaflet-routing-container { display: none !important; }
-    </style>
+    </style> -->
 </head>
 <body>
 
     <div th:object="${customer}">
         <input type="hidden" id="currentName" th:value="*{username}">
-    </div>
-
-    <h2>Customer Panel - Live Delivery Tracking</h2>
-    <p>🎯 မြေပုံပေါ်တွင် သင်၏ <b>အိမ်နေရာ (Home Location)</b> ကို ကလစ်နှိပ်၍ သတ်မှတ်ပါ</p>
-    
-    <div class="status-panel">
-        <b>Server Connection:</b> <span id="connection-status" style="color: red; font-weight: bold;">Disconnected</span><br>
     </div>
 
     <div class="container">
