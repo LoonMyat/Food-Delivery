@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.IT.FoodDelivery.model.AppUser;
 import com.IT.FoodDelivery.model.Order;
 import com.IT.FoodDelivery.model.Rider;
+import com.IT.FoodDelivery.repo.MenuRepo;
 import com.IT.FoodDelivery.repo.OrderRepo;
 import com.IT.FoodDelivery.repo.RiderRepo;
 import com.IT.FoodDelivery.repo.UserRepo;
@@ -20,6 +21,7 @@ public class AdminService {
     private final RiderRepo riderRepo;
     private final OrderRepo orderRepo;
     private final UserRepo userRepo;
+    private final MenuRepo menuRepo;
 
     public void deleteRider(Long riderId){
         Rider rider = riderRepo.findById(riderId).orElse(null);
@@ -31,7 +33,6 @@ public class AdminService {
                 order.setRider(null);
                 orderRepo.save(order);
             }
-
             riderRepo.delete(rider);
         }
     }
@@ -43,4 +44,15 @@ public class AdminService {
         }
     }
 
+    public void editMenu(Long id, String name, Double price){
+        menuRepo.findById(id).ifPresent(menu -> {
+            menu.setName(name);
+            menu.setPrice(price);
+            menuRepo.save(menu);
+        });
+    }
+
+    public void deleteMenu(Long id){
+        menuRepo.deleteById(id);
+    }
 }

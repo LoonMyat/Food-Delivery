@@ -24,25 +24,26 @@
 
 <div class="dashboard">
 
-    <div class="card" onclick="goPage('/admin/customer_list')">
+    <div class="card" onclick="goToPage('/admin/customer_list')">
         <span class="material-icons icon">groups</span>
         <h2>Total Customers</h2>
     </div>
 
 
-    <div class="card" onclick="goPage('/admin/menu_list')">
+    <div class="card" onclick="goToPage('/admin/menu_list')">
         <span class="material-icons icon">menu_book</span>
         <h2>Total Menus</h2>
     </div>
 
 
-    <div class="card" onclick="goPage('/admin/notification')">
+    <div class="card" onclick="goToPage('/admin/notification')">
+        <span id="notiDot" class="noti-dot" style="display: none;"></span>
         <span class="material-icons icon">notifications_active</span>
         <h2>Notifications</h2>
     </div>
 
 
-    <div class="card" onclick="goPage('/admin/rider_list')">
+    <div class="card" onclick="goToPage('/admin/rider_list')">
         <span class="material-icons icon">delivery_dining</span>
         <h2>Total Riders</h2>
     </div>
@@ -51,12 +52,7 @@
 
 <div th:replace="~{includes/admin/partial :: menu_bar}"></div>
 
-
-<script>
-function goPage(page){
-    window.location.href = page;
-}
-</script>
+<th:block th:replace="~{includes/admin/partial :: adminJS}"></th:block>
 
 </body>
 </html>

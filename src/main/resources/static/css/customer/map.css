@@ -12,7 +12,7 @@
 
 body {
     font-family: sans-serif;
-    margin: 20px;
+    /* margin: 20px; */
     background-color: #BBE0F2;
 }
 
@@ -58,9 +58,11 @@ body {
 
 h1 {
     text-align: center;
-    margin: 25px 0 35px;
+    /* margin: 25px 0 35px; */
     font-size: 38px;
     font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 /* ===========================
@@ -248,9 +250,9 @@ hr {
     }
 
     .back-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
     }
 
     #map {
@@ -348,5 +350,10 @@ hr {
 
     #statusBtn {
         font-size: 18px;
+    }
+    .back-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
     }
 }

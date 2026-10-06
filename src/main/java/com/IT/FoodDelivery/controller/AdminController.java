@@ -16,8 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.IT.FoodDelivery.model.AppUser;
 import com.IT.FoodDelivery.model.Menu;
+import com.IT.FoodDelivery.model.Order;
 import com.IT.FoodDelivery.model.Rider;
 import com.IT.FoodDelivery.repo.MenuRepo;
+import com.IT.FoodDelivery.repo.OrderRepo;
 import com.IT.FoodDelivery.repo.RiderRepo;
 import com.IT.FoodDelivery.repo.UserRepo;
 import com.IT.FoodDelivery.service.AdminService;
@@ -34,6 +36,7 @@ public class AdminController {
     private final UserRepo userRepo;
     private final RiderRepo riderRepo;
     private final AdminService adminService;
+    private final OrderRepo orderRepo;
 
     @GetMapping("/home")
     public String admin() {
@@ -41,7 +44,9 @@ public class AdminController {
     }
 
     @GetMapping("/order_list")
-    public String orderList() {
+    public String orderList(Model model) {
+        List<Order> orders = orderRepo.findAll();
+        model.addAttribute("orders", orders);
         return "admin/order_list";
     }
 
@@ -62,6 +67,7 @@ public class AdminController {
     public String menuList(Model model) {
         List<Menu> foods = menuRepo.findByType("Food");
         List<Menu> drinks = menuRepo.findByType("Drink");
+        
         model.addAttribute("foods", foods);
         model.addAttribute("drinks", drinks);
 
@@ -89,7 +95,7 @@ public class AdminController {
     @PostMapping("/add_menu")
     public String addMenu(
             @RequestParam(value = "name", required = true) String name,
-            @RequestParam(value = "price", required = true) double price,
+            @RequestParam(value = "price", required = true) Double price,
             @RequestParam(value = "image", required = true) MultipartFile image,
             @RequestParam(value = "type", required = true) String type,
             RedirectAttributes redirectAttributes
@@ -117,7 +123,7 @@ public class AdminController {
             return "redirect:/admin/menu_list";
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Error while uploading image");
             return "redirect:/admin/add_menu";
         }
@@ -172,6 +178,22 @@ public class AdminController {
         return "admin/notification";
     }
 
+    @PostMapping("/edit-menu/{id}")
+    public String editMenu(
+        @PathVariable("id") Long id,
+        @RequestParam("fname") String name,
+        @RequestParam("fprice") Double price
+    ){
+        adminService.editMenu(id, name, price);
+        return "redirect:/admin/menu_list";
+    }
 
+    @PostMapping ("/delete-menu/{id}")
+    public String deleteMenu(
+        @PathVariable("id") Long id
+    ){
+        adminService.deleteMenu(id);
+        return "redirect:/admin/menu_list";
+    }
 
 }

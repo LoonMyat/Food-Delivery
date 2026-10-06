@@ -106,10 +106,10 @@ async function handleRegister(event) {
 }
 
 async function handleLogin(event) {
-    event.preventDefault(); // Page reload မဖြစ်အောင် တားဆီးထားသည်
+    event.preventDefault();
 
     const loginError = document.getElementById("loginError");
-    const passwordInput = document.getElementById("loginPass"); // Password Field
+    const passwordInput = document.getElementById("loginPass");
     
     loginError.style.display = "none";
 
@@ -130,11 +130,10 @@ async function handleLogin(event) {
         if (data.success) {
             window.location.href = data.redirectUrl || "/home";
         } else {
-            // Password မှားသွားပါက Error ပြပြီး Password field ကိုပဲ Clear လုပ်မည်
+            
             loginError.innerText = data.message || "Invalid Email or Password!";
             loginError.style.display = "block";
             
-            // Password ကွက်ကိုပဲ ခါထုတ်လိုက်မည် (Email Input ကွက် မပျောက်ပါ)
             passwordInput.value = ""; 
             passwordInput.focus(); // Password ပြန်ရိုက်နိုင်ရန် cursor တန်းတင်ပေးမည်
         }

@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Panel - Live Tracking</title>
-    
+    <title>Order Details</title>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link rel="stylesheet" th:href="@{/css/customer/map.css}">
-    
-    <!-- <style>
-        body { font-family: sans-serif; margin: 20px; background-color: #f8f9fa; }
-        #map { height: 480px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .status-panel { margin-top: 15px; padding: 12px; background: #ffffff; border-left: 5px solid #007bff; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .leaflet-routing-container { display: none !important; }
-    </style> -->
+
 </head>
+
 <body>
 
-    <div th:object="${customer}">
-        <input type="hidden" id="currentName" th:value="*{username}">
-    </div>
+
 
     <div class="container">
 
@@ -44,7 +38,7 @@
                 <div id="map"></div>
                 <div>
                     <label for="phone">Phone No.</label>
-                    <input type="text" name="phone" id="phone" inputmode="numeric" pattern="[0-9]*"/>
+                    <input type="text" name="phone" id="phone" inputmode="numeric" pattern="[0-9]*" />
                 </div>
 
             </div>
@@ -119,6 +113,9 @@
         </div>
 
     </div>
+    <div th:object="${customer}">
+        <input type="hidden" id="currentName" th:value="*{username}">
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
@@ -128,4 +125,5 @@
     <script th:src="@{/js/customer/map.js}"></script>
 
 </body>
+
 </html>

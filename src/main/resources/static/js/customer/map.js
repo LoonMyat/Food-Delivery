@@ -8,7 +8,16 @@ let stompClient = null;
 let statusSubscription = null;
 let trackSubscription = null;
 
-const currentOrder = JSON.parse(localStorage.getItem("currentOrder"));
+const savedActiveOrderId = localStorage.getItem("activeOrderId");
+const savedOrderState = JSON.parse(localStorage.getItem("activeOrderState"));
+
+let currentOrder = null;
+
+if (savedActiveOrderId && savedOrderState && savedOrderState.orderData) {
+    currentOrder = savedOrderState.orderData; // Confirm ပြီးသား Order Data
+} else {
+    currentOrder = JSON.parse(localStorage.getItem("currentOrder"));
+}
 if (currentOrder) {
     const foodPriceElem = document.getElementById("foodPrice");
     const totalCountElem = document.getElementById("totalCount");
@@ -40,19 +49,15 @@ function connectWebSocket() {
     stompClient.connect({}, function (frame) {
         console.log("Connected to WebSocket: " + frame);
 
-        const statusElem = document.getElementById("connection-status");
-        if (statusElem) {
-            statusElem.innerText = "Connected";
-            statusElem.style.color = "green";
-        }
-
-        // DB မှ Order Response ပြန်ကျလာတာကို စောင့်ကြည့်ခြင်း
+        // fetch db response for actual order id
         stompClient.subscribe('/topic/order-response', function (response) {
             const savedOrder = JSON.parse(response.body);
 
             if (tempOrderId && savedOrder.tempOrderId === tempOrderId) {
-                orderId = savedOrder.id; // DB Order ID အမှန်
+                orderId = savedOrder.id; // DB Order ID 
                 console.log("✅ Order matched! Assigned DB Order ID:", orderId);
+
+                localStorage.setItem("activeOrderId", orderId);
 
                 let displayElem = document.getElementById("displayOrderId");
                 if (displayElem) displayElem.innerText = "#" + orderId;
@@ -65,11 +70,6 @@ function connectWebSocket() {
 
     }, function (error) {
         console.error("WebSocket Connection Error: ", error);
-        const statusElem = document.getElementById("connection-status");
-        if (statusElem) {
-            statusElem.innerText = "Connection Failed";
-            statusElem.style.color = "red";
-        }
         setTimeout(connectWebSocket, 5000);
     });
 }
@@ -87,52 +87,65 @@ function listenOrderStatus(assignedOrderId) {
         const data = JSON.parse(response.body);
         console.log("Received Status Update:", data);
 
-        let statusBtn = document.getElementById("statusBtn");
-        if (statusBtn && data.status) {
-            const currentStatus = data.status.toUpperCase();
-
-            if (currentStatus === "PREPARING" || currentStatus === "ACCEPTED") {
-                statusBtn.innerText = "Preparing meals";
-                statusBtn.style.backgroundColor = "#ff9800"; // Orange
-                statusBtn.disabled = true;
-            }
-            else if (currentStatus === "READY_FOR_PICKUP" || currentStatus === "READY_TO_PICKUP" || currentStatus === "READY") {
-                statusBtn.innerText = "Ready for Pick Up";
-                statusBtn.style.backgroundColor = "#28a745"; // Green
-                statusBtn.disabled = true;
-            }
-            // 💡 1. Rider ပစ္စည်းယူပြီး ထွက်လာချိန်
-            else if (currentStatus === "ON_THE_WAY") {
-                statusBtn.innerText = "On the Way 🛵";
-                statusBtn.style.backgroundColor = "#17a2b8"; // Blue
-                statusBtn.disabled = true;
-            }
-            // 💡 2. ပို့ဆောင်ပြီးစီးချိန်
-            else if (currentStatus === "DELIVERED") {
-                statusBtn.innerText = "Delivered 🎉";
-                statusBtn.style.backgroundColor = "#6c757d";
-
-                const confirmDelivery = confirm("Order arrived successfully!");
-                if (confirmDelivery) {
-                    localStorage.removeItem("currentOrder");
-                    window.location.href = "/customer/home";
-                }
-
-            }
-            else if (currentStatus === "REJECTED") {
-                alert("Sorry! Your order has been rejected.");
-
-                statusBtn.innerText = "Confirm Order";
-                statusBtn.disabled = false;
-                statusBtn.style.backgroundColor = "";
-
-                tempOrderId = null;
-                orderId = null;
-
-                enableMapClick();
-            }
+        if (data && data.status) {
+            updateStatusUI(data.status);
         }
     });
+}
+
+function updateStatusUI(status) {
+    let statusBtn = document.getElementById("statusBtn");
+    if (!statusBtn || !status) return;
+
+    const currentStatus = status.toUpperCase();
+
+    if (currentStatus === "PENDING") {
+        statusBtn.innerText = "Pending";
+        statusBtn.style.backgroundColor = "#ffc107"; // Yellow
+        statusBtn.disabled = true;
+    }
+    else if (currentStatus === "PREPARING" || currentStatus === "ACCEPTED") {
+        statusBtn.innerText = "Preparing meals";
+        statusBtn.style.backgroundColor = "#ff9800"; // Orange
+        statusBtn.disabled = true;
+    }
+    else if (currentStatus === "READY_FOR_PICKUP" || currentStatus === "READY_TO_PICKUP" || currentStatus === "READY") {
+        statusBtn.innerText = "Ready for Pick Up";
+        statusBtn.style.backgroundColor = "#28a745"; // Green
+        statusBtn.disabled = true;
+    }
+    else if (currentStatus === "ON_THE_WAY") {
+        statusBtn.innerText = "On the Way";
+        statusBtn.style.backgroundColor = "#17a2b8"; // Blue
+        statusBtn.disabled = true;
+    }
+    else if (currentStatus === "DELIVERED") {
+        statusBtn.innerText = "Delivered 🎉";
+        statusBtn.style.backgroundColor = "#6c757d";
+        statusBtn.disabled = true;
+
+        // remove locatStroage when delivered
+        localStorage.removeItem("activeOrderId");
+        localStorage.removeItem("currentOrder");
+        localStorage.removeItem("activeOrderState");
+        localStorage.removeItem("cart");
+
+        setTimeout(() => {
+            alert("Order arrived successfully!");
+            window.location.href = "/customer/home";
+        }, 500);
+    }
+    else if (currentStatus === "REJECTED") {
+        alert("Sorry! Your order has been rejected.");
+        statusBtn.innerText = "Confirm Order";
+        statusBtn.disabled = false;
+        statusBtn.style.backgroundColor = "";
+
+        localStorage.removeItem("activeOrderId");
+        localStorage.removeItem("activeOrderState"); 
+        orderId = null;
+        enableMapClick();
+    }
 }
 
 
@@ -140,11 +153,36 @@ function listenOrderStatus(assignedOrderId) {
 // 4. TRACK RIDER LOCATION & SEND CUSTOMER HOME
 // ==========================================
 function trackRiderLocation(assignedOrderId) {
-    if (trackSubscription) trackSubscription.unsubscribe();
+    
+    if (!stompClient || !stompClient.connected) {
+        console.error("❌ WebSocket ချိတ်ဆက်မထားပါ။ Rider ကို Track လုပ်၍ မရပါ။");
+        return;
+    }
 
-    trackSubscription = stompClient.subscribe('/topic/track/' + assignedOrderId, function (response) {
-        const riderLocation = JSON.parse(response.body);
-        updateRouteAndETA(riderLocation.latitude, riderLocation.longitude);
+    if (trackSubscription) {
+        trackSubscription.unsubscribe();
+    }
+
+    const topic = '/topic/track/' + assignedOrderId;
+    
+    
+    console.log("📡 Listening to: " + topic);
+
+    trackSubscription = stompClient.subscribe(topic, function (response) {
+        console.log("📍 Data received from Backend: ", response.body);
+        
+        
+        try {
+            const riderLocation = JSON.parse(response.body);
+
+            if (riderLocation && riderLocation.latitude && riderLocation.longitude) {
+                updateRouteAndETA(riderLocation.latitude, riderLocation.longitude);
+            } else {
+                console.warn("⚠️ Lat, Lng not found!", riderLocation);
+            }
+        } catch (error) {
+            console.error("Error", error);
+        }
     });
 }
 
@@ -173,7 +211,7 @@ function initMap() {
     });
 
     restaurantMarker = L.marker([restLat, restLng], { icon: redIcon }).addTo(map).bindPopup("<b>Restaurant</b>");
-    riderMarker = L.marker([restLat, restLng]).addTo(map).bindPopup("Rider (At Store)").openPopup();
+    // riderMarker = L.marker([restLat, restLng]).addTo(map).bindPopup("Rider (At Store)").openPopup();
 
     enableMapClick();
 }
@@ -220,7 +258,18 @@ function updateRouteAndETA(riderLat, riderLng) {
     currentRiderLat = riderLat;
     currentRiderLng = riderLng;
 
-    if (riderMarker) riderMarker.setLatLng([riderLat, riderLng]);
+    let riderLatLng = [riderLat, riderLng]; 
+
+    if (riderMarker) {
+        // Marker ရှိနေလျှင် နေရာရွှေ့မည်
+        riderMarker.setLatLng(riderLatLng); 
+    } else {
+        // Marker မရှိသေးလျှင် အသစ်တည်ဆောက်မည်
+        riderMarker = L.marker(riderLatLng)
+            .addTo(map)
+            .bindPopup("<b>Rider</b>"); 
+    }
+    // if (riderMarker) riderMarker.setLatLng([riderLat, riderLng]);
     if (destLat === 0 || destLng === 0) return;
 
     if (!routingControl) {
@@ -238,7 +287,6 @@ function updateRouteAndETA(riderLat, riderLng) {
             const distanceKm = (summary.totalDistance / 1000).toFixed(2);
             const durationMin = Math.round(summary.totalTime / 60);
 
-            
             if (currentOrder && currentOrder.foodPrice) {
                 total = calculateTotalAmount(distanceKm, currentOrder.foodPrice);
                 const deliFeeElem = document.getElementById("deliveryFee");
@@ -277,6 +325,67 @@ window.onload = function () {
     initMap();
     connectWebSocket();
 
+    const savedActiveOrderId = localStorage.getItem("activeOrderId");
+    const savedOrderState = JSON.parse(localStorage.getItem("activeOrderState"));
+
+    if (savedActiveOrderId && savedOrderState) {
+        destLat = savedOrderState.destLat;
+        destLng = savedOrderState.destLng;
+        total = savedOrderState.total;
+        deliFee = savedOrderState.deliFee;
+
+        if (savedOrderState.orderData) {
+            currentOrder = savedOrderState.orderData;
+            const foodPriceElem = document.getElementById("foodPrice");
+            const totalCountElem = document.getElementById("totalCount");
+            if (foodPriceElem) foodPriceElem.innerHTML = `${currentOrder.foodPrice} MMK`;
+            if (totalCountElem) totalCountElem.innerHTML = `${currentOrder.totalCount}`;
+        }
+        
+        if (destLat && destLng) {
+            if (destMarker) map.removeLayer(destMarker);
+            destMarker = L.marker([destLat, destLng]).addTo(map).bindPopup("<b>Your Home</b>").openPopup();
+            updateRouteAndETA(currentRiderLat, currentRiderLng);
+        }
+
+        const phoneElem = document.getElementById("phone");
+        if (phoneElem && savedOrderState.phone) {
+            phoneElem.value = savedOrderState.phone;
+        }
+
+        const deliFeeElem = document.getElementById("deliveryFee");
+        const totalAmountElem = document.getElementById("totalAmount");
+        if (deliFeeElem && deliFee) deliFeeElem.innerHTML = `${deliFee} MMK`;
+        if (totalAmountElem && total) totalAmountElem.innerText = `${total.toLocaleString()} MMK`;
+    }
+
+    if (savedActiveOrderId) {
+        orderId = savedActiveOrderId;
+
+        let displayElem = document.getElementById("displayOrderId");
+        if (displayElem) displayElem.innerText = "#" + orderId;
+
+        if (map) map.off('click', onMapClick); 
+
+        
+        fetch(`http://${SERVER_IP}:8080/api/orders/${orderId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.status) {
+                    updateStatusUI(data.status);
+                }
+            })
+            .catch(err => console.error("Error fetching order status:", err));
+
+        
+        setTimeout(() => {
+            if (stompClient && stompClient.connected) {
+                listenOrderStatus(orderId);
+                trackRiderLocation(orderId);
+            }
+        }, 1000);
+    }
+
     const statusBtn = document.getElementById("statusBtn");
     if (statusBtn) {
         statusBtn.addEventListener("click", function () {
@@ -285,11 +394,6 @@ window.onload = function () {
                 return;
             }
 
-            tempOrderId = "TEMP_" + Date.now();
-
-            this.innerText = "Pending";
-            if (map) map.off('click', onMapClick);
-
             const phoneElem = document.getElementById("phone");
             let phoneNumber = phoneElem.value.trim();
 
@@ -297,6 +401,25 @@ window.onload = function () {
                 alert("Please enter your phone number");
                 return;
             }
+
+            tempOrderId = "TEMP_" + Date.now();
+
+            
+            const orderStateToSave = {
+                destLat: destLat,
+                destLng: destLng,
+                phone: phoneNumber,
+                total: total,
+                deliFee: deliFee,
+                orderData: {
+                    foodPrice: currentOrder ? currentOrder.foodPrice : 0,
+                    totalCount: currentOrder ? currentOrder.totalCount : 0
+                }
+            };
+            localStorage.setItem("activeOrderState", JSON.stringify(orderStateToSave));
+
+            updateStatusUI("PENDING");
+            if (map) map.off('click', onMapClick);
 
             const nameElem = document.getElementById("currentName");
             let currentName = nameElem ? nameElem.value : "Customer";

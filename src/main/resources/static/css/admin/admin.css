@@ -14,6 +14,7 @@ body::-webkit-scrollbar{
     display: none;
 }
 
+
 /* Bottom Navigation */
 .bottom-nav {
     position: fixed;
@@ -91,7 +92,7 @@ body::-webkit-scrollbar{
 } */
 
 .title {
-    text-align: center;
+    text-align: left;
     font-size: clamp(2.4rem, 3vw, 2rem);
     margin-bottom: 1rem;
     font-weight: bold;
@@ -99,14 +100,16 @@ body::-webkit-scrollbar{
 }
 
 /* Header & Row */
-
+.order-container{
+    margin-bottom: 50px;
+}
 .order-item {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1.2fr 1.5fr 1fr 1fr;
     align-items: center;
     gap: 3.5rem;
     padding: 1rem;
-    border-radius: .8rem;
+    /* border-radius: .8rem; */
 }
 
 .order-item span {
@@ -125,7 +128,7 @@ body::-webkit-scrollbar{
 /* Scroll */
 
 .order-list {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     max-height: 70vh;
     overflow-y: auto;
     display: flex;
@@ -138,12 +141,12 @@ body::-webkit-scrollbar{
 .order-row {
 
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1.2fr 1.5fr 1fr 1fr;
     gap: 3.5rem;
     align-items: center;
     background: #FFF8E7;
     padding: 1rem;
-    border-radius: .8rem;
+    /* border-radius: .8rem; */
     transition: .3s;
 }
 
@@ -225,18 +228,35 @@ body {
     padding: 2rem;
 }
 
+.noti-dot{
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+    background-color: #f92125;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    /* border: 2px solid #FFF8E7;  */
+    /* box-shadow: 0 0 6px rgba(255, 59, 48, 0.8); */
+    box-shadow: 0 0 10px 5px rgba(255, 59, 48, 0.8);
+}
+
 /* Dashboard */
 .dashboard {
     width: 100%;
     max-width: 1200px;
-    margin: auto;
+    /* margin: auto; */
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 1rem;
 }
 
 /* Card */
 .card {
+    position: relative;
     background: #FFF8E7;
     border-radius: 20px;
     border: 2px solid #750608;
@@ -309,7 +329,7 @@ body {
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& profile.CSS */
 .profile-container {
     width: min(90vw, 380px);
-    /* min-height: 85vh; */
+    /* min-height: 95vh; */
     /* background:#fff; */
     /* border-radius:1.5rem; */
     /* padding: 2rem 1.5rem; */
@@ -327,15 +347,15 @@ body {
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;
-    border: .3rem solid #667eea;
-    box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .15);
+    border: .3rem solid #750608;
+    box-shadow: 0 .4rem 2rem rgb(158, 28, 28);
 }
 
 .admin p {
     font-size: clamp(1.1rem, 2.8vw, 1.5rem);
     font-weight: bold;
     text-align: center;
-    color: #333;
+    color: #750608;
 }
 
 input[type="submit"] {
@@ -434,11 +454,12 @@ input[type="submit"] {
     padding: 0 15px;
     border-bottom: 1px solid #ccc;
     flex-shrink: 0;
+    text-align: center;
 }
 
 .customertop-bar h2 {
     font-size: 30px;
-    margin-right: 90vh;
+    margin-right: 400px;
     color: #FFF8E7;
 }
 
@@ -647,14 +668,7 @@ header {
     margin-bottom: 20px;
 }
 
-.add-menu-btn {
-    background-color: #f39c12;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-}
+
 
 .menu-section {
     /* background-color: #FFF8E7; */
@@ -717,19 +731,17 @@ header {
 .menu-item {
     text-align: center;
     min-width: 140px;
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     align-items: center;
     justify-content: space-between;
 }
 .name{
     font-size: 15px;
-    
 }
 .price{
     font-weight: bold;
     font-size: 12px;
-    color: #750608;
 }
 
 .img-placeholder img {
@@ -747,6 +759,20 @@ header {
     /* border: #750608 solid 5px; */
     /* border:.3rem solid #667eea; */
     box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .15);
+}
+
+.edit-btn, .delete-btn{
+    text-decoration: none;
+    font-size: 10px;
+    color: #dcdbdb;
+    background: #750608;
+    /* box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .15); */
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+}
+
+.edit-btn:hover, .delete-btn:hover, .add-menu-btn:hover{
+    background-color: #e14141;
 }
 
 /* Responsive: Mobile အတွက် */
@@ -840,5 +866,205 @@ header {
         max-width: 85px;
         font-size: 11px;
         padding: 5px 6px;
+    }
+}
+
+#no-result{
+    text-align: center;
+    margin-top: 20px;
+    color: #fff;
+}
+/* =========================
+   Modal Overlay
+========================= */
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Show the modal */
+.modal-overlay.show {
+  display: block;
+}
+
+/* The modal box */
+.modal-box {
+  /* background: white; */
+  width: 90%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+/* Close button */
+/* .modal-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+} */
+
+
+/* =========================
+   Modal Box
+========================= */
+.modal-box {
+    /* position: relative; */
+    width: 100%;
+    max-width: 420px;
+    background: #BBE0F2;
+    padding: 35px 30px 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    /* display: flex; */
+    flex-direction: column;
+    gap: 10px;
+    animation: modalShow 0.25s ease;
+}
+/* Modal animation */
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+/* =========================
+   Close Button
+========================= */
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #f5f5f5;
+    color: #555;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+.modal-close:hover {
+    background: #750608;
+    color: white;
+}
+/* =========================
+   Labels
+========================= */
+.modal-box label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+/* =========================
+   Inputs
+========================= */
+.modal-box input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: 0.2s ease;
+}
+/* Input focus */
+.modal-box input:focus {
+    border-color: #750608;
+    background: #fff;
+
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+}
+/* =========================
+   Change Button
+========================= */
+.modal-box button[type="submit"] {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #750608;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.modal-box button[type="submit"]:hover {
+    background: #e85b2a;
+    transform: translateY(-1px);
+}
+.modal-box button[type="submit"]:active {
+    transform: translateY(0);
+}
+/* =========================
+   Tablet
+========================= */
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 18px;
+    }
+    .modal-box {
+        max-width: 380px;
+        padding: 32px 25px 25px;
+    }
+    .modal-box input {
+        padding: 11px 13px;
+    }
+}
+/* =========================
+   Mobile
+========================= */
+@media (max-width: 480px) {
+    .modal-overlay {
+        padding: 15px;
+    }
+    .modal-box {
+        max-width: 100%;
+        padding: 32px 20px 22px;
+        border-radius: 15px;
+    }
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+    .modal-box label {
+        font-size: 13px;
+    }
+    .modal-box input {
+        padding: 11px 12px;
+        font-size: 14px;
+    }
+    .modal-box button[type="submit"] {
+        padding: 12px;
+        font-size: 15px;
     }
 }

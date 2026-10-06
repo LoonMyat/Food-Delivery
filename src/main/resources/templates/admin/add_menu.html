@@ -121,17 +121,9 @@
 
     <script>
 
-        // Back Button Logic
         function goBack() {
-            window.location.href="/admin/menu_list";
+            window.location.href = "/admin/menu_list";
         }
-
-        // // // Add Button Logic
-        // document.getElementById('menuform').onsubmit = function(e) {
-        //     e.preventDefault();
-        //     alert("Menu added successfully!");
-        //     // ဒီနေရာမှာ Data ကို Database သို့မဟုတ် LocalStorage ထဲ သိမ်းမယ့် code ထည့်နိုင်ပါတယ်
-        // };
 
 
         let uploadedImageSrc = "";
@@ -176,6 +168,7 @@
 
         }
     </script>
+    <th:block th:replace="~{includes/admin/partial :: adminJS}"></th:block>
 
 </body>
 

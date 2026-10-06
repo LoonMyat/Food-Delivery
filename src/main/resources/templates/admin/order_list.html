@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,45 +10,52 @@
     <!-- <link rel="stylesheet" href="orserlist.css"> -->
     <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
     <style>
-        *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-    background:#BBE0F2;
-    padding:2vw;
-}
-
+        body {
+            background: #BBE0F2;
+            padding: 2vw;
+        }
     </style>
 
 </head>
+
 <body>
     <div class="order-container">
 
-        <h2 class="title">Order List</h2>
+        <h2 class="title">Orders</h2>
+        <p><span th:text="${orders.size()}"></span> orders found</p>
 
         <!-- Header -->
         <div class="order-item order-header">
             <span>Order ID</span>
             <span>Date</span>
             <span>Customer</span>
+            <span>Total Amount</span>
             <span>Status</span>
         </div>
 
         <!-- Scroll Area -->
-        <div class="order-list" id="orderList">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="order-list" id="orderList" th:each="order : ${orders}">
+            <div class="order-row">
+                <span th:text="'#' + ${#numbers.formatInteger(order.id, 3)}"></span>
+                <span th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, hh:mm a')}"></span>
+                <span th:text="${order.cusName}"></span>
+                <span th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></span>
+                <span th:text="${order.status}"></span>
+            </div>
         </div>
 
     </div>
-    <script th:src="@{/js/admin/orderlist.js}"></script>
+    <p th:if="${orders == null or #lists.isEmpty(orders)}" id="no-result">No result found</p>
 
     <div th:replace="~{includes/admin/partial :: menu_bar}"></div>
+    <th:block th:replace="~{includes/admin/partial :: adminJS}"></th:block>
 </body>
+
 </html>

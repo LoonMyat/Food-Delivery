@@ -36,7 +36,7 @@
 
         <div class="ridertopBar">
             <i class="fa-solid fa-angle-left back" onclick="goToPage('/admin/home')"></i>
-            <h2>Rider Lists</h2>
+            <h2>Riders</h2>
             <button class="rideraddBtn" onclick="goToPage('/admin/add_rider')">+</button>
         </div>
 
@@ -71,7 +71,7 @@
 
     </div>
 
-    <script th:src="@{/js/admin/admin.js}"></script>
+    <th:block th:replace="~{includes/admin/partial :: adminJS}"></th:block>
 </body>
 
 </html>

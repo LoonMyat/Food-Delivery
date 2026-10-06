@@ -14,7 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #BBE0F2;
+            background: #FFF8E7;
             /* padding: 5vw; */
         }
     </style>
@@ -23,10 +23,10 @@
 <body>
     <div class="profile-container">
         <div class="image">
-            <img th:src="@{/images/profile.jpg}" alt="profile_image" width="100" height="auto">
+            <img th:src="@{/images/logo.jpg}" alt="profile_image" width="100" height="auto">
         </div>
         <div class="admin">
-            <p th:text="${user.username}">Food Deliver Tracking</p>
+            <p>TASTE HEAVEN</p>
         </div>
         <div class="admin-logout">
             <form th:action="@{/logout}" method="post">
@@ -36,7 +36,7 @@
     </div>
     
     <div th:replace="~{includes/admin/partial :: menu_bar}"></div>
-
+    <th:block th:replace="~{includes/admin/partial :: adminJS}"></th:block>
 
 </body>
 

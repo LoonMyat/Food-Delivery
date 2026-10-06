@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>Delivery Rider - Main</title>
@@ -7,13 +8,20 @@
   <meta name="rider-id" th:content="${riderId}">
   <link rel="stylesheet" th:href="@{/css/rider.css}">
 </head>
+
 <body>
-  
+  <div class="rider-profile">
+    <div class="rider-name" id="riderName" th:text="${user.username}">Rider Name</div>
+    <div class="rider-email" id="riderEmail" th:text="${user.email}">rider@gmail.com</div>
+  </div>
+
   <div class="menu">
     <button class="menu-card" th:onclick="|goToPage('/rider/notifications/${riderId}')|">
+      <span id="notiDot" class="noti-dot" style="display: none;"></span>
       <img th:src="@{/images/NotiIcon.png}" alt="Notifications" class="icon">
       <span>Notifications</span>
     </button>
+  
     <button class="menu-card" th:onclick="|goToPage('/rider/orders/${riderId}')|">
       <img th:src="@{/images/OrderIcon.png}" alt="Orders" class="icon">
       <span>Orders</span>
@@ -22,11 +30,12 @@
   <form th:action="@{/logout}" method="post">
     <button class="logout-btn">Log out</button>
   </form>
-  <!-- 1. SockJS Library -->
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-<!-- 2. STOMP Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
   <script th:src="@{/js/rider/rider.js}"></script>
 </body>
+
 </html>

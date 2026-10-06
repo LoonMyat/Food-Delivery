@@ -1,5 +1,6 @@
 package com.IT.FoodDelivery.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -43,11 +44,6 @@ public class RiderController {
     @GetMapping("/orders/{riderId}")
     public String orders(@PathVariable("riderId") Long riderId, Model model) {
         List<Order> orders = orderRepo.findByRiderId(riderId);
-
-        for (Order order : orders) {
-            String phone = WebSocketController.ORDER_PHONE_MAP.getOrDefault(order.getId(), "N/A");
-            order.setPhone(phone);
-        }
         model.addAttribute("riderId", riderId);
         model.addAttribute("orders", orders);
         return "rider/orders";
@@ -57,11 +53,7 @@ public class RiderController {
     public String showNotifications(@PathVariable("riderId") Long riderId, Model model) {
         List<Order> orders = orderRepo.findByRiderIdAndStatusNot(riderId, "DELIVERED");
 
-        for (Order order : orders) {
-            String phone = WebSocketController.ORDER_PHONE_MAP.getOrDefault(order.getId(), "N/A");
-            order.setPhone(phone);
-        }
-
+        Collections.reverse(orders);
         model.addAttribute("riderId", riderId);
         model.addAttribute("orders", orders);
 
@@ -73,9 +65,6 @@ public class RiderController {
         Order order = orderRepo.findById(orderId).orElse(null);
 
         if (order != null) {
-            String phone = WebSocketController.ORDER_PHONE_MAP.getOrDefault(order.getId(), "N/A");
-            order.setPhone(phone);
-
             if (order.getRider() != null) {
             model.addAttribute("riderId", order.getRider().getId());
         }

@@ -37,11 +37,11 @@
         <!-- Header -->
         <div class="customertop-bar">
 
-            <button class="back" onclick="goHome()">
+            <button class="back" onclick="goToPage('/admin/home')">
                 <i class="fa-solid fa-angle-left back"></i>
             </button>
 
-            <h2>Customer Lists</h2>
+            <h2>Customer Lists(Total - <span th:text="${customers.size()}"></span>)</h2>
 
         </div>
 
@@ -58,7 +58,7 @@
         <div id="list" class="list">
             <th:block th:each="customer, num : ${customers}">
                 <div class="customer-row">
-                    <div th:text="${num.count}"></div>
+                    <div th:text="${customer.id}"></div>
                     <div th:text="${customer.username}">${customer.username}</div>
                     <div th:text="${customer.email}">${customer.email}</div>
                     <div>
@@ -76,11 +76,8 @@
 
     </div>
 
-    <script>
-        function goHome() {
-            window.location.href = "/admin/home";
-        }
-    </script>
+    <th:block th:replace="~{includes/admin/partial :: adminJS}"></th:block>
+
 
 </body>
 

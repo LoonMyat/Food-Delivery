@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,13 +32,12 @@ public class Order {
     private String status;
     private LocalDateTime createdAt;
     private Double totalAmount;
+    private String phone;
     
     
     @ManyToOne
     @JoinColumn(name = "rider_id") // Foreign key column အမည်
     private Rider rider;
 
-    @Transient 
-    private String phone;
 
 }

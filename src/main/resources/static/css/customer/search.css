@@ -24,7 +24,7 @@ body::-webkit-scrollbar {
     display: flex;
     align-items: center;
     gap: 20px;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
 }
 
 .search-header a {
@@ -60,7 +60,7 @@ body::-webkit-scrollbar {
 .search-box {
     width: 100%;
     /* Desktop ပေါ်တွင် အကျယ်ဆုံး အတိုင်းအတာ */
-    margin: 0 auto;
+    /* margin: 0 auto; */
     padding: 0 15px;
 }
 
@@ -136,7 +136,7 @@ body::-webkit-scrollbar {
     /* margin-bottom: 18px; */
 }
 .result-container{
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 }
 
 /* Food List */

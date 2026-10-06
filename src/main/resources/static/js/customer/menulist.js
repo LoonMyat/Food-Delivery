@@ -19,7 +19,6 @@ function addToCart(name, price, image){
 
     alert("Item added to cart");  
 
-    // window.location.href = "/customer/cart";
 }
 
 // For add Menu

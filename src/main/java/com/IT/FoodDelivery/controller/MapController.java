@@ -18,7 +18,7 @@ public class MapController {
             Map<String, Object> location) {
             
         System.out.println("Rider Location for Order [" + orderId + "]: " + location);
-        return location; // /topic/track/12345 ကို နားထောင်နေသော Customer ထံ ပြန်ပို့ပေးမည်
+        return location;
     }
 
     //customer location ကို rider map မှာပြပေး

@@ -1,15 +1,22 @@
 <nav class="bottom-nav" th:fragment="menu_bar">
-        <a href="/admin/order_list">
-            <span class="material-symbols-outlined" id="order">order_approve</span>
-            <!-- <span>Home</span> -->
-        </a>
+    <a href="/admin/order_list">
+        <span class="material-symbols-outlined" id="order">order_approve</span>
+        <!-- <span>Home</span> -->
+    </a>
 
-        <a href="/admin/home">
-            <span class="material-symbols-outlined">food_bank</span>
-        </a>
+    <a href="/admin/home">
+        <span class="material-symbols-outlined">food_bank</span>
+    </a>
 
-        <a href="/admin/profile">
-            <span class="material-symbols-outlined">account_circle</span>
-            <!-- <span>Profile</span> -->
-        </a>
+    <a href="/admin/profile">
+        <span class="material-symbols-outlined">account_circle</span>
+        <!-- <span>Profile</span> -->
+    </a>
 </nav>
+
+<th:block th:fragment="adminJS">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script th:src="@{/js/admin/admin.js}"></script>
+</th:block>

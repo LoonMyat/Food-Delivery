@@ -10,7 +10,6 @@ const totalPrice = document.getElementById("totalPrice");
 // Display Cart
 // =========================
 function displayCart() {
-    // 💡 HTML Element မရှိသည့် Page မျိုးတွင် Error မတက်စေရန် စစ်ပေးထားပါသည်
     if (!cartItems || !totalPrice) return;
 
     cartItems.innerHTML = "";
@@ -94,7 +93,6 @@ displayCart();
 // =========================
 const orderBtn = document.getElementById("orderBtn");
 
-// 💡 orderBtn ရှိမှသာ Event Listener ကို ဖွင့်ပေးမည်
 if (orderBtn) {
     orderBtn.addEventListener("click", function () {
         let currentCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -120,7 +118,6 @@ if (orderBtn) {
 
         localStorage.setItem("currentOrder", JSON.stringify(orderData));
 
-        // Map / ETA Page သို့ လမ်းကြောင်းညွှန်းမည်
         window.location.href = "/customer/map";
     });
 }

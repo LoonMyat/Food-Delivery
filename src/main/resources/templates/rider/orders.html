@@ -21,6 +21,7 @@
         <tr>
           <th>Order ID</th>
           <th>Date</th>
+          <th>Total Amount</th>
           <th>Status</th>
         </tr>
       </thead>
@@ -30,6 +31,7 @@
           <tr>
             <td th:text="'#' + ${#numbers.formatInteger(order.id, 3)}"></td>
             <td th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, hh:mm a')}"></td>
+            <td th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></td>
             <td th:text="${order.status}"></td>
           </tr>
         </th:block>
@@ -37,7 +39,10 @@
 
 
     </table>
+    <p th:if="${orders == null or #lists.isEmpty(orders)}" id="no-result">No result found</p>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
   <script th:src="@{/js/rider/rider.js}"></script>
 </body>
 

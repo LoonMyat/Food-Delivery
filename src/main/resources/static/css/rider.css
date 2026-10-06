@@ -10,6 +10,20 @@ h2 {
   color: #750608;
 }
 
+.noti-dot{
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+    background-color: #f92125;
+    position: absolute;
+    top: 12px;
+    right: 385px;
+    /* border: 2px solid #FFF8E7;  */
+    /* box-shadow: 0 0 6px rgba(255, 59, 48, 0.8); */
+    box-shadow: 0 0 10px 5px rgba(255, 59, 48, 0.8);
+}
+
+
 .menu {
   display: flex;
   justify-content: center;
@@ -101,6 +115,11 @@ h2 {
   /* allows absolute positioning inside */
 }
 
+#no-result{
+  text-align: center;
+  color: #750608;
+}
+
 .action-btn {
   background: #750608;
   color: white;
@@ -178,10 +197,6 @@ thead {
   color: white;
 }
 
-tr {
-  border-top: #750608 solid 1px;
-}
-
 th,
 td {
   /* border: 1px solid #ddd; */
@@ -221,6 +236,10 @@ td {
   .menu {
     flex-direction: column;
   }
+  .noti-dot{
+    top: 20px;
+    right: 13px;
+  }
 
   .menu-card {
     max-width: 240px;
@@ -256,4 +275,97 @@ td {
   text-align: center;
   font-size: 15px;
   margin: 10px 0;
+}
+
+/* Rider Profile box */
+
+
+.rider-profile {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 190px;
+    max-width: calc(100% - 40px);
+    padding: 10px 14px;
+    background: white;
+    border-radius: 50px;
+    border: 2px solid #750608;
+    /* box-shadow: 0 3px 12px #750608; */
+    z-index: 1000;
+    box-sizing: border-box;
+    /* Center */
+    text-align: center;
+}
+.rider-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rider-email {
+    font-size: 12px;
+    color: #777;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Tablet */
+@media (max-width: 768px) {
+    .rider-profile {
+        top: 15px;
+        right: 15px;
+        width: 170px;
+        padding: 9px 12px;
+    }
+    .rider-name {
+        font-size: 14px;
+    }
+    .rider-email {
+        font-size: 11px;
+    }
+}
+/* Mobile */
+@media (max-width: 480px) {
+    .rider-profile {
+        top: 10px;
+        right: 10px;
+        width: 150px;
+        padding: 8px 10px;
+    }
+    .rider-name {
+        font-size: 13px;
+    }
+    .rider-email {
+        font-size: 10px;
+    }
+}
+.map-card {
+    /* background: #fff; */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    background: rgba(108, 107, 107, 0.25);
+    backdrop-filter: blur(12px);
+    max-width: 600px;
+    margin: 0 auto;
+}
+#map {
+    width: 100%;
+    height: 480px;
+    border-radius: 18px;
+    border: 4px solid #750608;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#action-btn {
+  display: flex;
+  width: 280px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }

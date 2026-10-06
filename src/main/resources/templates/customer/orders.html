@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Delivered Orders</title>
+  <title>Orders</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" th:href="@{/css/rider.css}">
@@ -20,15 +20,18 @@
         <tr>
           <th>Order ID</th>
           <th>Date</th>
+          <th>Total Amount</th>
           <th>Status</th>
         </tr>
       </thead>
 
+      
       <tbody>
         <th:block th:each="order: ${orders}">
           <tr>
             <td th:text="'#' + ${#numbers.formatInteger(order.id, 3)}"></td>
             <td th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, hh:mm a')}"></td>
+            <td th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></td>
             <td th:text="${order.status}"></td>
           </tr>
         </th:block>
@@ -36,8 +39,13 @@
 
 
     </table>
+    <p th:if="${orders == null or #lists.isEmpty(orders)}" id="no-result">No result found</p>
   </div>
-  <script th:src="@{/js/rider/rider.js}"></script>
+   <script>
+    function goToPage(page){
+      window.location.href = page;
+    }
+   </script>
 </body>
 
 </html>

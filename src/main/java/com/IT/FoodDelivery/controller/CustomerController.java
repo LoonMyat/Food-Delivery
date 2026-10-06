@@ -93,6 +93,7 @@ public class CustomerController {
         if(user != null){
             String name = user.getUsername();
             List<Order> orders = orderRepo.findByCusName(name);
+
             model.addAttribute("orders", orders);
         }
         return "customer/orders";

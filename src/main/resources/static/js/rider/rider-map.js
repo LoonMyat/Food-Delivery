@@ -6,6 +6,9 @@ let routingControl = null;
 let stompClient = null;
 let watchId = null;
 
+const restLat = 22.029440;
+const restLng = 96.101202;
+
 const riderId = document.querySelector("meta[name='rider-id']").getAttribute("content");
 // 💡 Meta Tags မှ Dynamic Data များ ယူခြင်း
 const orderId = document.querySelector('meta[name="order-id"]')?.getAttribute('content');
@@ -16,22 +19,22 @@ const customerLng = parseFloat(document.querySelector('meta[name="customer-lng"]
 const actionBtn = document.getElementById('action-btn');
 
 document.addEventListener("DOMContentLoaded", function () {
-    initMap();               // ၁။ မြေပုံ စတင်ဆွဲမည်
-    connectWebSocket();      // ၂။ WebSocket ချိတ်ဆက်မည်
-    // updateButtonUI(currentStatus); // ၃။ Button UI ကို လက်ရှိ Status အတိုင်း ပြမည်
+    initMap();
+    connectWebSocket();
 
-
-    if (actionBtn) {
+    if (currentStatus == "ON_THE_WAY") {
         actionBtn.addEventListener('click', handleButtonClick);
+    } else {
+        actionBtn.disabled = true;
     }
 });
 
 // -------------------------------------------------------------
-// 🗺️ ၁။ Leaflet Map Initialization
+// Leaflet Map Initialization
 // -------------------------------------------------------------
 function initMap() {
-    const defaultLat = customerLat !== 0 ? customerLat : 16.8409; // Default Yangon Lat
-    const defaultLng = customerLng !== 0 ? customerLng : 96.1735; // Default Yangon Lng
+    const defaultLat = customerLat !== 0 ? customerLat : 16.8409; // Default Lat
+    const defaultLng = customerLng !== 0 ? customerLng : 96.1735; // Default Lng
 
     map = L.map('map').setView([defaultLat, defaultLng], 14);
 
@@ -39,64 +42,59 @@ function initMap() {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Customer တည်နေရာရှိပါက Marker စိုက်မည်
+    // Customer location marker
     if (customerLat !== 0 && customerLng !== 0) {
         customerMarker = L.marker([customerLat, customerLng])
             .addTo(map)
             .bindPopup("<b>Customer Location</b>")
             .openPopup();
 
-        document.getElementById('customer-text').innerText = `${customerLat.toFixed(5)}, ${customerLng.toFixed(5)}`;
     }
+
+    // map.on('click', function (e) {
+    //     const clickedLat = e.latlng.lat;
+    //     const clickedLng = e.latlng.lng;
+
+    //     // ၁။ UI ပေါ်က စာသားကို Update လုပ်မည် (ရှိခဲ့လျှင်)
+    //     const locationText = document.getElementById('location-text');
+    //     if (locationText) {
+    //         locationText.innerText = `${clickedLat.toFixed(5)}, ${clickedLng.toFixed(5)} (Manual)`;
+    //     }
+    //     // ၂။ သင်ရေးထားပြီးသား Function ဖြင့် Marker နှင့် Route ကို Update လုပ်မည်
+    //     updateRiderMapPosition(clickedLat, clickedLng);
+    //     // startLiveLocationTracking();
+
+    //     // ၃။ WebSocket မှတစ်ဆင့် Customer ဆီသို့ လှမ်းပို့မည်
+    //     if (stompClient && stompClient.connected) {
+    //         stompClient.send(`/app/rider-location/${orderId}`, {}, JSON.stringify({
+    //             orderId: orderId,
+    //             latitude: clickedLat,
+    //             longitude: clickedLng
+    //         }));
+    //     }
+    // });
 }
 
 // -------------------------------------------------------------
-// 🔌 ၂။ WebSocket Connection
+// WebSocket Connection
 // -------------------------------------------------------------
 function connectWebSocket() {
-    const socket = new SockJS('/ws'); // သင်၏ WebSocket Endpoint
+    const socket = new SockJS('/ws'); // WebSocket Endpoint
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
-        document.getElementById('status').innerText = 'Connected';
-        document.getElementById('status').style.color = 'green';
-
-        // အကယ်၍ အော်ဒါက ON_THE_WAY ဖြစ်နေပြီးသားဆိုပါက တန်းပြီး Live Tracking စတင်မည်
         if (currentStatus === 'ON_THE_WAY') {
-            startLiveLocationTracking();
+            startLiveLocationTracking(); //start live tracking
         }
-    }, function (error) {
-        document.getElementById('status').innerText = 'Disconnected';
-        document.getElementById('status').style.color = 'red';
     });
 }
 
-// -------------------------------------------------------------
-// 🔘 ၃။ Button UI & State Management
-// -------------------------------------------------------------
-// function updateButtonUI(status) {
-//     if (!actionBtn) return;
-
-//     if (status === 'READY_TO_PICKUP' || status === 'PREPARING') {
-//         actionBtn.innerText = "📦 Picked Up (ပစ္စည်းယူပြီးပြီ)";
-//         actionBtn.className = "status-btn btn-pickup";
-//         actionBtn.style.display = "block";
-//     } else if (status === 'ON_THE_WAY') {
-//         actionBtn.innerText = "✅ Delivered (ပို့ဆောင်ပြီးပြီ)";
-//         actionBtn.className = "status-btn btn-delivered";
-//         actionBtn.style.display = "block";
-//     } else {
-//         actionBtn.style.display = "none"; 
-//     }
-// }
-
 function handleButtonClick() {
-    
-        const confirmDelivery = confirm("အော်ဒါ ပို့ဆောင်ပြီးစီးကြောင်း အတည်ပြုပါသလား။");
-        if (confirmDelivery) {
-            changeOrderStatus();
-        }
-    
+    const confirmDelivery = confirm("Are you sure order delivered?");
+    if (confirmDelivery) {
+        changeOrderStatus();
+    }
+
 }
 
 function changeOrderStatus() {
@@ -106,7 +104,6 @@ function changeOrderStatus() {
         status: "DELIVERED"
     };
 
-    // WebSocket သို့ Status ပြောင်းကြောင်း ပို့ခြင်း
     if (stompClient && stompClient.connected) {
         stompClient.send("/app/accept-order", {}, JSON.stringify(payload));
     }
@@ -115,11 +112,11 @@ function changeOrderStatus() {
 
     stopLiveLocationTracking();
     alert("🎉 Delivered Successfully!");
-    window.location.href = '/rider/home'; // Rider Home သို့ ပြန်ပို့မည်
+    window.location.href = '/rider/home';
 }
 
 // -------------------------------------------------------------
-// 📡 ၄။ GPS Live Tracking & Map Update
+// GPS Live Tracking & Map Update
 // -------------------------------------------------------------
 function startLiveLocationTracking() {
     if (navigator.geolocation) {
@@ -134,18 +131,21 @@ function startLiveLocationTracking() {
 
             // 💡 WebSocket ကနေ Customer ဆီ Live Location ပို့မည်
             if (stompClient && stompClient.connected) {
-                stompClient.send(`/app/rider/location/${orderId}`, {}, JSON.stringify({
+                stompClient.send(`/app/rider-location/${orderId}`, {}, JSON.stringify({
                     orderId: orderId,
                     latitude: lat,
                     longitude: lng
                 }));
+
+                
             }
+            
         }, function (error) {
             console.error("GPS Error:", error);
         }, {
             enableHighAccuracy: true,
             maximumAge: 0,
-            timeout: 5000
+            timeout: 10000
         });
     }
 }
@@ -157,10 +157,11 @@ function stopLiveLocationTracking() {
 }
 
 // -------------------------------------------------------------
-// 📍 ၅။ Leaflet Map ပေါ်တွင် Rider Marker & Route ဆွဲပေးခြင်း
+// Draw rider marker and route on map
 // -------------------------------------------------------------
 function updateRiderMapPosition(lat, lng) {
     const riderLatLng = [lat, lng];
+
 
     // Rider Marker မရှိသေးပါက အသစ်ဆွဲ၊ ရှိပါက နေရာရွှေ့မည်
     if (!riderMarker) {
@@ -169,7 +170,7 @@ function updateRiderMapPosition(lat, lng) {
         riderMarker.setLatLng(riderLatLng);
     }
 
-    // Customer တည်နေရာ ရှိပါက လမ်းကြောင်း (Routing) ဆွဲပေးမည်
+    // Customer route
     if (customerLat !== 0 && customerLng !== 0) {
         if (!routingControl) {
             routingControl = L.Routing.control({
@@ -180,7 +181,7 @@ function updateRiderMapPosition(lat, lng) {
                 routeWhileDragging: false,
                 addWaypoints: false,
                 show: false,
-                createMarker: function () { return null; } // Default Marker များ မပေါ်စေရန်
+                createMarker: function () { return null; }
             }).addTo(map);
         } else {
             routingControl.setWaypoints([
@@ -189,4 +190,8 @@ function updateRiderMapPosition(lat, lng) {
             ]);
         }
     }
+}
+
+function goToPage(page) {
+    window.location.href = page;
 }

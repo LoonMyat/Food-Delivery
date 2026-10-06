@@ -5,8 +5,6 @@
   <meta charset="UTF-8">
   <title>New Deliveries</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- 💡 Active Rider ID ကို Meta Tag တွင် ထည့်သွင်းထားခြင်း -->
   <meta name="rider-id" th:content="${riderId}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -19,20 +17,18 @@
   </button>
   <h2>New Deliveries</h2>
 
-  <!-- Noti Card များ ပေါ်လာမည့် Container -->
+  <!-- Noti Card Container -->
   <div id="noti-container">
 
-    <!-- 💡 DB + In-Memory Phone မှ ရလာသော Active Orders များကို Loop ပတ်ပြမည့် အပိုင်း -->
     <div th:each="order : ${orders}" class="delivery-card" th:id="'assigned-order-' + ${order.id}">
       <div class="card-body">
         <p><strong>Order ID: </strong><span th:text="'#' + ${#numbers.formatInteger(order.id, 3)}">#001</span></p>
         <p><strong>Customer Name:</strong> <span th:text="${order.cusName != null ? order.cusName : 'N/A'}">Customer</span></p>
         
-        <!-- 💡 Phone နံပါတ်ကို Thymeleaf ဖြင့် တိုက်ရိုက်ပြသခြင်း (ဖုန်းခေါ်ဆို၍ ရနိုင်သည်) -->
         <p><strong>Phone:</strong> 
           <a th:href="'tel:' + ${order.phone}" 
              style="color: #007bff; font-weight: bold; text-decoration: none;" 
-             th:text="'📞 ' + ${order.phone != null ? order.phone : 'N/A'}">📞 N/A</a>
+             th:text="${order.phone}"></a>
         </p>
         <p><strong>Total amount:</strong> <span th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></span></p>
 

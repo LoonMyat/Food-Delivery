@@ -36,7 +36,6 @@ public class AuthController {
 
         boolean hasError = false;
 
-        // 2. Error ရှိသမျှကို Map ထဲ ပေါင်းထည့်မည် (else if မသုံးပါ)
         if (nameError != null) {
             response.put("nameError", nameError);
             hasError = true;
@@ -50,13 +49,11 @@ public class AuthController {
             hasError = true;
         }
 
-        // 3. Error အနည်းဆုံး တစ်ခုရှိခဲ့ပါက badRequest (400) ပြန်မည်
         if (hasError) {
             response.put("success", false);
             return ResponseEntity.badRequest().body(response);
         }
 
-        // 4. Error မရှိပါက Database ထဲ သိမ်းပြီး Success ပြန်မည်
         userService.register(user);
 
         response.put("success", true);
