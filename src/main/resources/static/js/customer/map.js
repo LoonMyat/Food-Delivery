@@ -155,7 +155,7 @@ function updateStatusUI(status) {
 function trackRiderLocation(assignedOrderId) {
     
     if (!stompClient || !stompClient.connected) {
-        console.error("❌ WebSocket ချိတ်ဆက်မထားပါ။ Rider ကို Track လုပ်၍ မရပါ။");
+        console.error("WebSocket not connected!");
         return;
     }
 
@@ -166,10 +166,10 @@ function trackRiderLocation(assignedOrderId) {
     const topic = '/topic/track/' + assignedOrderId;
     
     
-    console.log("📡 Listening to: " + topic);
+    console.log("Listening to: " + topic);
 
     trackSubscription = stompClient.subscribe(topic, function (response) {
-        console.log("📍 Data received from Backend: ", response.body);
+        console.log("Data received from Backend: ", response.body);
         
         
         try {
@@ -178,7 +178,7 @@ function trackRiderLocation(assignedOrderId) {
             if (riderLocation && riderLocation.latitude && riderLocation.longitude) {
                 updateRouteAndETA(riderLocation.latitude, riderLocation.longitude);
             } else {
-                console.warn("⚠️ Lat, Lng not found!", riderLocation);
+                console.warn("Lat, Lng not found!", riderLocation);
             }
         } catch (error) {
             console.error("Error", error);

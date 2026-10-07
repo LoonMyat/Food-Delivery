@@ -58,7 +58,7 @@
         <div id="list" class="list">
             <th:block th:each="customer, num : ${customers}">
                 <div class="customer-row">
-                    <div th:text="${customer.id}"></div>
+                    <div th:text="${num.count}"></div>
                     <div th:text="${customer.username}">${customer.username}</div>
                     <div th:text="${customer.email}">${customer.email}</div>
                     <div>

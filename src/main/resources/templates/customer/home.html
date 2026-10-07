@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,36 +12,45 @@
 </head>
 
 <body>
-<main id="main-content">
+    <main id="main-content">
 
-    <section class="popular-menu">
-    <h4>OUR MENU</h4>
-    <h1>The Most Popular</h1>
+        <section class="popular-menu">
 
-    <div class="menu-container">
+            <div class="logo">
+                <img th:src="@{/images/logo.jpg}" alt="logo">
 
-        <!-- Food Card -->
-        <div class="food-card" th:each="menu : ${menus}">
-            <img th:src="${menu.image}" alt="image" loading="lazy">
-            <h2 th:text="${menu.name}">Double Beef Burger</h2>
-            <p class="price" th:text="${#numbers.formatInteger(menu.price, 0, 'COMMA')} + ' MMK'">2000</p>
-            <button class="cart-btn" th:onclick="addToCart([[${menu.name}]], [[${menu.price}]], [[${menu.image}]])">
-                Add to Cart
-            </button>
-        </div>
+                <div class="logo-text">
+                    <h4>OUR MENU</h4>
+                </div>
+            </div>
 
-    </div>
-</section>
+            <div class="menu-container">
+
+                <!-- Food Card -->
+                <div class="food-card" th:each="menu : ${menus}">
+                    <img th:src="${menu.image}" alt="image" loading="lazy">
+                    <h2 th:text="${menu.name}">Double Beef Burger</h2>
+                    <p class="price" th:text="${#numbers.formatInteger(menu.price, 0, 'COMMA')} + ' MMK'">2000</p>
+                    <button class="cart-btn"
+                        th:onclick="addToCart([[${menu.name}]], [[${menu.price}]], [[${menu.image}]])">
+                        Add to Cart
+                    </button>
+                </div>
+
+            </div>
+        </section>
 
 
-    <div th:replace="~{includes/customer/partial :: menubar}"></div>
-    <!-- 1. SockJS Library -->
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-<!-- 2. STOMP Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <div th:replace="~{includes/customer/partial :: menubar}"></div>
+        <!-- 1. SockJS Library -->
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-    <script th:src="@{/js/customer/menulist.js}"></script>
-</main>
+        <!-- 2. STOMP Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+        <script th:src="@{/js/customer/menulist.js}"></script>
+    </main>
 </body>
+
 </html>

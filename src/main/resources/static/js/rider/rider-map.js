@@ -50,7 +50,7 @@ function initMap() {
             .openPopup();
 
     }
-
+    startLiveLocationTracking();
     // map.on('click', function (e) {
     //     const clickedLat = e.latlng.lat;
     //     const clickedLng = e.latlng.lng;
@@ -124,7 +124,7 @@ function startLiveLocationTracking() {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
 
-            document.getElementById('location-text').innerText = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+            // document.getElementById('location-text').innerText = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 
             // 💡 Rider ရဲ့ Marker နဲ့ Route ကို မြေပုံပေါ်မှာ Update လုပ်မည်
             updateRiderMapPosition(lat, lng);

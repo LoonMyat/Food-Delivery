@@ -39,5 +39,9 @@ public class Order {
     @JoinColumn(name = "rider_id") // Foreign key column အမည်
     private Rider rider;
 
+    @ManyToOne
+    @JoinColumn(name= "cus_id", nullable = false)
+    private AppUser user;
+
 
 }
