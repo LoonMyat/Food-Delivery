@@ -38,7 +38,7 @@ public class NotiRestController {
 
     @GetMapping("/riders")
     public List<Rider> getAllRiders() {
-        List<Rider> riders = riderRepo.findByStatus("AVAILABLE");
+        List<Rider> riders = riderRepo.findAll();
         return riders;
     }
 

@@ -141,7 +141,7 @@ header {
 /* Responsive: Mobile အတွက် */
 @media (max-width: 600px) {
     .grid-menu {
-        gap: 25px;
+        gap: 35px;
     }
 
     .img-placeholder {
@@ -210,7 +210,7 @@ header {
 @media (max-width:600px) {
 
     .menu-item {
-        min-width: 100px;
+        min-width: 130px;
     }
 
     .img-placeholder img {
@@ -232,7 +232,7 @@ header {
 @media (max-width:400px) {
 
     .menu-item {
-        min-width: 90px;
+        min-width: 130px;
     }
 
     .cart-btn {
