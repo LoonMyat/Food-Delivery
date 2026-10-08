@@ -56,7 +56,6 @@ public class WebSecurityConfig {
                             .anyRequest()
                             .authenticated();
                 })
-
                 .formLogin(httpForm -> {
                     httpForm
                             .loginPage("/login")
@@ -64,15 +63,16 @@ public class WebSecurityConfig {
                             .usernameParameter("loginEmail")
                             .passwordParameter("loginPass")
                             .successHandler(loginSuccessHandler)
-                            
                             .permitAll();
                 })
-
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecretKeyForMyRestaurantApp")
+                        .tokenValiditySeconds(86400 * 7) // ၇ ရက်
+                )
                 .logout(logout -> {
                     logout
                             .logoutSuccessUrl("/login");
                 })
-
                 .build();
     }
 

@@ -46,6 +46,9 @@ public class AdminService {
 
     public void editMenu(Long id, String name, Double price){
         menuRepo.findById(id).ifPresent(menu -> {
+            if(menuRepo.findByName(name).isPresent() && !menu.getName().equals(name)){
+                throw new IllegalArgumentException("Menu already exists");
+            }
             menu.setName(name);
             menu.setPrice(price);
             menuRepo.save(menu);

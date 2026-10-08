@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>Menu List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
@@ -27,6 +27,9 @@
 
 <body>
 
+    <div class="edit-status" th:if="${errorMessage}" style="color: red; margin-bottom: 10px;" th:text="${errorMessage}"></div>
+    <div class="edit-status" th:if="${successMessage}" style="color: green; margin-bottom: 10px;" th:text="${successMessage}"></div>
+
     <div class="menu-container">
         <header>
             <h1>Menus</h1>
@@ -47,8 +50,8 @@
                             <p class="name" th:text="${food.name}">Bubble Tea</p>
                             <p class="price" th:text="${#numbers.formatInteger(food.price, 0, 'COMMA')} + ' MMK'">price
                             </p>
-                            <a id="food-edit" class="edit-btn" th:data-id="${food.id}"
-                                th:data-name="${food.name}" th:data-price="${food.price}">
+                            <a id="food-edit" class="edit-btn" th:data-id="${food.id}" th:data-name="${food.name}"
+                                th:data-price="${food.price}">
                                 <i class="fa-solid fa-edit"></i></a>
                             <a class="delete-btn" th:data-id="${food.id}"><i class="fa-solid fa-trash"></i></a>
                         </div>
@@ -71,8 +74,8 @@
                             <p class="name" th:text="${drink.name}">Name</p>
                             <p class="price" th:text="${#numbers.formatInteger(drink.price, 0, 'COMMA')} + ' MMK'">price
                             </p>
-                            <a id="drink-edit" class="edit-btn" th:data-id="${drink.id}"
-                                th:data-name="${drink.name}" th:data-price="${drink.price}">
+                            <a id="drink-edit" class="edit-btn" th:data-id="${drink.id}" th:data-name="${drink.name}"
+                                th:data-price="${drink.price}">
                                 <i class="fa-solid fa-edit"></i></a>
                             <a class="delete-btn" th:data-id="${drink.id}"><i class="fa-solid fa-trash"></i></a>
                         </div>

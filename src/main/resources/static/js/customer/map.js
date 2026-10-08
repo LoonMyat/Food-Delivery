@@ -34,16 +34,16 @@ let currentRiderLat = restLat, currentRiderLng = restLng;
 
 let map, destMarker, riderMarker, restaurantMarker, routingControl = null;
 
-const SERVER_IP = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-    ? "localhost"
-    : "172.20.10.4";
+// const SERVER_IP = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+//     ? "localhost"
+//     : "172.20.10.4";  //deployment server ip address
 
 
 // ==========================================
 // 2. WEBSOCKET CONNECTION
 // ==========================================
 function connectWebSocket() {
-    const socket = new SockJS(`http://${SERVER_IP}:8080/ws`);
+    const socket = new SockJS(`/ws`);
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
@@ -383,7 +383,7 @@ window.onload = function () {
         if (map) map.off('click', onMapClick);
 
 
-        fetch(`http://${SERVER_IP}:8080/api/orders/${orderId}`)
+        fetch(`/api/orders/${orderId}`)
             .then(res => res.json())
             .then(data => {
                 if (data && data.status) {

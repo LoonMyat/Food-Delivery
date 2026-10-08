@@ -178,15 +178,22 @@ public class AdminController {
         return "admin/notification";
     }
 
-    @PostMapping("/edit-menu/{id}")
-    public String editMenu(
-        @PathVariable("id") Long id,
-        @RequestParam("fname") String name,
-        @RequestParam("fprice") Double price
-    ){
+@PostMapping("/edit-menu/{id}")
+public String editMenu(
+    @PathVariable("id") Long id,
+    @RequestParam("fname") String name,
+    @RequestParam("fprice") Double price,
+    RedirectAttributes redirectAttributes
+) {
+    try {
         adminService.editMenu(id, name, price);
-        return "redirect:/admin/menu_list";
+        redirectAttributes.addFlashAttribute("successMessage", "Menu updated successfully!");  
+    } catch (IllegalArgumentException e) {
+        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
     }
+    
+    return "redirect:/admin/menu_list"; 
+}
 
     @PostMapping ("/delete-menu/{id}")
     public String deleteMenu(
