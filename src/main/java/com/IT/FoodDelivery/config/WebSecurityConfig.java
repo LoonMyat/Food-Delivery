@@ -65,10 +65,14 @@ public class WebSecurityConfig {
                             .successHandler(loginSuccessHandler)
                             .permitAll();
                 })
-                .rememberMe(remember -> remember
-                        .key("uniqueAndSecretKeyForMyRestaurantApp")
-                        .tokenValiditySeconds(86400 * 7) // ၇ ရက်
-                )
+                .rememberMe(remember -> {
+                    remember
+                            .key("uniqueAndSecretKeyForMyRestaurantApp")
+                            .tokenValiditySeconds(86400 * 7) // ၇ ရက်
+                            .alwaysRemember(true)
+                            .userDetailsService(customUserDetailsService);
+
+                })
                 .logout(logout -> {
                     logout
                             .logoutSuccessUrl("/login");

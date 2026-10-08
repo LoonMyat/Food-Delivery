@@ -205,7 +205,6 @@ body::-webkit-scrollbar {
     font-size: 17px;
     cursor: pointer;
     transition: .3s;
-    margin-top: 200px;
 }
 
 @media(max-width:600px) {

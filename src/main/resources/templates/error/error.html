@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Occurred</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #BBE0F2; }
+        .container { max-width: 500px; margin: 0 auto; background: #FFF8E7; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #dc3545; font-size: 48px; margin-bottom: 10px; }
+        p { color: #6c757d; margin-bottom: 20px; }
+        a { background: #750608; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; }
+        a:hover { background: #f50707; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Oops!</h1>
+        <p>Something went wrong!</p>
+        
+        <p th:if="${error}" th:text="${error}" style="font-size: 14px; color: #999;"></p>
+        
+        <br>
+        <a href="/">Go Home</a>
+    </div>
+</body>
+</html>
