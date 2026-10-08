@@ -26,32 +26,44 @@ public class WebSocketController {
 
     @MessageMapping("/new-order")
     public void orderFromCusToRes(OrderDto dto) {
+        double restLat = 22.029440;
+        double restLng = 96.101202;
 
-        Order order = new Order();
-        order.setCusName(dto.getCusName());
-        order.setLatitude(dto.getLatitude());
-        order.setLongitude(dto.getLongitude());
-        order.setStatus("PENDING");
-        order.setCreatedAt(LocalDateTime.now());
-        order.setTotalAmount(dto.getTotalAmount());
-        order.setPhone(dto.getPhone());
+        double distance = DistanceCalculator.calculateDistance(restLat, restLng, dto.getLatitude(), dto.getLongitude());
 
-        Order savedOrder = orderRepo.save(order);
+        if (distance > 20) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", "Your location is too far from the restaurant");
+            messagingTemplate.convertAndSend("/topic/order-response", (Object) response);
 
-        Map<String, Object> orderPayload = new HashMap<>();
-        orderPayload.put("id", savedOrder.getId());
-        orderPayload.put("tempOrderId", dto.getTempOrderId());
-        orderPayload.put("cusName", savedOrder.getCusName());
-        orderPayload.put("phone", savedOrder.getPhone());
-        orderPayload.put("latitude", savedOrder.getLatitude());
-        orderPayload.put("longitude", savedOrder.getLongitude());
-        orderPayload.put("status", savedOrder.getStatus());
-        orderPayload.put("totalAmount", savedOrder.getTotalAmount());
+        } else {    
+            Order order = new Order();
+            order.setCusName(dto.getCusName());
+            order.setLatitude(dto.getLatitude());
+            order.setLongitude(dto.getLongitude());
+            order.setStatus("PENDING");
+            order.setCreatedAt(LocalDateTime.now());
+            order.setTotalAmount(dto.getTotalAmount());
+            order.setPhone(dto.getPhone());
 
-        messagingTemplate.convertAndSend("/topic/order-response", (Object) orderPayload);
-        messagingTemplate.convertAndSend("/topic/admin/orders", (Object) orderPayload);
+            Order savedOrder = orderRepo.save(order);
 
-        System.out.println("order sent: " + savedOrder.getId());
+        
+            Map<String, Object> orderPayload = new HashMap<>();
+            orderPayload.put("id", savedOrder.getId());
+            orderPayload.put("tempOrderId", dto.getTempOrderId());
+            orderPayload.put("cusName", savedOrder.getCusName());
+            orderPayload.put("phone", savedOrder.getPhone());
+            orderPayload.put("latitude", savedOrder.getLatitude());
+            orderPayload.put("longitude", savedOrder.getLongitude());
+            orderPayload.put("status", savedOrder.getStatus());
+            orderPayload.put("totalAmount", savedOrder.getTotalAmount());
+
+            messagingTemplate.convertAndSend("/topic/order-response", (Object) orderPayload);
+            messagingTemplate.convertAndSend("/topic/admin/orders", (Object) orderPayload);
+
+            System.out.println("order sent: " + savedOrder.getId());
+        }
     }
 
     @MessageMapping("/accept-order")

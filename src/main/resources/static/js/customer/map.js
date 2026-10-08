@@ -53,7 +53,19 @@ function connectWebSocket() {
         stompClient.subscribe('/topic/order-response', function (response) {
             const savedOrder = JSON.parse(response.body);
 
-            if (tempOrderId && savedOrder.tempOrderId === tempOrderId) {
+            if (savedOrder.error) {
+                alert(savedOrder.error);
+                statusBtn.innerText = "Confirm Order";
+                statusBtn.disabled = false;
+                statusBtn.style.backgroundColor = "";
+
+                localStorage.removeItem("activeOrderId");
+                localStorage.removeItem("activeOrderState");
+                orderId = null;
+                enableMapClick();
+            }
+
+            else if (tempOrderId && savedOrder.tempOrderId === tempOrderId) {
                 orderId = savedOrder.id; // DB Order ID 
                 console.log("✅ Order matched! Assigned DB Order ID:", orderId);
 
@@ -142,7 +154,7 @@ function updateStatusUI(status) {
         statusBtn.style.backgroundColor = "";
 
         localStorage.removeItem("activeOrderId");
-        localStorage.removeItem("activeOrderState"); 
+        localStorage.removeItem("activeOrderState");
         orderId = null;
         enableMapClick();
     }
@@ -153,7 +165,7 @@ function updateStatusUI(status) {
 // 4. TRACK RIDER LOCATION & SEND CUSTOMER HOME
 // ==========================================
 function trackRiderLocation(assignedOrderId) {
-    
+
     if (!stompClient || !stompClient.connected) {
         console.error("WebSocket not connected!");
         return;
@@ -164,14 +176,14 @@ function trackRiderLocation(assignedOrderId) {
     }
 
     const topic = '/topic/track/' + assignedOrderId;
-    
-    
+
+
     console.log("Listening to: " + topic);
 
     trackSubscription = stompClient.subscribe(topic, function (response) {
         console.log("Data received from Backend: ", response.body);
-        
-        
+
+
         try {
             const riderLocation = JSON.parse(response.body);
 
@@ -244,9 +256,9 @@ let deliFee = 0;
 function calculateTotalAmount(distance, amount) {
     let total = 0;
     if (distance <= 5) deliFee = 1000;
-    else if (distance <= 10) deliFee = 2000;
-    else if (distance <= 20) deliFee = 3000;
-    else deliFee = 3500;
+    else if (distance <= 10) deliFee = 2500;
+    else if (distance <= 20) deliFee = 3500;
+    else deliFee = 4500;
 
     total = deliFee + amount;
     return total;
@@ -258,16 +270,16 @@ function updateRouteAndETA(riderLat, riderLng) {
     currentRiderLat = riderLat;
     currentRiderLng = riderLng;
 
-    let riderLatLng = [riderLat, riderLng]; 
+    let riderLatLng = [riderLat, riderLng];
 
     if (riderMarker) {
         // Marker ရှိနေလျှင် နေရာရွှေ့မည်
-        riderMarker.setLatLng(riderLatLng); 
+        riderMarker.setLatLng(riderLatLng);
     } else {
         // Marker မရှိသေးလျှင် အသစ်တည်ဆောက်မည်
         riderMarker = L.marker(riderLatLng)
             .addTo(map)
-            .bindPopup("<b>Rider</b>"); 
+            .bindPopup("<b>Rider</b>");
     }
     // if (riderMarker) riderMarker.setLatLng([riderLat, riderLng]);
     if (destLat === 0 || destLng === 0) return;
@@ -292,15 +304,18 @@ function updateRouteAndETA(riderLat, riderLng) {
                 const deliFeeElem = document.getElementById("deliveryFee");
                 if (deliFeeElem) deliFeeElem.innerHTML = `${deliFee} MMK`;
             }
+            let duration = (durationMin >= 4) ? durationMin * 2 : durationMin;
 
-            riderMarker.bindPopup(`<b>Rider (${durationMin} mins away)</b>`).openPopup();
+
+            riderMarker.bindPopup(`<b>Rider (${duration} mins away)</b>`).openPopup();
 
             const etaElem = document.getElementById("eta");
             const distanceElem = document.getElementById("distance");
             const totalAmountElem = document.getElementById("totalAmount");
 
             if (etaElem) {
-                etaElem.innerText = (durationMin >= 4) ? `${durationMin * 2} mins` : `${durationMin} mins`;
+                // etaElem.innerText = (durationMin >= 4) ? `${durationMin * 2} mins` : `${durationMin} mins`;
+                etaElem.innerText = `${duration} mins`;
             }
             if (distanceElem) {
                 distanceElem.innerText = `${distanceKm} km`;
@@ -341,7 +356,7 @@ window.onload = function () {
             if (foodPriceElem) foodPriceElem.innerHTML = `${currentOrder.foodPrice} MMK`;
             if (totalCountElem) totalCountElem.innerHTML = `${currentOrder.totalCount}`;
         }
-        
+
         if (destLat && destLng) {
             if (destMarker) map.removeLayer(destMarker);
             destMarker = L.marker([destLat, destLng]).addTo(map).bindPopup("<b>Your Home</b>").openPopup();
@@ -365,9 +380,9 @@ window.onload = function () {
         let displayElem = document.getElementById("displayOrderId");
         if (displayElem) displayElem.innerText = "#" + orderId;
 
-        if (map) map.off('click', onMapClick); 
+        if (map) map.off('click', onMapClick);
 
-        
+
         fetch(`http://${SERVER_IP}:8080/api/orders/${orderId}`)
             .then(res => res.json())
             .then(data => {
@@ -377,7 +392,7 @@ window.onload = function () {
             })
             .catch(err => console.error("Error fetching order status:", err));
 
-        
+
         setTimeout(() => {
             if (stompClient && stompClient.connected) {
                 listenOrderStatus(orderId);
@@ -385,6 +400,16 @@ window.onload = function () {
             }
         }, 1000);
     }
+
+    function validatePhoneNumber(phone) {
+    // ^09 = 09 နဲ့ စရမည်
+    // \d{7} = နောက်ကိန်းဂဏန်း ၇ လုံး (စုစုပေါင်း 9 လုံးဖြစ်ရန်)
+    // | = သို့မဟုတ်
+    // \d{9}$ = နောက်ကိန်းဂဏန်း ၉ လုံး (စုစုပေါင်း 11 လုံးဖြစ်ရန်)
+    const phoneRegex = /^09(\d{7}|\d{9})$/;
+
+    return phoneRegex.test(phone);
+}
 
     const statusBtn = document.getElementById("statusBtn");
     if (statusBtn) {
@@ -400,11 +425,14 @@ window.onload = function () {
             if (!phoneNumber) {
                 alert("Please enter your phone number");
                 return;
+            } else if (!validatePhoneNumber(phoneNumber)) {
+                alert("Phone number must start with '09' and '9 or 11' digits long.");
+                return;
             }
 
             tempOrderId = "TEMP_" + Date.now();
 
-            
+
             const orderStateToSave = {
                 destLat: destLat,
                 destLng: destLng,

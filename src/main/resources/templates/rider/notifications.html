@@ -17,20 +17,25 @@
   </button>
   <h2>New Deliveries</h2>
 
+  <div class="no-result-container">
+    <p th:if="${orders == null or #lists.isEmpty(orders)}" id="no-result">No new orders</p>
+  </div>
+
   <!-- Noti Card Container -->
   <div id="noti-container">
 
     <div th:each="order : ${orders}" class="delivery-card" th:id="'assigned-order-' + ${order.id}">
       <div class="card-body">
         <p><strong>Order ID: </strong><span th:text="'#' + ${#numbers.formatInteger(order.id, 3)}">#001</span></p>
-        <p><strong>Customer Name:</strong> <span th:text="${order.cusName != null ? order.cusName : 'N/A'}">Customer</span></p>
-        
-        <p><strong>Phone:</strong> 
-          <a th:href="'tel:' + ${order.phone}" 
-             style="color: #007bff; font-weight: bold; text-decoration: none;" 
-             th:text="${order.phone}"></a>
+        <p><strong>Customer Name:</strong> <span
+            th:text="${order.cusName != null ? order.cusName : 'N/A'}">Customer</span></p>
+
+        <p><strong>Phone:</strong>
+          <a th:href="'tel:' + ${order.phone}" style="color: #007bff; font-weight: bold; text-decoration: none;"
+            th:text="${order.phone}"></a>
         </p>
-        <p><strong>Total amount:</strong> <span th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></span></p>
+        <p><strong>Total amount:</strong> <span
+            th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></span></p>
 
         <p><strong>Status:</strong> <span style="color: orange;" th:text="${order.status}">PREPARING</span></p>
 

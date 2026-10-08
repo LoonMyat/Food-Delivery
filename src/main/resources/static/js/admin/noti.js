@@ -35,8 +35,7 @@ function renderOrderCard(order) {
     if (!notiContainer) return;
 
     let cardElem = document.getElementById("order-card-" + order.id);
-
-    // 💡 အကယ်၍ Order က DELIVERED ဖြစ်သွားရင် Card ကို ချက်ချင်း ဖယ်ရှားမည်
+    // remove card when delivered
     if (order.status === "DELIVERED") {
         if (cardElem) {
             cardElem.remove();

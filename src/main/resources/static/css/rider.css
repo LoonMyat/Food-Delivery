@@ -115,9 +115,15 @@ h2 {
   /* allows absolute positioning inside */
 }
 
+.no-result-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px; /* Adjust the height as needed */
+}
+
 #no-result{
-  text-align: center;
-  color: #750608;
+    color: #555;
 }
 
 .action-btn {

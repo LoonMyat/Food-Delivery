@@ -236,3 +236,14 @@ body {
         font-size: 13px;
     }
 }
+
+.no-result-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px; /* Adjust the height as needed */
+}
+
+#no-result{
+    color: #555;
+}
