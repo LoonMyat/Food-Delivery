@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/admin")
 @AllArgsConstructor
 public class AdminController {
+
     private final FileUploadService fileUploadService;
     private final MenuRepo menuRepo;
     private final UserRepo userRepo;
@@ -67,7 +68,7 @@ public class AdminController {
     public String menuList(Model model) {
         List<Menu> foods = menuRepo.findByType("Food");
         List<Menu> drinks = menuRepo.findByType("Drink");
-        
+
         model.addAttribute("foods", foods);
         model.addAttribute("drinks", drinks);
 
@@ -99,10 +100,10 @@ public class AdminController {
             @RequestParam(value = "image", required = true) MultipartFile image,
             @RequestParam(value = "type", required = true) String type,
             RedirectAttributes redirectAttributes
-        ) {
+    ) {
         try {
             Optional<Menu> menuOptional = menuRepo.findByName(name);
-            if(!menuOptional.isEmpty()){
+            if (!menuOptional.isEmpty()) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Menu already exit");
                 return "redirect:/admin/add_menu";
             }
@@ -136,14 +137,21 @@ public class AdminController {
             @RequestParam(value = "phno", required = true) String phno,
             RedirectAttributes redirectAttributes
     ) {
+        model.addAttribute("email", email);
+        model.addAttribute("phno", phno);
         Optional<AppUser> userOptional = userRepo.findByEmail(email);
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Email does not exist");
             return "redirect:/admin/add_rider";
         }
         AppUser user = userOptional.get();
-        if(riderRepo.existsByUser(user)){
+        if (riderRepo.existsByUser(user)) {
             redirectAttributes.addFlashAttribute("errorMessage", "Rider already exists");
+            return "redirect:/admin/add_rider";
+        }
+        final String PHONE_REGEX = "^09(\\d{7}|\\d{9})$";
+        if (!phno.matches(PHONE_REGEX)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Invalid phone number");
             return "redirect:/admin/add_rider";
         }
 
@@ -162,13 +170,13 @@ public class AdminController {
     }
 
     @PostMapping("/deleteRider/{riderId}")
-    public String deleteRider(@PathVariable("riderId") Long id){
+    public String deleteRider(@PathVariable("riderId") Long id) {
         adminService.deleteRider(id);
         return "redirect:/admin/rider_list";
     }
 
     @PostMapping("/deleteUser/{userId}")
-    public String deleteUser(@PathVariable("userId") Long id){
+    public String deleteUser(@PathVariable("userId") Long id) {
         adminService.deleteUser(id);
         return "redirect:/admin/customer_list";
     }
@@ -178,27 +186,27 @@ public class AdminController {
         return "admin/notification";
     }
 
-@PostMapping("/edit-menu/{id}")
-public String editMenu(
-    @PathVariable("id") Long id,
-    @RequestParam("fname") String name,
-    @RequestParam("fprice") Double price,
-    RedirectAttributes redirectAttributes
-) {
-    try {
-        adminService.editMenu(id, name, price);
-        redirectAttributes.addFlashAttribute("successMessage", "Menu updated successfully!");  
-    } catch (IllegalArgumentException e) {
-        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-    }
-    
-    return "redirect:/admin/menu_list"; 
-}
+    @PostMapping("/edit-menu/{id}")
+    public String editMenu(
+            @PathVariable("id") Long id,
+            @RequestParam("fname") String name,
+            @RequestParam("fprice") Double price,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            adminService.editMenu(id, name, price);
+            redirectAttributes.addFlashAttribute("successMessage", "Menu updated successfully!");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
 
-    @PostMapping ("/delete-menu/{id}")
+        return "redirect:/admin/menu_list";
+    }
+
+    @PostMapping("/delete-menu/{id}")
     public String deleteMenu(
-        @PathVariable("id") Long id
-    ){
+            @PathVariable("id") Long id
+    ) {
         adminService.deleteMenu(id);
         return "redirect:/admin/menu_list";
     }
