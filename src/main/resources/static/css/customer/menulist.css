@@ -16,7 +16,7 @@ body::-webkit-scrollbar {
     height: calc(100vh - 90px);
     /* nav အတွက်နေရာချန် */
     overflow-y: auto;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
 }
 
 header {
@@ -194,7 +194,7 @@ header {
 @media (max-width:768px) {
 
     .menu-item {
-        min-width: 120px;
+        min-width: 125px;
     }
 
     .cart-btn {
@@ -210,7 +210,7 @@ header {
 @media (max-width:600px) {
 
     .menu-item {
-        min-width: 130px;
+        min-width: 113px;
     }
 
     .img-placeholder img {
@@ -232,7 +232,7 @@ header {
 @media (max-width:400px) {
 
     .menu-item {
-        min-width: 130px;
+        min-width: 113px;
     }
 
     .cart-btn {
