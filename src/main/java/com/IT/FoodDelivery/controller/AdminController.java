@@ -137,8 +137,6 @@ public class AdminController {
             @RequestParam(value = "phno", required = true) String phno,
             RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute("email", email);
-        model.addAttribute("phno", phno);
         Optional<AppUser> userOptional = userRepo.findByEmail(email);
         if (userOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Email does not exist");
