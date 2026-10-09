@@ -27,7 +27,7 @@
             th:text="${order.cusName != null ? order.cusName : 'N/A'}">Customer</span></p>
 
         <p><strong>Phone:</strong>
-          <a th:href="'tel:' + ${order.phone}" style="color: #007bff; font-weight: bold; text-decoration: none;"
+          <a th:href="'tel:' + ${order.phone}" style="font-weight: bold; text-decoration: none;"
             th:text="${order.phone}"></a>
         </p>
         <p><strong>Total amount:</strong> <span
