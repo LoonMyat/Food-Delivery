@@ -8,7 +8,7 @@ html {
 
 /* Background အတွက် */
 body {
-    background-image: url("../images/login.png");
+    background-image: url("../images/login.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -23,7 +23,7 @@ body::-webkit-scrollbar {
 
 @media (max-width:768px) {
     body {
-        background-image: url("../images/mobile_login.png");
+        background-image: url("../images/mobile_login.jpg");
     }
 }
 
@@ -48,7 +48,7 @@ body::-webkit-scrollbar {
 }
 
 .card {
-    background: rgba(215, 237, 52, 0.116);
+    background: rgba(61, 61, 61, 0.116);
     backdrop-filter: blur(15px);
     padding: 30px;
     border-radius: 25px;
@@ -60,7 +60,7 @@ body::-webkit-scrollbar {
     max-width: 400px;
     /* ကွန်ပျူတာ screen မှာ အရမ်းမကြီးသွားအောင် ကန့်သတ်မယ် */
     text-align: center;
-    color: white;
+    color: #fff;
     position: relative;
     overflow: hidden;
     margin: 10px;
@@ -68,7 +68,7 @@ body::-webkit-scrollbar {
 }
 
 input, select, textarea {
-    font-size: 16px; /* ၁၆px သို့မဟုတ် ထို့ထက်ပိုကြီးအောင် ထားပေးပါ */
+    font-size: 16px; 
 }
 
 /* Input box များ ပိုကြီးစေရန် */
@@ -83,16 +83,14 @@ input {
     /* အောက်ဘက် မျဉ်းကြောင်းလေး ထည့်ပါ */
     background: transparent;
     /* background ကို အကြည်ဖြစ်အောင် လုပ်ပါ */
-    color: white;
+    color: #000;
     outline: none;
     /* နှိပ်လိုက်ရင် ပေါ်လာတဲ့ default ဘောင်ကို ဖျောက်ပါ */
     transition: 0.3s;
 }
 
-/* နှိပ်လိုက်တဲ့အခါ မျဉ်းကြောင်း အရောင်ပြောင်းစေချင်ရင် */
 input:focus {
     border-bottom: 2px solid #101011;
-    /* အပြာရောင် သို့မဟုတ် သင်ကြိုက်တဲ့ အရောင် */
 }
 
 .input-group {
@@ -105,17 +103,15 @@ input:focus {
     top: -10px;
     left: 10px;
     background: #010408;
-    /* Label ရဲ့ နောက်ခံအရောင် */
     padding: 0 5px;
     font-size: 12px;
     color: white;
     border-radius: 4px;
     opacity: 0;
-    /* ပုံမှန်ဆို မပေါ်ဘူး */
     transition: 0.3s;
 }
 
-/* Input ကို နှိပ်လိုက်ရင် (Focus ဖြစ်ရင်) Label လေးပေါ်လာမယ် */
+/* input focus */
 .input-group input:focus+label {
     opacity: 1;
 }
@@ -204,10 +200,12 @@ input:focus {
     border-radius: 40px 40px 40px 40px;
     font-size: 35px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #000;
 }
 
 .login {
     font-size: 45px;
+    color: #000;
 }
 
 .website-title {
@@ -217,24 +215,22 @@ input:focus {
     margin-top: 60px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    /* စာလုံးလေးတွေ ပေါ်လွင်အောင် Shadow ထည့်ခြင်း */
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 8px rgba(47, 47, 47, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 19px;
 }
 
 .brand-text {
     color: #181717;
-    /* ပထမပိုင်း စာလုံးအဖြူ */
 }
 
 .accent-text {
-    color: #ffcc00;
-    /* ဒုတိယပိုင်းကို အဝါရောင် (Food နဲ့လိုက်အောင်) */
+    /* margin-left: 5px; */
+    color: #ffaa00;
 }
 
-/* နာမည်လေးကို အနည်းငယ် လှုပ်ရှားနေစေချင်ရင် (Animation) */
 .website-title {
     animation: fadeInDown 3s ease;
 }
