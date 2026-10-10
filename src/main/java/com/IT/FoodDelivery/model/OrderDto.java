@@ -1,6 +1,7 @@
 package com.IT.FoodDelivery.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class OrderDto {
     private String phone;
     private LocalDateTime createdAt;
     private Double totalAmount;
+    private String items;
 
 }

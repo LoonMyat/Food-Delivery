@@ -12,6 +12,7 @@ import com.IT.FoodDelivery.repo.OrderRepo;
 import com.IT.FoodDelivery.repo.RiderRepo;
 import com.IT.FoodDelivery.repo.UserRepo;
 
+import jakarta.transaction.Transactional;
 import lombok.Data;
 
 @Service
@@ -23,6 +24,7 @@ public class AdminService {
     private final UserRepo userRepo;
     private final MenuRepo menuRepo;
 
+    @Transactional 
     public void deleteRider(Long riderId){
         Rider rider = riderRepo.findById(riderId).orElse(null);
 
@@ -33,6 +35,13 @@ public class AdminService {
                 order.setRider(null);
                 orderRepo.save(order);
             }
+
+            AppUser user = rider.getUser();
+            if(user!=null){
+                user.setRole("CUSTOMER");
+                userRepo.save(user);
+            }
+
             riderRepo.delete(rider);
         }
     }

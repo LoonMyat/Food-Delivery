@@ -17,18 +17,22 @@ function connectWebSocket() {
             const data = JSON.parse(message.body);
             const orderId = data.orderId || data.id;
             if (data.status === "PREPARING") {
-                showRealtimeToast();
+                showRealtimeToast("New order arrive");
                 playNotiSound();
                 triggerNewNotification();
             }
-
-
-
-            if (data.alert || data.status === "READY_FOR_PICKUP") {
-                alert("🔔 Order #" + orderId + " is Ready for Pick Up!");
+            if (data.status === "ON_THE_WAY") {
+                let mapButton = document.getElementById("view-map-" + orderId);
+                if (mapButton) {
+                    mapButton.removeAttribute("disabled");
+                }
             }
 
 
+            if (data.alert || data.status === "READY_TO_PICKUP") {
+                showRealtimeToast("Order ready!");
+                playNotiSound();
+            }
 
             renderNewOrderCard(data);
         });
@@ -53,21 +57,22 @@ function renderNewOrderCard(data) {
     }
 
     let cardElement = document.getElementById("assigned-order-" + orderId);
+    let isDisabled = (data.status !== "ON_THE_WAY") ? "disabled" : "";
 
 
     const cardContent = `
         <div class="card-body">
-            <p><strong>Order ID: </strong>#${String(orderId).padStart(3, '0')}</p>
+            <p><strong>Order ID: </strong>#${String(orderId).padStart(4, '0')}</p>
             <p><strong>Customer Name:</strong> ${data.cusName || 'Customer'}</p>
             <p><strong>Phone:</strong> 
-                <a href="tel:${data.phone}" style="color: inherit; text-decoration: none;">
+                <a href="tel:${data.phone}" style="text-decoration: none;">
                     ${data.phone}
                 </a>
             </p>
             <p><strong>Total amount:</strong> ${Number(data.totalAmount || 0).toLocaleString()} MMK</p>
             <p><strong>Status:</strong> <span style="color: orange; font-weight: bold;">${data.status || 'ACCEPTED'}</span></p>
 
-            <button class="btn-map" onclick="viewOrderOnMap('${orderId}')">🗺️ View Map</button>
+            <button class="btn-map" onclick="viewOrderOnMap('${orderId}')" ${isDisabled}>View Map</button>
         </div>
     `;
 
@@ -110,10 +115,10 @@ function goToPage(page) {
     window.location.href = page;
 }
 
-function showRealtimeToast() {
+function showRealtimeToast(message) {
     const toastHtml = `
         <div class="custom-toast" style="position: fixed; top: 20px; background: #FFF8E7; color: #750608; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 9999;">
-            <div style="font-weight: bold; font-size: 16px;">🔔 New order arrive!</div>
+            <div style="font-weight: bold; font-size: 16px;">${message}</div>
         </div>
     `;
 
@@ -124,7 +129,7 @@ function showRealtimeToast() {
     setTimeout(() => {
         const toast = document.querySelector('.custom-toast');
         if (toast) toast.remove();
-    }, 10000);
+    }, 5000);
 }
 
 function playNotiSound() {

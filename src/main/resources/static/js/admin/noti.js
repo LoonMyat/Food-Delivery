@@ -7,9 +7,33 @@ async function loadRiders() {
         const response = await fetch('/api/riders');
         ridersList = await response.json();
         console.log("Riders loaded:", ridersList);
+        updateAllRiderSelects();
     } catch (error) {
         console.error("Error loading riders:", error);
     }
+}
+
+function updateAllRiderSelects(availableRiders) {
+
+    const selects = document.querySelectorAll('select[name="rider"]');
+
+    selects.forEach((selectElem, index) => {
+        if (!selectElem.disabled) {
+            let currentVal = selectElem.value;
+            let html = '<option value="" disabled selected>Select Rider</option>';
+            
+            availableRiders.forEach(rider => {
+                let rId = rider.id;
+                let rName = rider.user ? rider.user.username : (rider.name || "Unknown");
+                let isSelected = (rId == currentVal) ? 'selected' : '';
+                html += `<option value="${rId}" ${isSelected}>${rName}</option>`;
+            });
+            selectElem.innerHTML = html;
+            if (currentVal) {
+                selectElem.value = currentVal;
+            }
+        }
+    });
 }
 
 // Fetch active orders from db
@@ -40,10 +64,10 @@ function renderOrderCard(order) {
         if (cardElem) {
             cardElem.remove();
         }
+        loadRiders();
         return;
     }
 
-    // 💡 Card က ရှိပြီးသားဆိုရင် အဟောင်းကိုဖျက်ပြီး အသစ်နဲ့ အစားထိုးရန် (Status နဲ့ Select တွေ အချိန်နဲ့တပြေးညီ ပြောင်းလဲစေရန်)
     if (cardElem) {
         cardElem.remove();
     }
@@ -59,7 +83,7 @@ function renderOrderCard(order) {
     if (order.status === "PREPARING" || order.status === "ACCEPTED") {
         btnText = "Ready to pick up";
         isRejectDisabled = "disabled";
-        isSelectDisabled = "disabled"; // Select box ကို Disable လုပ်မည်
+        isSelectDisabled = "disabled"; 
     } else if (order.status === "READY_FOR_PICKUP" || order.status === "READY_TO_PICKUP") {
         btnText = "Picked Up";
         isRejectDisabled = "disabled";
@@ -80,9 +104,10 @@ function renderOrderCard(order) {
     let currentRiderId = order.rider ? order.rider.id : "";
 
     info.innerHTML = `
-        <p><strong>Order ID:</strong> #${String(order.id).padStart(3, '0')}</p>
+        <p><strong>Order ID:</strong> #${String(order.id).padStart(4, '0')}</p>
         <p><strong>Customer:</strong> ${order.cusName || 'N/A'}</p>
-        <p><strong>Phone:</strong> ${order.phone}</p>
+        <p><strong>Items:</strong> ${order.items ? order.items : 'N/A'}</p>
+        <p><strong>Phone:</strong> ${order.phone ? order.phone : 'N/A'}</p>
         <p><strong>Total amount:</strong> ${Number(order.totalAmount || 0).toLocaleString()} MMK</p>
         
         <select name="rider" id="rider-${order.id}" data-assigned-rider="${currentRiderId}" ${isSelectDisabled} required>
@@ -111,28 +136,31 @@ function rejectOrder(orderId) {
 
 // Connect websocket
 function connectWebSocket() {
-    const socket = new SockJS("/ws"); 
+    const socket = new SockJS("/ws");
     stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, function(frame) {
+    stompClient.connect({}, function (frame) {
         console.log("Connected to WebSocket: " + frame);
 
-        stompClient.subscribe('/topic/admin/orders', function(message) {
+        stompClient.subscribe('/topic/admin/orders', function (message) {
             var order = JSON.parse(message.body);
-            
-            // 💡 ဤနေရာတွင် DELIVERED ဖြစ်လျှင် ကဒ်ကို ချက်ချင်း ဖယ်ရှားရန် ထည့်ပါ
+
+            // remove card when delivered
             if (order.status === "DELIVERED") {
                 const cardElem = document.getElementById("order-card-" + order.id);
                 if (cardElem) {
                     cardElem.remove();
                 }
-                return; // Card အသစ် ဆက်မဆောက်တော့ပါ
+                return; 
             }
 
-            // အခြား status များအတွက်မူ ပုံမှန်အတိုင်း Card အသစ်ဆောက်မည် (သို့ အပ်ဒိတ်လုပ်မည်)
             renderOrderCard(order);
         });
-    }, function(error) {
+        stompClient.subscribe('/topic/available-riders', function (message) {
+                const availableRiders = JSON.parse(message.body);
+                updateAllRiderSelects(availableRiders);
+            });
+    }, function (error) {
         console.error("WebSocket Error: ", error);
         setTimeout(connectWebSocket, 5000);
     });
@@ -213,6 +241,7 @@ function acceptOrder(orderId, btnElement) {
             btnElement.disabled = true;
         }
     }
+
 }
 
 function goToPage(page) {

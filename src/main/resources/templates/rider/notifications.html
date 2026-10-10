@@ -35,8 +35,9 @@
 
         <p><strong>Status:</strong> <span style="color: orange;" th:text="${order.status}">PREPARING</span></p>
 
-        <button class="btn-map" th:onclick="|viewOrderOnMap('${order.id}')|">
-          🗺️ View Map
+        <button class="btn-map" th:onclick="|viewOrderOnMap('${order.id}')|" 
+        th:id="'view-map-' + ${order.id}" th:disabled="${order.status != 'ON_THE_WAY'}">
+          View Map
         </button>
 
       </div>

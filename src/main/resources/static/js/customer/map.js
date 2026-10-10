@@ -10,6 +10,7 @@ let trackSubscription = null;
 
 const savedActiveOrderId = localStorage.getItem("activeOrderId");
 const savedOrderState = JSON.parse(localStorage.getItem("activeOrderState"));
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 let currentOrder = null;
 
@@ -57,6 +58,7 @@ function connectWebSocket() {
                 alert(savedOrder.error);
                 statusBtn.innerText = "Confirm Order";
                 statusBtn.disabled = false;
+                phone.disabled = false;
                 statusBtn.style.backgroundColor = "";
 
                 localStorage.removeItem("activeOrderId");
@@ -67,7 +69,7 @@ function connectWebSocket() {
 
             else if (tempOrderId && savedOrder.tempOrderId === tempOrderId) {
                 orderId = savedOrder.id; // DB Order ID 
-                console.log("✅ Order matched! Assigned DB Order ID:", orderId);
+                console.log("Order matched! Assigned DB Order ID:", orderId);
 
                 localStorage.setItem("activeOrderId", orderId);
 
@@ -115,32 +117,38 @@ function updateStatusUI(status) {
         statusBtn.innerText = "Pending";
         statusBtn.style.backgroundColor = "#ffc107"; // Yellow
         statusBtn.disabled = true;
+        phone.disabled = true;
     }
     else if (currentStatus === "PREPARING" || currentStatus === "ACCEPTED") {
         statusBtn.innerText = "Preparing meals";
         statusBtn.style.backgroundColor = "#ff9800"; // Orange
         statusBtn.disabled = true;
+        phone.disabled = true;
     }
     else if (currentStatus === "READY_FOR_PICKUP" || currentStatus === "READY_TO_PICKUP" || currentStatus === "READY") {
         statusBtn.innerText = "Ready for Pick Up";
         statusBtn.style.backgroundColor = "#28a745"; // Green
         statusBtn.disabled = true;
+        phone.disabled = true;
     }
     else if (currentStatus === "ON_THE_WAY") {
         statusBtn.innerText = "On the Way";
         statusBtn.style.backgroundColor = "#17a2b8"; // Blue
         statusBtn.disabled = true;
+        phone.disabled = true;
     }
     else if (currentStatus === "DELIVERED") {
         statusBtn.innerText = "Delivered 🎉";
         statusBtn.style.backgroundColor = "#6c757d";
         statusBtn.disabled = true;
+        phone.disabled = true;
 
         // remove locatStroage when delivered
         localStorage.removeItem("activeOrderId");
         localStorage.removeItem("currentOrder");
         localStorage.removeItem("activeOrderState");
         localStorage.removeItem("cart");
+        playNotiSound();
 
         setTimeout(() => {
             alert("Order arrived successfully!");
@@ -148,16 +156,21 @@ function updateStatusUI(status) {
         }, 500);
     }
     else if (currentStatus === "REJECTED") {
+        playNotiSound();
         alert("Sorry! Your order has been rejected.");
         statusBtn.innerText = "Confirm Order";
         statusBtn.disabled = false;
+        phone.disabled = false;
         statusBtn.style.backgroundColor = "";
-
         localStorage.removeItem("activeOrderId");
         localStorage.removeItem("activeOrderState");
         orderId = null;
         enableMapClick();
     }
+}
+function playNotiSound() {
+    const audio = new Audio('/audio/notification.wav');
+    audio.play().catch(e => console.log("Audio play constraint:", e));
 }
 
 
@@ -242,7 +255,8 @@ function onMapClick(e) {
     if (orderId) {
         sendCustomerHomeToBackend(destLat, destLng);
     }
-    updateRouteAndETA(currentRiderLat, currentRiderLng);
+    updateRouteAndETA(restLat, restLng);
+    
 }
 
 function enableMapClick() {
@@ -307,7 +321,7 @@ function updateRouteAndETA(riderLat, riderLng) {
             let duration = (durationMin >= 4) ? durationMin * 2 : durationMin;
 
 
-            riderMarker.bindPopup(`<b>Rider (${duration} mins away)</b>`).openPopup();
+            riderMarker.bindPopup(`<b>(${duration} mins away)</b>`).openPopup();
 
             const etaElem = document.getElementById("eta");
             const distanceElem = document.getElementById("distance");
@@ -451,10 +465,16 @@ window.onload = function () {
 
             const nameElem = document.getElementById("currentName");
             let currentName = nameElem ? nameElem.value : "Customer";
+            let itemNamesWithCount = [];
+            cart.forEach(item => {
+                itemNamesWithCount.push(`${item.name} (x${item.qty})`);
+            });
+            let items = itemNamesWithCount.join(', ');
 
             let orderDetails = {
                 tempOrderId: tempOrderId,
                 cusName: currentName,
+                items: items,
                 phone: phoneNumber,
                 latitude: destLat,
                 longitude: destLng,

@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/rider")
 @AllArgsConstructor
 public class RiderController {
-    
+
     private final RiderRepo riderRepo;
     private final OrderRepo orderRepo;
 
@@ -29,14 +29,11 @@ public class RiderController {
     public String home(Model model, Authentication auth) {
         if (auth != null) {
             String email = auth.getName();
-            Rider rider = riderRepo.findByUserEmail(email).orElse(null);
+            Rider rider = riderRepo.findByUserEmail(email).orElseThrow(() -> new RiderNotFoundException("Rider profile not found!"));
 
-            if (rider != null) {
-                model.addAttribute("rider", rider);
-                model.addAttribute("riderId", rider.getId());
-            } else {
-                model.addAttribute("errorMessage", "Rider profile not found.");
-            }
+            model.addAttribute("rider", rider);
+            model.addAttribute("riderId", rider.getId());
+
         }
         return "rider/home";
     }
@@ -66,8 +63,8 @@ public class RiderController {
 
         if (order != null) {
             if (order.getRider() != null) {
-            model.addAttribute("riderId", order.getRider().getId());
-        }
+                model.addAttribute("riderId", order.getRider().getId());
+            }
         }
 
         model.addAttribute("order", order);

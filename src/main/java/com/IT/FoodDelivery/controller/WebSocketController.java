@@ -2,6 +2,7 @@ package com.IT.FoodDelivery.controller;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -45,6 +46,7 @@ public class WebSocketController {
             order.setCreatedAt(LocalDateTime.now());
             order.setTotalAmount(dto.getTotalAmount());
             order.setPhone(dto.getPhone());
+            order.setItems(dto.getItems());
 
             Order savedOrder = orderRepo.save(order);
 
@@ -58,6 +60,7 @@ public class WebSocketController {
             orderPayload.put("longitude", savedOrder.getLongitude());
             orderPayload.put("status", savedOrder.getStatus());
             orderPayload.put("totalAmount", savedOrder.getTotalAmount());
+            orderPayload.put("items", savedOrder.getItems());
 
             messagingTemplate.convertAndSend("/topic/order-response", (Object) orderPayload);
             messagingTemplate.convertAndSend("/topic/admin/orders", (Object) orderPayload);
@@ -69,6 +72,7 @@ public class WebSocketController {
     @MessageMapping("/accept-order")
     public void acceptOrder(Map<String, Object> payload) {
         try {
+
             Long orderId = Long.parseLong(payload.get("orderId").toString());
 
             Object riderIdObj = payload.get("riderId");
@@ -112,6 +116,8 @@ public class WebSocketController {
                 riderRepo.save(rider);
             }
             orderRepo.save(order);
+            List<Rider> availabelRiders = riderRepo.findByStatus("AVAILABLE");
+            messagingTemplate.convertAndSend("/topic/available-riders", (Object)availabelRiders);
 
             Map<String, Object> response = new HashMap<>();
             response.put("orderId", order.getId());
@@ -123,7 +129,6 @@ public class WebSocketController {
             response.put("longitude", order.getLongitude() != null ? order.getLongitude() : 0.0);
             response.put("totalAmount", order.getTotalAmount());
 
-            // 💡 Response Map အစား order object တစ်ခုလုံးကို ပို့ပေးရန်
             messagingTemplate.convertAndSend("/topic/admin/orders", (Object) order);
             if (rider != null) {
                 messagingTemplate.convertAndSend("/topic/rider/" + rider.getId() + "/orders", (Object) order);

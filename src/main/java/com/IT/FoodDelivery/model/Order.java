@@ -33,7 +33,7 @@ public class Order {
     private LocalDateTime createdAt;
     private Double totalAmount;
     private String phone;
-    
+    private String items;
     
     @ManyToOne
     @JoinColumn(name = "rider_id") // Foreign key column အမည်

@@ -21,7 +21,7 @@ public class Rider {
     private String ph_no;
     private String status;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private AppUser user;
 

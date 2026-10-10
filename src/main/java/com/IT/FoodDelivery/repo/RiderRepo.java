@@ -14,4 +14,5 @@ import com.IT.FoodDelivery.model.Rider;
 public interface RiderRepo extends JpaRepository<Rider, Long>{
     boolean existsByUser(AppUser user);
     Optional<Rider> findByUserEmail(String email);
+    List<Rider> findByStatus(String status);
 }
