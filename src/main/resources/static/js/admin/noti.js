@@ -45,7 +45,7 @@ function loadActiveOrders() {
             if (notiContainer) {
                 notiContainer.innerHTML = "";
             }
-            orders.forEach(order => {
+            orders.slice().reverse().forEach(order => {
                 renderOrderCard(order);
             });
         })
@@ -68,9 +68,9 @@ function renderOrderCard(order) {
         return;
     }
 
-    if (cardElem) {
-        cardElem.remove();
-    }
+    // if (cardElem) {
+    //     cardElem.remove();
+    // }
 
     var info = document.createElement("div");
     info.className = "order-card";
@@ -118,7 +118,13 @@ function renderOrderCard(order) {
         <button onclick="acceptOrder(${order.id}, this)" class="statusBtn">${btnText}</button>
     `;
 
-    notiContainer.prepend(info);
+    if(cardElem){
+        notiContainer.replaceChild(info, cardElem);
+    }else{
+        notiContainer.prepend(info);
+    }
+
+    // notiContainer.appendChild(info);
 }
 // Reject Order
 function rejectOrder(orderId) {

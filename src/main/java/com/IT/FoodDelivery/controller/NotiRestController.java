@@ -2,6 +2,7 @@ package com.IT.FoodDelivery.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class NotiRestController {
     @ResponseBody
     public List<Order> getActiveOrders() {
         // Get active orders 
-        List<Order> orders = orderRepo.findByStatusNotAndStatusNot("DELIVERED", "REJECTED");
+        List<Order> orders = orderRepo.findByStatusNotAndStatusNot("DELIVERED", "REJECTED", Sort.by(Sort.Direction.DESC, "id"));
 
         return orders;
     }
