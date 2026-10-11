@@ -5,9 +5,10 @@ let customerMarker = null;
 let routingControl = null;
 let stompClient = null;
 let watchId = null;
+let restaurantMarker = null;
 
-const restLat = 22.029440;
-const restLng = 96.101202;
+const restLat = 22.027599;
+const restLng = 96.100753;
 
 const riderId = document.querySelector("meta[name='rider-id']").getAttribute("content");
 // 💡 Meta Tags မှ Dynamic Data များ ယူခြင်း
@@ -37,6 +38,14 @@ function initMap() {
     const defaultLng = customerLng !== 0 ? customerLng : 96.1735; // Default Lng
 
     map = L.map('map').setView([defaultLat, defaultLng], 14);
+
+    const redIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    });
+
+    restaurantMarker = L.marker([restLat, restLng], { icon: redIcon }).addTo(map).bindPopup("<b>Restaurant</b>");
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'

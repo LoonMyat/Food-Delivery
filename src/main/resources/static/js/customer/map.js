@@ -27,8 +27,9 @@ if (currentOrder) {
 }
 
 // Restaurant Coordinates
-const restLat = 22.029440;
-const restLng = 96.101202;
+//22.027599, 96.100753
+const restLat = 22.027599;
+const restLng = 96.100753;
 
 let destLat = 0, destLng = 0;
 let currentRiderLat = restLat, currentRiderLng = restLng;
