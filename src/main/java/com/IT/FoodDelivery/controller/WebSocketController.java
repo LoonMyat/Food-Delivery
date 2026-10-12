@@ -44,7 +44,6 @@ public class WebSocketController {
             AppUser user = userRepo.findById(dto.getUserId()).orElse(null);
 
             Order order = new Order();
-            order.setCusName(user.getUsername());
             order.setLatitude(dto.getLatitude());
             order.setLongitude(dto.getLongitude());
             order.setStatus("PENDING");
@@ -60,7 +59,6 @@ public class WebSocketController {
             Map<String, Object> orderPayload = new HashMap<>();
             orderPayload.put("id", savedOrder.getId());
             orderPayload.put("tempOrderId", dto.getTempOrderId());
-            orderPayload.put("cusName", savedOrder.getCusName());
             orderPayload.put("phone", savedOrder.getPhone());
             orderPayload.put("latitude", savedOrder.getLatitude());
             orderPayload.put("longitude", savedOrder.getLongitude());

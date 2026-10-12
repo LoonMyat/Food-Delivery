@@ -26,7 +26,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String cusName;
     private Double latitude;
     private Double longitude;
     private String status;
