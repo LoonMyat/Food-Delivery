@@ -4,7 +4,6 @@
 let tempOrderId = null;
 let orderId = null;
 let stompClient = null;
-
 let statusSubscription = null;
 let trackSubscription = null;
 

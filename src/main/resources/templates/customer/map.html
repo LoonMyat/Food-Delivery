@@ -30,88 +30,53 @@
 
 
         <div class="content">
-
             <!-- ================= MAP ================= -->
-
             <div class="map-card">
-
                 <div id="map"></div>
                 <div>
                     <label for="phone">Phone No.</label>
                     <input type="text" name="phone" id="phone" inputmode="numeric" pattern="[0-9]*" />
                 </div>
-
             </div>
 
-
             <!-- ================= ORDER DETAIL ================= -->
-
             <div class="detail-card">
-
                 <div class="info">
-
-                    <!-- <div class="row">
-                        <span>Order ID</span>
-                        <strong id="orderId">#000</strong>
-                    </div> -->
-
                     <div class="row">
                         <span>Total Count</span>
                         <strong id="totalCount">--</strong>
                     </div>
-
                     <div class="row">
                         <span>Food Price</span>
                         <strong id="foodPrice">-- MMK</strong>
                     </div>
-
                     <div class="row">
                         <span>Delivery Fee</span>
                         <strong id="deliveryFee">-- MMK</strong>
                     </div>
-
                 </div>
-
                 <hr>
-
                 <div class="total">
-
                     <span>Total Amount</span>
-
                     <strong id="totalAmount">-- MMK</strong>
-
                 </div>
-
                 <!-- Distance & Time -->
-
                 <div class="status-box">
-
                     <div class="box">
-
                         <h4>Distance</h4>
-
                         <p id="distance">-- km</p>
-
                     </div>
-
                     <div class="box">
-
                         <h4>Estimated Time</h4>
-
                         <p id="eta">-- min</p>
-
                     </div>
-
                 </div>
 
                 <button id="statusBtn">
                     Confirm Order
                 </button>
-
             </div>
-
         </div>
-
     </div>
     <div th:object="${customer}">
         <input type="hidden" id="currentName" th:value="*{username}">
@@ -121,9 +86,7 @@
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
     <script th:src="@{/js/customer/map.js}"></script>
-
 </body>
 
 </html>

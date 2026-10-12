@@ -29,7 +29,7 @@
       <tbody>
         <th:block th:each="order: ${orders}">
           <tr>
-            <td th:text="'#' + ${#numbers.formatInteger(order.id, 3)}"></td>
+            <td th:text="'#' + ${#numbers.formatInteger(order.id, 4)}"></td>
             <td th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, hh:mm a')}"></td>
             <td th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></td>
             <td th:text="${order.status}"></td>

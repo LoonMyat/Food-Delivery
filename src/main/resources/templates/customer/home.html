@@ -8,24 +8,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/customer/home.css}">
     <link rel="stylesheet" th:href="@{/css/customer/nav.css}">
-
 </head>
 
 <body>
     <main id="main-content">
-
         <section class="popular-menu">
-
             <div class="logo">
                 <img th:src="@{/images/logo.jpg}" alt="logo">
-
                 <div class="logo-text">
                     <h4>OUR MENU</h4>
                 </div>
             </div>
-
             <div class="menu-container">
-
                 <!-- Food Card -->
                 <div class="food-card" th:each="menu : ${menus}">
                     <img th:src="${menu.image}" alt="image" loading="lazy">
@@ -36,19 +30,13 @@
                         Add to Cart
                     </button>
                 </div>
-
             </div>
         </section>
-
-
-
         <div th:replace="~{includes/customer/partial :: menubar}"></div>
         <!-- 1. SockJS Library -->
         <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-
-        <!-- 2. STOMP Library -->
+        <!--STOMP Library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
         <script th:src="@{/js/customer/menulist.js}"></script>
     </main>
 </body>

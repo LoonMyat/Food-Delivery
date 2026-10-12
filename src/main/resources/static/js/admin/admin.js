@@ -13,18 +13,10 @@ const socket = new SockJS('/ws');
 const stompClient = Stomp.over(socket);
 
 stompClient.connect({}, function (frame) {
-    // WebSocket ကနေ Message ရောက်လာသည့်အခါ အလုပ်လုပ်မည်
     stompClient.subscribe('/topic/admin/orders', function (notification) {
-
-        // Server က ပို့လိုက်သော Order Data ကို ယူခြင်း
         const order = JSON.parse(notification.body);
-
-        // ၁။ Toast Box ထဲမှာ စာသားနှင့် တန်ဖိုး သွားထည့်ခြင်း
         showRealtimeToast(order);
-
-        // ၂။ Noti အသံပေးခြင်း
         playNotiSound();
-
         //show noti-dot
         triggerNewNotification();
     });
@@ -55,10 +47,10 @@ function playNotiSound() {
 function triggerNewNotification() {
     const notiDot = document.getElementById('notiDot');
     if (notiDot) {
-        notiDot.style.display = 'inline-block'; // အနီရောင်အစက် ဖော်ပြမည်
+        notiDot.style.display = 'inline-block'; // Show the notification dot
     }
 
-    // Refresh လုပ်ရင်လည်း မပျောက်သွားအောင် LocalStorage ထဲ မှတ်ထားမည်
+    // Set a flag in localStorage to indicate there's an unread notification
     localStorage.setItem('hasUnreadNoti', 'true');
 }
 
@@ -89,16 +81,13 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener("click", function (e) {
             e.preventDefault();
             
-            // ID နဲ့ Data များကို သိမ်းဆည်းခြင်း
             currentMenuId = this.getAttribute("data-id");
             const name = this.getAttribute("data-name");
             const price = this.getAttribute("data-price");
 
-            // Input တွေထဲ ထည့်ပေးခြင်း
             if (nameInput) nameInput.value = name;
             if (priceInput) priceInput.value = price;
             
-            // Modal ကို ပေါ်လာစေရန်
             if (modal) {
                 modal.style.display = "block";
             }
@@ -132,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-
 
     const deleteBtns = document.querySelectorAll(".delete-btn");
 

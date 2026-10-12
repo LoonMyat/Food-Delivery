@@ -43,7 +43,7 @@
         <!-- Scroll Area -->
         <div class="order-list" id="orderList" th:each="order : ${orders}">
             <div class="order-row">
-                <span th:text="'#' + ${#numbers.formatInteger(order.id, 3)}"></span>
+                <span th:text="'#' + ${#numbers.formatInteger(order.id, 4)}"></span>
                 <span th:text="${#temporals.format(order.createdAt, 'dd MMM yyyy, hh:mm a')}"></span>
                 <span th:text="${order.cusName}"></span>
                 <span th:text="${#numbers.formatInteger(order.totalAmount, 0, 'COMMA')} + ' MMK'"></span>

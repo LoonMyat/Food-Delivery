@@ -22,7 +22,7 @@
 
     <div th:each="order : ${orders}" class="delivery-card" th:id="'assigned-order-' + ${order.id}">
       <div class="card-body">
-        <p><strong>Order ID: </strong><span th:text="'#' + ${#numbers.formatInteger(order.id, 3)}">#001</span></p>
+        <p><strong>Order ID: </strong><span th:text="'#' + ${#numbers.formatInteger(order.id, 4)}">#0001</span></p>
         <p><strong>Customer Name:</strong> <span
             th:text="${order.cusName != null ? order.cusName : 'N/A'}">Customer</span></p>
 

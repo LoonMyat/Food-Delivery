@@ -68,10 +68,6 @@ function renderOrderCard(order) {
         return;
     }
 
-    // if (cardElem) {
-    //     cardElem.remove();
-    // }
-
     var info = document.createElement("div");
     info.className = "order-card";
     info.id = "order-card-" + order.id;
