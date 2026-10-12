@@ -24,8 +24,14 @@
             <div id="loginForm" class="form-content">
                 <form th:action="@{/login}" method="post">
                     <h2 class="login">Login</h2>
-                    <span id="loginError" th:if="${param.error}" style="color: red;">Invalid email or
-                        password</span><br>
+                    <span id="loginError" th:if="${param.error}" style="color: red;">
+                        <!-- အကောင့်ဖျက်ခံရလို့ Error တက်လာရင် ဒီစာသားပေါ်မည် -->
+                        <span th:if="${param.error[0] == 'account_deleted'}">Your account has been deleted or does not
+                            exist.</span>
+
+                        <!-- သာမန် Password မှားတာစတဲ့ Error တွေအတွက် -->
+                        <span th:unless="${param.error[0] == 'account_deleted'}">Invalid email or password</span>
+                    </span><br>
                     <div class="input-group">
                         <input type="email" placeholder="Email" id="loginEmail" name="loginEmail">
                         <label for="loginEmail">Email</label>

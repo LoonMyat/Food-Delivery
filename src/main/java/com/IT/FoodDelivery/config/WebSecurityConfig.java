@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.IT.FoodDelivery.service.CustomUserDetailsService;
+import com.IT.FoodDelivery.config.AccountCheckFilter;
 
 import lombok.AllArgsConstructor;
 
@@ -22,6 +24,7 @@ public class WebSecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final LoginSuccessHandler loginSuccessHandler;
+    private final AccountCheckFilter accountCheckFilter;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -56,6 +59,7 @@ public class WebSecurityConfig {
                             .anyRequest()
                             .authenticated();
                 })
+                .addFilterBefore(accountCheckFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(httpForm -> {
                     httpForm
                             .loginPage("/login")
