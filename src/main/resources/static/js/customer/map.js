@@ -256,7 +256,7 @@ function onMapClick(e) {
         sendCustomerHomeToBackend(destLat, destLng);
     }
     updateRouteAndETA(restLat, restLng);
-    
+
 }
 
 function enableMapClick() {
@@ -416,14 +416,14 @@ window.onload = function () {
     }
 
     function validatePhoneNumber(phone) {
-    // ^09 = 09 နဲ့ စရမည်
-    // \d{7} = နောက်ကိန်းဂဏန်း ၇ လုံး (စုစုပေါင်း 9 လုံးဖြစ်ရန်)
-    // | = သို့မဟုတ်
-    // \d{9}$ = နောက်ကိန်းဂဏန်း ၉ လုံး (စုစုပေါင်း 11 လုံးဖြစ်ရန်)
-    const phoneRegex = /^09(\d{7}|\d{9})$/;
+        // ^09 = 09 နဲ့ စရမည်
+        // \d{7} = နောက်ကိန်းဂဏန်း ၇ လုံး (စုစုပေါင်း 9 လုံးဖြစ်ရန်)
+        // | = သို့မဟုတ်
+        // \d{9}$ = နောက်ကိန်းဂဏန်း ၉ လုံး (စုစုပေါင်း 11 လုံးဖြစ်ရန်)
+        const phoneRegex = /^09(\d{7}|\d{9})$/;
 
-    return phoneRegex.test(phone);
-}
+        return phoneRegex.test(phone);
+    }
 
     const statusBtn = document.getElementById("statusBtn");
     if (statusBtn) {
@@ -470,6 +470,8 @@ window.onload = function () {
                 itemNamesWithCount.push(`${item.name} (x${item.qty})`);
             });
             let items = itemNamesWithCount.join(', ');
+            const metaTag = document.querySelector('meta[name="user-id"]');
+            const currentUserId = metaTag ? metaTag.getAttribute('content') : null;
 
             let orderDetails = {
                 tempOrderId: tempOrderId,
@@ -478,7 +480,8 @@ window.onload = function () {
                 phone: phoneNumber,
                 latitude: destLat,
                 longitude: destLng,
-                totalAmount: total
+                totalAmount: total,
+                userId: currentUserId
             };
 
             stompClient.send("/app/new-order", {}, JSON.stringify(orderDetails));

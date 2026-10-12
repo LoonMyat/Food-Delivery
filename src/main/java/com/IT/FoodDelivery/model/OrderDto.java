@@ -9,7 +9,6 @@ import lombok.Data;
 public class OrderDto {
 
     private String tempOrderId;
-    private String cusName;
     private Double latitude;
     private Double longitude;
     private String status;
@@ -17,5 +16,6 @@ public class OrderDto {
     private LocalDateTime createdAt;
     private Double totalAmount;
     private String items;
+    private Long userId;
 
 }

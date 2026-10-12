@@ -24,6 +24,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RiderNotFoundException.class)
     public String handleRiderNotFound(RiderNotFoundException ex) {
-        return "redirect:/login?rider_removed=true";
+        return "redirect:/login?error=rider_removed";
     }
 }

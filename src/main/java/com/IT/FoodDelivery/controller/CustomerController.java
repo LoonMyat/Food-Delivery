@@ -71,10 +71,10 @@ public class CustomerController {
     }
 
     @GetMapping("/map")
-    public String map(Model model, Authentication auth) {
-        String email = auth.getName();
-        AppUser customer = userRepo.findByEmail(email).orElseThrow();
-        model.addAttribute("customer", customer);
+    public String map() {
+        // String email = auth.getName();
+        // AppUser customer = userRepo.findByEmail(email).orElseThrow();
+        // model.addAttribute("customer", customer);
         return "customer/map";
     }
 
@@ -91,8 +91,7 @@ public class CustomerController {
     public String orders(@PathVariable("userId") Long id, Model model){
         AppUser user = userRepo.findById(id).orElse(null);
         if(user != null){
-            String name = user.getUsername();
-            List<Order> orders = orderRepo.findByCusName(name);
+            List<Order> orders = orderRepo.findByUserId(id);
 
             model.addAttribute("orders", orders);
         }

@@ -9,11 +9,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import com.IT.FoodDelivery.model.AppUser;
 import com.IT.FoodDelivery.model.Order;
 import com.IT.FoodDelivery.model.OrderDto;
 import com.IT.FoodDelivery.model.Rider;
 import com.IT.FoodDelivery.repo.OrderRepo;
 import com.IT.FoodDelivery.repo.RiderRepo;
+import com.IT.FoodDelivery.repo.UserRepo;
 
 import lombok.Data;
 
@@ -24,6 +26,7 @@ public class WebSocketController {
     private final OrderRepo orderRepo;
     private final SimpMessagingTemplate messagingTemplate;
     private final RiderRepo riderRepo;
+    private final UserRepo userRepo;
 
     @MessageMapping("/new-order")
     public void orderFromCusToRes(OrderDto dto) {
@@ -38,8 +41,10 @@ public class WebSocketController {
             messagingTemplate.convertAndSend("/topic/order-response", (Object) response);
 
         } else {    
+            AppUser user = userRepo.findById(dto.getUserId()).orElse(null);
+
             Order order = new Order();
-            order.setCusName(dto.getCusName());
+            order.setCusName(user.getUsername());
             order.setLatitude(dto.getLatitude());
             order.setLongitude(dto.getLongitude());
             order.setStatus("PENDING");
@@ -47,6 +52,7 @@ public class WebSocketController {
             order.setTotalAmount(dto.getTotalAmount());
             order.setPhone(dto.getPhone());
             order.setItems(dto.getItems());
+            order.setUser(user);
 
             Order savedOrder = orderRepo.save(order);
 

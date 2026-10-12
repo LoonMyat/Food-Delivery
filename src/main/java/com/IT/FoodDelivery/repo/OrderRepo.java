@@ -19,7 +19,7 @@ public interface OrderRepo extends JpaRepository<Order, Long>{
 
     List<Order> findByStatus(String status);
 
-    List<Order> findByCusName(String cusName);    
+    List<Order> findByUserId(Long id);    
 
     List<Order> findByRiderIdAndStatus(Long id, String status);
 }
